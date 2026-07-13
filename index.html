@@ -28,9 +28,8 @@
             <p class="text-gray-500 max-w-2xl mx-auto">Explore our exclusive range of premium jewelry, crafted with elegance and perfection just for you.</p>
         </div>
 
-        <!-- Products Grid (यहाँ आपके डेटाबेस से प्रोडक्ट आएँगे) -->
+        <!-- Products Grid -->
         <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <!-- Loading Message -->
             <div class="col-span-full text-center py-10">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
                 <p class="mt-2 text-gray-500">Loading beautiful collections...</p>
@@ -45,17 +44,18 @@
 
     <!-- Supabase Javascript Code -->
     <script>
-        // Supabase कनेक्शन
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-        // प्रोडक्ट लोड करने का फंक्शन
         async function loadProducts() {
             const container = document.getElementById('product-list');
             
             try {
-                // डेटाबेस से डेटा मंगाना (उल्टे क्रम में ताकि नया प्रोडक्ट सबसे पहले दिखे)
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को रिफ्रेश करें।");
+                }
+
+                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
                 const { data, error } = await supabase
                     .from('products')
                     .select('*')
@@ -63,18 +63,16 @@
 
                 if (error) throw error;
 
-                // अगर डेटाबेस खाली है
-                if (data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10">No products available right now. Please check back later!</div>';
+                if (!data || data.length === 0) {
+                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
                     return;
                 }
 
-                // डेटाबेस में प्रोडक्ट मिलने पर उन्हें दिखाना
                 container.innerHTML = '';
                 data.forEach(product => {
                     const card = `
                         <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group cursor-pointer border border-gray-100">
-                            <div class="relative h-64 overflow-hidden bg-gray-100">
+                            <div class="relative h-64 overflow-hidden bg-gray-100 flex justify-center items-center">
                                 <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                             </div>
                             <div class="p-5">
@@ -90,12 +88,10 @@
                 });
 
             } catch (error) {
-                console.error("Error loading products:", error);
-                container.innerHTML = '<div class="col-span-full text-center text-red-500 py-10">Failed to load products. Please refresh the page.</div>';
+                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
             }
         }
 
-        // पेज लोड होते ही फंक्शन चलाना
         window.onload = loadProducts;
     </script>
 </body>
