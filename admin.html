@@ -26,7 +26,6 @@
             
             <div class="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300">
                 <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image (फाइल मैनेजर से फोटो चुनें)</label>
-                <!-- मैंने यहाँ से 'accept' एट्रिब्यूट हटा दिया है ताकि सीधा File Manager खुले -->
                 <input type="file" id="image_file" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 cursor-pointer">
             </div>
 
@@ -37,44 +36,43 @@
     </div>
 
     <script>
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        document.getElementById('add-product-form').addEventListener('submit', async function(e) {
+            e.preventDefault(); // यह पेज को रिफ्रेश होने से रोकेगा
 
-        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
             const submitBtn = document.getElementById('submit-btn');
             const msgDiv = document.getElementById('message');
             
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Uploading...';
-
-            const name = document.getElementById('name').value;
-            const price = document.getElementById('price').value;
-            const fileInput = document.getElementById('image_file');
-            const file = fileInput.files[0];
-
             try {
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को एक बार रिफ्रेश करें।");
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Uploading... ⏳';
+
+                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+                const supabaseKey = 'EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+                const name = document.getElementById('name').value;
+                const price = document.getElementById('price').value;
+                const fileInput = document.getElementById('image_file');
+                const file = fileInput.files[0];
+
+                if (!file) throw new Error("कृपया पहले कोई फोटो चुनें।");
+
                 const fileExt = file.name.split('.').pop();
-                const fileName = `${Date.now()}.${fileExt}`;
-                const filePath = `${fileName}`;
+                const fileName = Date.now() + '.' + fileExt;
 
-                const { error: uploadError } = await supabase.storage
-                    .from('product-images')
-                    .upload(filePath, file);
-
+                // 1. फोटो अपलोड करना
+                const { error: uploadError } = await supabase.storage.from('product-images').upload(fileName, file);
                 if (uploadError) throw uploadError;
 
-                const { data: { publicUrl } } = supabase.storage
-                    .from('product-images')
-                    .getPublicUrl(filePath);
+                // 2. फोटो का लिंक लेना
+                const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName);
 
-                const { error: insertError } = await supabase
-                    .from('products')
-                    .insert([{ name, price, image_url: publicUrl }]);
-
+                // 3. डेटाबेस में नाम, कीमत और फोटो का लिंक सेव करना
+                const { error: insertError } = await supabase.from('products').insert([{ name: name, price: price, image_url: publicUrl }]);
                 if (insertError) throw insertError;
 
                 msgDiv.textContent = "Product Live Successfully! 🎉";
@@ -87,10 +85,6 @@
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Upload & Save Product';
-                setTimeout(() => {
-                    msgDiv.classList.add('hidden');
-                    msgDiv.classList.remove('block');
-                }, 4000);
             }
         });
     </script>
