@@ -6,6 +6,8 @@
     <title>Premium Jewellery Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- प्रोफेशनल आइकन्स -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body class="bg-gray-50 font-sans">
 
@@ -13,10 +15,13 @@
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-yellow-600 tracking-wider">YOGESH JEWELLERS</h1>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">Home</a>
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">Collections</a>
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">About Us</a>
+            <nav class="flex space-x-6 items-center">
+                <a href="index.html" class="text-gray-600 hover:text-yellow-600 font-medium transition-colors">Home</a>
+                <!-- Cart Icon -->
+                <a href="cart.html" class="text-gray-800 hover:text-yellow-600 font-bold flex items-center gap-1 relative transition-colors">
+                    <i class="ph ph-shopping-cart text-2xl"></i> Cart
+                    <span id="cart-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-sm">0</span>
+                </a>
             </nav>
         </div>
     </header>
@@ -37,34 +42,31 @@
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
-        <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
-    </footer>
-
-    <!-- Full Image Modal (बड़ी फोटो दिखाने वाला पॉपअप) -->
+    <!-- Full Image Modal -->
     <div id="imageModal" class="hidden fixed inset-0 z-[100] bg-black bg-opacity-90 flex justify-center items-center p-4">
         <span class="absolute top-5 right-5 text-white text-5xl cursor-pointer hover:text-gray-300 z-[101]" onclick="closeImage()">&times;</span>
         <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100]">
     </div>
 
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
+        <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
+    </footer>
+
     <!-- Javascript Code -->
     <script>
+        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         async function loadProducts() {
             const container = document.getElementById('product-list');
-            
             try {
-                // यह रहा वह सुरक्षा कवच जो पिछली बार छूट गया था
                 if (typeof window.supabase === 'undefined') {
-                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को एक बार रिफ्रेश करें।");
+                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज रिफ्रेश करें।");
                 }
 
-                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
                 const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-                
                 if (error) throw error;
                 
                 if (!data || data.length === 0) {
@@ -85,8 +87,9 @@
                             <div class="p-5">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-1 truncate">${product.name}</h3>
                                 <p class="text-xl text-yellow-600 font-bold mb-4">₹${product.price}</p>
-                                <button onclick="addToCart('${product.name}')" class="w-full bg-gray-900 text-white font-medium py-2.5 rounded-lg hover:bg-yellow-600 transition-colors duration-300 cursor-pointer">
-                                    Add to Cart
+                                <!-- कार्ट में प्रोडक्ट का नाम, कीमत और फोटो भेजने का कोड -->
+                                <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-gray-900 text-white font-medium py-2.5 rounded-lg hover:bg-yellow-600 transition-colors duration-300 cursor-pointer flex justify-center items-center gap-2">
+                                    <i class="ph ph-shopping-cart-simple text-lg"></i> Add to Cart
                                 </button>
                             </div>
                         </div>
@@ -94,28 +97,40 @@
                     container.innerHTML += card;
                 });
             } catch (error) {
-                // अगर कोई दिक्कत आई, तो लोडिंग अटकने के बजाय यह एरर मैसेज दिखाएगा
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message} <br> कृपया पेज को रिफ्रेश करें।</div>`;
+                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
             }
         }
 
-        // 2. बड़ी फोटो खोलने का फंक्शन
+        // कार्ट का नंबर अपडेट करने का फंक्शन
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            document.getElementById('cart-count').innerText = cart.length;
+        }
+
+        // प्रोडक्ट को कार्ट में सेव करने का असली फंक्शन
+        function addToCart(name, price, image) {
+            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            cart.push({ name: name, price: price, image: image });
+            localStorage.setItem('y_store_cart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // अब नया मैसेज आएगा
+            alert("🛒 " + name + " कार्ट में सेव हो गया है! ऊपर 'Cart' पर क्लिक करके अपना बिल देखें।");
+        }
+
         function openImage(imgUrl) {
             document.getElementById('fullImage').src = imgUrl;
             document.getElementById('imageModal').classList.remove('hidden');
         }
 
-        // 3. बड़ी फोटो बंद करने का फंक्शन
         function closeImage() {
             document.getElementById('imageModal').classList.add('hidden');
         }
 
-        // 4. Add to Cart बटन का फंक्शन
-        function addToCart(productName) {
-            alert("🛒 " + productName + " आपके कार्ट में सफलतापूर्वक जुड़ गया है!");
-        }
-
-        window.onload = loadProducts;
+        window.onload = () => {
+            loadProducts();
+            updateCartCount();
+        };
     </script>
 </body>
 </html>
