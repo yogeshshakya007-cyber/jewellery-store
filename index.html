@@ -44,24 +44,29 @@
 
     <!-- Full Image Modal (बड़ी फोटो दिखाने वाला पॉपअप) -->
     <div id="imageModal" class="hidden fixed inset-0 z-[100] bg-black bg-opacity-90 flex justify-center items-center p-4">
-        <!-- Close Button -->
         <span class="absolute top-5 right-5 text-white text-5xl cursor-pointer hover:text-gray-300 z-[101]" onclick="closeImage()">&times;</span>
-        <!-- Big Image -->
         <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100]">
     </div>
 
     <!-- Javascript Code -->
     <script>
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-        // 1. प्रोडक्ट लोड करने का फंक्शन
         async function loadProducts() {
             const container = document.getElementById('product-list');
+            
             try {
+                // यह रहा वह सुरक्षा कवच जो पिछली बार छूट गया था
+                if (typeof window.supabase === 'undefined') {
+                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को एक बार रिफ्रेश करें।");
+                }
+
+                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
                 const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
+                
                 if (error) throw error;
+                
                 if (!data || data.length === 0) {
                     container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
                     return;
@@ -69,7 +74,6 @@
 
                 container.innerHTML = '';
                 data.forEach(product => {
-                    // यहाँ मैंने Add to Cart और Image click के फंक्शन जोड़ दिए हैं
                     const card = `
                         <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group border border-gray-100">
                             <div class="relative h-64 overflow-hidden bg-gray-100 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
@@ -90,7 +94,8 @@
                     container.innerHTML += card;
                 });
             } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
+                // अगर कोई दिक्कत आई, तो लोडिंग अटकने के बजाय यह एरर मैसेज दिखाएगा
+                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message} <br> कृपया पेज को रिफ्रेश करें।</div>`;
             }
         }
 
@@ -107,7 +112,6 @@
 
         // 4. Add to Cart बटन का फंक्शन
         function addToCart(productName) {
-            // अभी के लिए यह एक पॉपअप मैसेज दिखाएगा
             alert("🛒 " + productName + " आपके कार्ट में सफलतापूर्वक जुड़ गया है!");
         }
 
