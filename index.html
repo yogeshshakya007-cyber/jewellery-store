@@ -5,19 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Jewellery Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase Link -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- प्रोफेशनल आइकन्स -->
+    <!-- Professional Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body class="bg-gray-50 font-sans">
 
-    <!-- Header / Navigation -->
+    <!-- Header -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-bold text-yellow-600 tracking-wider">YOGESH JEWELLERS</h1>
             <nav class="flex space-x-6 items-center">
                 <a href="index.html" class="text-gray-600 hover:text-yellow-600 font-medium transition-colors">Home</a>
-                <!-- Cart Icon -->
                 <a href="cart.html" class="text-gray-800 hover:text-yellow-600 font-bold flex items-center gap-1 relative transition-colors">
                     <i class="ph ph-shopping-cart text-2xl"></i> Cart
                     <span id="cart-count" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-sm">0</span>
@@ -55,22 +55,30 @@
 
     <!-- Javascript Code -->
     <script>
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        // कार्ट का नंबर अपडेट करने का फंक्शन
+        function updateCartCount() {
+            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            document.getElementById('cart-count').innerText = cart.length;
+        }
 
         async function loadProducts() {
             const container = document.getElementById('product-list');
             try {
                 if (typeof window.supabase === 'undefined') {
-                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज रिफ्रेश करें।");
+                    throw new Error("इंटरनेट धीमा होने के कारण डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज रिफ्रेश करें।");
                 }
 
+                // कनेक्शन को सुरक्षा कवच के अंदर कर दिया है
+                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
                 const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
+                
                 if (error) throw error;
                 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
+                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-xl">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
                     return;
                 }
 
@@ -87,7 +95,6 @@
                             <div class="p-5">
                                 <h3 class="text-lg font-semibold text-gray-800 mb-1 truncate">${product.name}</h3>
                                 <p class="text-xl text-yellow-600 font-bold mb-4">₹${product.price}</p>
-                                <!-- कार्ट में प्रोडक्ट का नाम, कीमत और फोटो भेजने का कोड -->
                                 <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-gray-900 text-white font-medium py-2.5 rounded-lg hover:bg-yellow-600 transition-colors duration-300 cursor-pointer flex justify-center items-center gap-2">
                                     <i class="ph ph-shopping-cart-simple text-lg"></i> Add to Cart
                                 </button>
@@ -97,24 +104,15 @@
                     container.innerHTML += card;
                 });
             } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
+                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message} <br> कृपया पेज को रिफ्रेश करें।</div>`;
             }
         }
 
-        // कार्ट का नंबर अपडेट करने का फंक्शन
-        function updateCartCount() {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            document.getElementById('cart-count').innerText = cart.length;
-        }
-
-        // प्रोडक्ट को कार्ट में सेव करने का असली फंक्शन
         function addToCart(name, price, image) {
             let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
             cart.push({ name: name, price: price, image: image });
             localStorage.setItem('y_store_cart', JSON.stringify(cart));
             updateCartCount();
-            
-            // अब नया मैसेज आएगा
             alert("🛒 " + name + " कार्ट में सेव हो गया है! ऊपर 'Cart' पर क्लिक करके अपना बिल देखें।");
         }
 
@@ -128,8 +126,8 @@
         }
 
         window.onload = () => {
-            loadProducts();
             updateCartCount();
+            loadProducts();
         };
     </script>
 </body>
