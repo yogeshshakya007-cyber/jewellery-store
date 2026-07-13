@@ -37,16 +37,12 @@
 
     <script>
         document.getElementById('add-product-form').addEventListener('submit', async function(e) {
-            e.preventDefault(); // यह पेज को रिफ्रेश होने से रोकेगा
+            e.preventDefault();
 
             const submitBtn = document.getElementById('submit-btn');
             const msgDiv = document.getElementById('message');
             
             try {
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को एक बार रिफ्रेश करें।");
-                }
-
                 submitBtn.disabled = true;
                 submitBtn.innerHTML = 'Uploading... ⏳';
 
