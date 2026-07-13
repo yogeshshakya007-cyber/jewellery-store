@@ -47,7 +47,8 @@
                 submitBtn.innerHTML = 'Uploading... ⏳';
 
                 const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-                const supabaseKey = 'EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+                // यहाँ मैंने बड़ा 'E' हटाकर छोटा 'e' कर दिया है
+                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
                 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
                 const name = document.getElementById('name').value;
@@ -60,14 +61,11 @@
                 const fileExt = file.name.split('.').pop();
                 const fileName = Date.now() + '.' + fileExt;
 
-                // 1. फोटो अपलोड करना
                 const { error: uploadError } = await supabase.storage.from('product-images').upload(fileName, file);
                 if (uploadError) throw uploadError;
 
-                // 2. फोटो का लिंक लेना
                 const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName);
 
-                // 3. डेटाबेस में नाम, कीमत और फोटो का लिंक सेव करना
                 const { error: insertError } = await supabase.from('products').insert([{ name: name, price: price, image_url: publicUrl }]);
                 if (insertError) throw insertError;
 
