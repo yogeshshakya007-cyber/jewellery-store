@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jewellery Store - Premium Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gray-50 p-4 font-sans">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl p-6 mt-10 border border-gray-100">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b pb-4">Seller Dashboard<br><span class="text-sm font-normal text-gray-500">Add New Jewellery Design</span></h2>
+        
+        <div id="message" class="hidden mb-4 p-3 rounded text-center font-bold text-sm"></div>
+
+        <form id="add-product-form" class="space-y-5">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Product Name (गहने का नाम)</label>
+                <input type="text" id="name" required class="border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="e.g. Premium Gold Plated Necklace">
+            </div>
+            
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Price (कीमत ₹ में)</label>
+                <input type="number" id="price" required class="border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="e.g. 1500">
+            </div>
+            
+            <div class="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image (गैलरी से फोटो चुनें)</label>
+                <!-- यह बटन सीधे मोबाइल की गैलरी खोलेगा -->
+                <input type="file" id="image_file" accept="image/*" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 cursor-pointer">
+                <p class="text-xs text-gray-400 mt-2">Only images (JPG, PNG) are allowed.</p>
+            </div>
+
+            <button type="submit" id="submit-btn" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none shadow-md transition duration-200 flex justify-center items-center">
+                <span>Upload & Save Product</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // आपका Supabase URL और Anon Key (मैंने सेट कर दिए हैं)
+        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+        const supabaseKey = 'EyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+        
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            const msgDiv = document.getElementById('message');
+            
+            // बटन को लोडिंग स्टेट में बदलें
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Uploading...';
+
+            const name = document.getElementById('name').value;
+            const price = document.getElementById('price').value;
+            const fileInput = document.getElementById('image_file');
+            const file = fileInput.files[0];
+
+            try {
+                // 1. गैलरी वाली फोटो को Supabase Storage में अपलोड करें
+                const fileExt = file.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`; // फोटो का एक नया यूनिक नाम
+                const filePath = `${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('product-images')
+                    .upload(filePath, file);
+
+                if (uploadError) throw uploadError;
+
+                // 2. अपलोड की गई फोटो का पब्लिक URL निकालें
+                const { data: { publicUrl } } = supabase.storage
+                    .from('product-images')
+                    .getPublicUrl(filePath);
+
+                // 3. नाम, कीमत और फोटो का URL डेटाबेस टेबल में सेव करें
+                const { error: insertError } = await supabase
+                    .from('products')
+                    .insert([{ name, price, image_url: publicUrl }]);
+
+                if (insertError) throw insertError;
+
+                // सफलता का मैसेज
+                msgDiv.textContent = "Product Live Successfully! 🎉";
+                msgDiv.className = "mb-4 p-3 rounded-lg text-center font-bold bg-green-100 text-green-700 block border border-green-200";
+                document.getElementById('add-product-form').reset();
+
+            } catch (error) {
+                // एरर का मैसेज
+                msgDiv.textContent = "Error: " + error.message;
+                msgDiv.className = "mb-4 p-3 rounded-lg text-center font-bold bg-red-100 text-red-700 block border border-red-200";
+            } finally {
+                // बटन को वापस नॉर्मल करें
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Upload & Save Product';
+                
+                // 4 सेकंड बाद मैसेज छिपा दें
+                setTimeout(() => {
+                    msgDiv.classList.add('hidden');
+                    msgDiv.classList.remove('block');
+                }, 4000);
+            }
+        });
+    </script>
+</body>
+</html>
