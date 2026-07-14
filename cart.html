@@ -1,121 +1,68 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Jewellery Store</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body class="bg-gray-50 font-sans">
+<!-- Dark Overlay Backdrop -->
+<div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
 
-    <!-- Header / Navigation -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-yellow-600 tracking-wider">YOGESH JEWELLERS</h1>
-            <nav class="hidden md:flex space-x-8">
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">Home</a>
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">Collections</a>
-                <a href="#" class="text-gray-600 hover:text-yellow-600 font-medium">About Us</a>
-            </nav>
+<!-- Cart Drawer (साइडबार) -->
+<div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+    
+    <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white">
+        <div class="flex items-center gap-3">
+            <button onclick="toggleCart()" class="text-gray-600 hover:text-black"><i class="ph ph-list text-2xl"></i></button>
+            <h2 class="text-xl font-bold text-gray-900 flex items-center gap-1">
+                Cart <span id="cart-drawer-count" class="text-gray-400 font-normal text-lg">0</span>
+            </h2>
         </div>
+        <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-gray-300 transition cursor-pointer">
+            <i class="ph ph-x font-bold"></i>
+        </button>
     </header>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Our Latest Collection</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto">Explore our exclusive range of premium jewelry, crafted with elegance and perfection just for you.</p>
-        </div>
-
-        <!-- Products Grid -->
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="col-span-full text-center py-10">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600"></div>
-                <p class="mt-2 text-gray-500">Loading beautiful collections...</p>
-            </div>
-        </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
-        <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
-    </footer>
-
-    <!-- Full Image Modal (बड़ी फोटो दिखाने वाला पॉपअप) -->
-    <div id="imageModal" class="hidden fixed inset-0 z-[100] bg-black bg-opacity-90 flex justify-center items-center p-4">
-        <span class="absolute top-5 right-5 text-white text-5xl cursor-pointer hover:text-gray-300 z-[101]" onclick="closeImage()">&times;</span>
-        <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[100]">
+    <div class="peach-bg text-white text-sm font-medium py-2.5 px-4 flex justify-between items-center">
+        <i class="ph ph-caret-left text-lg"></i>
+        <span>Extra 5% off on Prepaid Orders</span>
+        <i class="ph ph-caret-right text-lg"></i>
     </div>
 
-    <!-- Javascript Code -->
-    <script>
-        async function loadProducts() {
-            const container = document.getElementById('product-list');
-            
-            try {
-                // यह रहा वह सुरक्षा कवच जो पिछली बार छूट गया था
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error("डेटाबेस लिंक लोड नहीं हो पाया। कृपया पेज को एक बार रिफ्रेश करें।");
-                }
+    <div id="cart-items" class="px-5 py-2 flex-grow overflow-y-auto hide-scrollbar bg-white"></div>
 
-                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden bg-white">
+        <h3 class="text-center font-bold text-gray-800 mb-4">"You will also love these!"</h3>
+        <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+            <div class="min-w-[140px] border border-gray-100 bg-gray-50 p-2 rounded flex flex-col">
+                <div class="h-32 bg-gray-200 mb-2 rounded overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-xs font-bold text-gray-800 leading-tight mb-1 h-8 overflow-hidden">Premium Rudraksha Chain</h4>
+                <div class="flex gap-1 text-xs mb-3"><span class="font-bold text-gray-800">₹ 399</span><span class="text-gray-400 line-through">₹ 449</span></div>
+                <button class="w-full peach-bg text-white text-xs font-bold py-2 rounded mt-auto" onclick="toggleCart()">ADD</button>
+            </div>
+        </div>
+    </div>
 
-                const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-                
-                if (error) throw error;
-                
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
-                    return;
-                }
-
-                container.innerHTML = '';
-                data.forEach(product => {
-                    const card = `
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 group border border-gray-100">
-                            <div class="relative h-64 overflow-hidden bg-gray-100 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
-                                <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                    <span class="text-white opacity-0 group-hover:opacity-100 bg-black bg-opacity-50 px-3 py-1 rounded-full text-sm">👁️ View</span>
-                                </div>
-                            </div>
-                            <div class="p-5">
-                                <h3 class="text-lg font-semibold text-gray-800 mb-1 truncate">${product.name}</h3>
-                                <p class="text-xl text-yellow-600 font-bold mb-4">₹${product.price}</p>
-                                <button onclick="addToCart('${product.name}')" class="w-full bg-gray-900 text-white font-medium py-2.5 rounded-lg hover:bg-yellow-600 transition-colors duration-300 cursor-pointer">
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    container.innerHTML += card;
-                });
-            } catch (error) {
-                // अगर कोई दिक्कत आई, तो लोडिंग अटकने के बजाय यह एरर मैसेज दिखाएगा
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message} <br> कृपया पेज को रिफ्रेश करें।</div>`;
-            }
-        }
-
-        // 2. बड़ी फोटो खोलने का फंक्शन
-        function openImage(imgUrl) {
-            document.getElementById('fullImage').src = imgUrl;
-            document.getElementById('imageModal').classList.remove('hidden');
-        }
-
-        // 3. बड़ी फोटो बंद करने का फंक्शन
-        function closeImage() {
-            document.getElementById('imageModal').classList.add('hidden');
-        }
-
-        // 4. Add to Cart बटन का फंक्शन
-        function addToCart(productName) {
-            alert("🛒 " + productName + " आपके कार्ट में सफलतापूर्वक जुड़ गया है!");
-        }
-
-        window.onload = loadProducts;
-    </script>
-</body>
-</html>
+    <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="checkout-section">
+        <div class="mb-5">
+            <p id="discount-msg" class="text-sm font-medium text-gray-800 mb-3 text-center">Add ₹ 901 more Item and get extra 15% off</p>
+            <div class="relative w-full h-1.5 bg-gray-300 rounded-full mb-1 mt-6">
+                <div id="progress-fill" class="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-500" style="width: 0%;"></div>
+                <div class="absolute -top-3 left-[60%] flex flex-col items-center">
+                    <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
+                    <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 1,500</span>
+                </div>
+                <div class="absolute -top-3 right-0 flex flex-col items-center">
+                    <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
+                    <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 2,500</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-between items-center text-sm text-gray-600 mt-8 mb-2 border-t border-gray-200 pt-4">
+            <span>Shipping</span>
+            <span>CALCULATED AT CHECKOUT</span>
+        </div>
+        <div class="flex justify-between items-center font-bold text-gray-900 text-lg mb-4">
+            <span>Subtotal</span>
+            <span id="subtotal">₹ 0</span>
+        </div>
+        <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-lg py-3.5 rounded shadow-md transition">
+            Checkout
+        </button>
+    </div>
+</div>
