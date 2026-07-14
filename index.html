@@ -1,312 +1,104 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogesh Jewellers - Premium Collection</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
-        .peach-bg { background-color: #e6998c; }
-        .peach-text { color: #e6998c; }
-        .peach-border { border-color: #e6998c; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .peach-hover:hover { background-color: #d8897c; }
-    </style>
-</head>
-<body class="relative min-h-screen flex flex-col">
+async function loadProducts() {
+    const container = document.getElementById("product-list");
 
-    <!-- HEADER -->
-    <header class="bg-white shadow-sm sticky top-0 z-[100]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-extrabold peach-text tracking-wider">YOGESH JEWELLERS</h1>
-            <nav class="flex space-x-6 items-center">
-                <a href="#" class="text-gray-600 hover:text-black font-medium transition-colors">Home</a>
-                <button onclick="toggleCart()" class="text-gray-900 hover:text-gray-600 font-bold flex items-center gap-1 relative transition-colors cursor-pointer">
-                    <i class="ph ph-shopping-cart text-2xl"></i> Cart
-                    <span id="header-cart-count" class="absolute -top-2 -right-3 peach-bg text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-sm">0</span>
-                </button>
-            </nav>
+    container.innerHTML = `
+        <div class="col-span-full text-center py-10">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-[#e6998c]"></div>
+            <p class="mt-2 text-gray-500">Loading collections...</p>
         </div>
-    </header>
+    `;
 
-    <!-- MAIN CONTENT (PRODUCTS) -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Our Premium Collection</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto">Explore our exclusive range of jewelry, crafted with elegance.</p>
-        </div>
-        
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="col-span-full text-center py-10">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
-                <p class="mt-2 text-gray-500">Loading collections...</p>
-            </div>
-        </div>
-    </main>
+    try {
 
-    <footer class="bg-gray-900 text-white py-8 text-center">
-        <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
-    </footer>
+        if (!window.supabase) {
+            throw new Error("Supabase library not loaded.");
+        }
 
-    <!-- BIG IMAGE POPUP -->
-    <div id="imageModal" class="hidden fixed inset-0 z-[300] bg-black bg-opacity-90 flex justify-center items-center p-4">
-        <button onclick="closeImage()" class="absolute top-5 right-5 text-white bg-gray-800 rounded-full p-2 hover:bg-red-500 transition cursor-pointer z-[301]">
-            <i class="ph ph-x font-bold text-2xl"></i>
-        </button>
-        <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[300]">
-    </div>
+        const supabase = window.supabase.createClient(
+            supabaseUrl,
+            supabaseKey
+        );
 
-    <!-- ============================================================== -->
-    <!-- CART DRAWER CODE (अब यह सुरक्षित रूप से इसी फाइल में है) -->
-    <!-- ============================================================== -->
-    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
-    <div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
-        
-        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleCart()" class="text-gray-600 hover:text-black"><i class="ph ph-list text-2xl"></i></button>
-                <h2 class="text-xl font-bold text-gray-900 flex items-center gap-1">
-                    Cart <span id="cart-drawer-count" class="text-gray-400 font-normal text-lg">0</span>
-                </h2>
-            </div>
-            <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-gray-300 transition cursor-pointer">
-                <i class="ph ph-x font-bold"></i>
-            </button>
-        </header>
+        const { data, error } = await supabase
+            .from("products")
+            .select("*")
+            .order("id", { ascending: false });
 
-        <div class="peach-bg text-white text-sm font-medium py-2.5 px-4 flex justify-between items-center">
-            <i class="ph ph-caret-left text-lg"></i>
-            <span>Extra 5% off on Prepaid Orders</span>
-            <i class="ph ph-caret-right text-lg"></i>
-        </div>
+        if (error) {
+            console.error(error);
+            throw error;
+        }
 
-        <div id="cart-items" class="px-5 py-2 flex-grow overflow-y-auto hide-scrollbar bg-white"></div>
-        
-        <!-- Cross Sell -->
-        <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden bg-white">
-            <h3 class="text-center font-bold text-gray-800 mb-4">"You will also love these!"</h3>
-            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
-                <div class="min-w-[140px] border border-gray-100 bg-gray-50 p-2 rounded flex flex-col">
-                    <div class="h-32 bg-gray-200 mb-2 rounded overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xs font-bold text-gray-800 leading-tight mb-1 h-8 overflow-hidden">Premium Rudraksha Chain</h4>
-                    <div class="flex gap-1 text-xs mb-3"><span class="font-bold text-gray-800">₹ 399</span><span class="text-gray-400 line-through">₹ 449</span></div>
-                    <button class="w-full peach-bg text-white text-xs font-bold py-2 rounded mt-auto" onclick="toggleCart()">ADD</button>
+        if (!data || data.length === 0) {
+            container.innerHTML = `
+                <div class="col-span-full text-center text-gray-500 py-10">
+                    No Products Found
                 </div>
-            </div>
-        </div>
+            `;
+            return;
+        }
 
-        <!-- Checkout Section -->
-        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="checkout-section">
-            <div class="mb-5">
-                <p id="discount-msg" class="text-sm font-medium text-gray-800 mb-3 text-center">Add ₹ 901 more Item and get extra 15% off</p>
-                <div class="relative w-full h-1.5 bg-gray-300 rounded-full mb-1 mt-6">
-                    <div id="progress-fill" class="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-500" style="width: 0%;"></div>
-                    <div class="absolute -top-3 left-[60%] flex flex-col items-center">
-                        <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
-                        <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 1,500</span>
-                    </div>
-                    <div class="absolute -top-3 right-0 flex flex-col items-center">
-                        <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
-                        <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 2,500</span>
-                    </div>
+        container.innerHTML = "";
+
+        data.forEach(product => {
+
+            container.innerHTML += `
+            <div class="bg-white rounded-xl shadow">
+
+                <img
+                    src="${product.image_url}"
+                    class="w-full h-64 object-cover rounded-t-xl"
+                    loading="lazy"
+                    onerror="this.src='https://placehold.co/600x600?text=No+Image'"
+                >
+
+                <div class="p-4">
+
+                    <h3 class="font-bold text-lg">
+                        ${product.name}
+                    </h3>
+
+                    <p class="font-bold text-xl mt-2">
+                        ₹${product.price}
+                    </p>
+
+                    <button
+                        onclick="addToCart('${product.name}',${product.price},'${product.image_url}')"
+                        class="mt-4 w-full bg-[#e6998c] text-white py-3 rounded-lg">
+
+                        Add To Cart
+
+                    </button>
+
                 </div>
+
             </div>
-            <div class="flex justify-between items-center text-sm text-gray-600 mt-8 mb-2 border-t border-gray-200 pt-4">
-                <span>Shipping</span>
-                <span>CALCULATED AT CHECKOUT</span>
-            </div>
-            <div class="flex justify-between items-center font-bold text-gray-900 text-lg mb-4">
-                <span>Subtotal</span>
-                <span id="subtotal">₹ 0</span>
-            </div>
-            <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-lg py-3.5 rounded shadow-md transition">
-                Checkout
-            </button>
+            `;
+
+        });
+
+    }
+
+    catch(err){
+
+        console.error("LOAD ERROR",err);
+
+        container.innerHTML=`
+
+        <div class="col-span-full text-center py-12">
+
+        <h2 class="text-red-600 font-bold text-lg">
+        Failed to load products
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+        ${err.message}
+        </p>
+
         </div>
-    </div>
 
-    <!-- ============================================================== -->
-    <!-- JAVASCRIPT ENGINE -->
-    <!-- ============================================================== -->
-    <script>
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        let supabase;
+        `;
 
-        async function loadProducts() {
-            const container = document.getElementById('product-list');
-            try {
-                if (typeof window.supabase === 'undefined') throw new Error("Supabase Database link failed.");
-                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-                
-                const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-                if (error) throw error;
-                
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">No products available right now.</div>';
-                    return;
-                }
+    }
 
-                container.innerHTML = '';
-                data.forEach(product => {
-                    container.innerHTML += `
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
-                            <div class="relative h-64 overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer rounded-t-xl" onclick="openImage('${product.image_url}')">
-                                <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                    <span class="text-white opacity-0 group-hover:opacity-100 bg-black bg-opacity-50 px-4 py-1.5 rounded-full text-sm font-medium shadow-lg"><i class="ph ph-arrows-out-simple"></i> View</span>
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col flex-grow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-1 line-clamp-2">${product.name}</h3>
-                                <p class="text-xl font-extrabold text-gray-900 mb-4 mt-auto">₹${product.price}</p>
-                                <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full peach-bg peach-hover text-white font-bold py-3 rounded-lg shadow-sm transition flex justify-center items-center gap-2">
-                                    <i class="ph ph-shopping-bag-open text-xl"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error loading products: ${error.message}</div>`;
-            }
-        }
-
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('cart-overlay');
-            if (drawer.classList.contains('translate-x-full')) {
-                drawer.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-                renderCart(); 
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                drawer.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.style.overflow = 'auto'; 
-            }
-        }
-
-        function addToCart(name, price, image) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            let existing = cart.find(c => c.name === name);
-            if(existing) existing.quantity += 1;
-            else cart.push({ name: name, price: price, image: image, quantity: 1 });
-            
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
-            else renderCart();
-        }
-
-        function renderCart() {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            let cartItemsDiv = document.getElementById('cart-items');
-            
-            let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            document.getElementById('header-cart-count').innerText = totalItems;
-            document.getElementById('cart-drawer-count').innerText = totalItems;
-
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-24">
-                        <i class="ph ph-shopping-cart text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-lg font-bold text-gray-800">Your cart is empty</h3>
-                    </div>`;
-                document.getElementById('checkout-section').style.display = 'none';
-                document.getElementById('cross-sell').style.display = 'none';
-                return;
-            }
-
-            document.getElementById('checkout-section').style.display = 'block';
-            document.getElementById('cross-sell').style.display = 'block';
-            cartItemsDiv.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                let itemTotal = Number(item.price) * item.quantity;
-                total += itemTotal;
-                cartItemsDiv.innerHTML += `
-                    <div class="flex items-start py-5 border-b border-gray-100 relative">
-                        <div class="w-20 h-20 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden border border-gray-200">
-                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="ml-4 flex-1 pr-6">
-                            <h3 class="text-sm font-bold text-gray-900 leading-tight mb-3">${item.name}</h3>
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center border border-gray-300 rounded-sm bg-white">
-                                    <button onclick="updateQty(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition"><i class="ph ph-minus"></i></button>
-                                    <span class="w-8 h-7 flex items-center justify-center text-sm font-medium border-l border-r border-gray-300">${item.quantity}</span>
-                                    <button onclick="updateQty(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition"><i class="ph ph-plus"></i></button>
-                                </div>
-                                <span class="font-bold text-gray-900">₹ ${itemTotal}</span>
-                            </div>
-                        </div>
-                        <button onclick="removeItem(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1">
-                            <i class="ph ph-x font-bold text-lg"></i>
-                        </button>
-                    </div>
-                `;
-            });
-            document.getElementById('subtotal').innerText = "₹ " + total;
-            updateProgressBar(total);
-        }
-
-        function updateQty(index, delta) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart[index].quantity += delta;
-            if (cart[index].quantity <= 0) cart.splice(index, 1);
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function updateProgressBar(total) {
-            let msgElement = document.getElementById('discount-msg');
-            let fillElement = document.getElementById('progress-fill');
-            const tier1 = 1500;
-            const tier2 = 2500;
-            if (total < tier1) {
-                msgElement.innerHTML = `Add ₹ ${tier1 - total} more Item and get extra 15% off`;
-            } else if (total >= tier1 && total < tier2) {
-                msgElement.innerHTML = `Add ₹ ${tier2 - total} more Item and get extra 25% off <span class="text-green-600 font-bold ml-1">(15% Unlocked!)</span>`;
-            } else {
-                msgElement.innerHTML = `<span class="text-green-600 font-bold">🎉 Congratulations! 25% OFF Unlocked!</span>`;
-            }
-            let percentage = (total / tier2) * 100;
-            fillElement.style.width = (percentage > 100 ? 100 : percentage) + "%";
-        }
-
-        function openImage(imgUrl) {
-            document.getElementById('fullImage').src = imgUrl;
-            document.getElementById('imageModal').classList.remove('hidden');
-        }
-        function closeImage() {
-            document.getElementById('imageModal').classList.add('hidden');
-        }
-        function checkout() { alert("Checkout Proceeding..."); }
-
-        // Start everything when the page loads
-        window.onload = () => {
-            loadProducts();
-            renderCart(); 
-        };
-    </script>
-</body>
-</html>
+}
