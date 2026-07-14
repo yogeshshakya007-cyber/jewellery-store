@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers - Premium Collection</title>
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS (For Design) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -44,14 +42,15 @@
         </div>
         
         <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- Loading Spinner -->
             <div class="col-span-full text-center py-10" id="loading-spinner">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
-                <p class="mt-2 text-gray-500">Loading collections...</p>
+                <p class="mt-2 text-gray-500 font-medium">Loading collections...</p>
             </div>
         </div>
     </main>
 
-    <footer class="bg-gray-900 text-white py-8 text-center">
+    <footer class="bg-gray-900 text-white py-8 text-center mt-auto">
         <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
     </footer>
 
@@ -132,35 +131,37 @@
         </div>
     </div>
 
-    <!-- JAVASCRIPT ENGINE -->
+    <!-- JAVASCRIPT ENGINE (NO EXTERNAL DB LIBRARIES NEEDED) -->
     <script>
-        // 1. कोई भी एरर आएगा तो स्क्रीन पर साफ़-साफ़ दिखेगा, चक्का नहीं अटकेगा!
-        window.onerror = function(msg) {
-            const container = document.getElementById('product-list');
-            if(container) container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Technical Error: ${msg} <br> कृपया पेज को रीफ्रेश करें।</div>`;
-        };
-
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-        let supabase;
 
+        // Direct API Fetch (यह किसी भी नेटवर्क पर कभी ब्लॉक नहीं होगा)
         async function loadProducts() {
             const container = document.getElementById('product-list');
             try {
-                if (typeof window.supabase === 'undefined') {
-                    throw new Error("डेटाबेस सर्वर कनेक्ट नहीं हो पाया। अपना इंटरनेट चेक करें।");
+                const response = await fetch(supabaseUrl + '/rest/v1/products?select=*&order=id.desc', {
+                    method: 'GET',
+                    headers: {
+                        'apikey': supabaseKey,
+                        'Authorization': 'Bearer ' + supabaseKey,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error("सर्वर से डेटा नहीं मिल पाया।");
                 }
-                supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
-                
-                const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
-                if (error) throw error;
+
+                const data = await response.json();
                 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
+                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
                     return;
                 }
 
-                container.innerHTML = '';
+                container.innerHTML = ''; // लोडिंग चक्का हटाएँ
+                
                 data.forEach(product => {
                     container.innerHTML += `
                         <div class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
@@ -181,11 +182,17 @@
                     `;
                 });
             } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
+                // अगर इंटरनेट नहीं चला, तो चक्का हटेगा और लाल एरर दिखेगा
+                container.innerHTML = `
+                    <div class="col-span-full text-center text-red-500 py-10">
+                        <i class="ph ph-wifi-slash text-5xl mb-3"></i>
+                        <h3 class="font-bold text-lg">इंटरनेट या नेटवर्क की समस्या</h3>
+                        <p class="text-sm mt-1">${error.message}</p>
+                    </div>`;
             }
         }
 
-        // कार्ट के बाकी सारे फंक्शन्स 
+        // --- Cart Functions ---
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const overlay = document.getElementById('cart-overlay');
@@ -210,6 +217,7 @@
                 cart.push({ name: name, price: price, image: image, quantity: 1 });
             }
             localStorage.setItem('y_store_cart', JSON.stringify(cart));
+            
             const drawer = document.getElementById('cart-drawer');
             if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
             else renderCart();
@@ -307,16 +315,16 @@
         function closeImage() { document.getElementById('imageModal').classList.add('hidden'); }
         function checkout() { alert("Checkout Proceeding..."); }
 
-        // 2. तुरंत रन होने वाला सिस्टम (बिना किसी इंतज़ार के)
-        (async function startApp() {
+        // पेज का डिज़ाइन पूरा लोड होने के बाद ही चालू करें (100% Safe Initialization)
+        document.addEventListener('DOMContentLoaded', () => {
             try {
                 let checkCart = JSON.parse(localStorage.getItem('y_store_cart'));
                 if (checkCart && !Array.isArray(checkCart)) localStorage.removeItem('y_store_cart');
             } catch(e) { localStorage.removeItem('y_store_cart'); }
 
-            renderCart();
-            await loadProducts();
-        })();
+            renderCart(); 
+            loadProducts(); // अब यह डायरेक्ट API कॉल करेगा!
+        });
     </script>
 </body>
 </html>
