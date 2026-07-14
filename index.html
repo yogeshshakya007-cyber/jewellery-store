@@ -3,252 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - Yogesh Jewellers</title>
-    <!-- Tailwind CSS -->
+    <title>Yogesh Jewellers - Premium Collection</title>
+    <!-- Tailwind & Supabase & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Professional Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Premium Font (Montserrat) -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f9fafb; overflow-x: hidden; }
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
+        .peach-border { border-color: #e6998c; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .peach-hover:hover { background-color: #d8897c; }
     </style>
 </head>
-<body class="flex justify-center min-h-screen">
+<body class="relative min-h-screen flex flex-col">
 
-    <!-- Main Mobile-like Cart Container -->
-    <main class="w-full max-w-md bg-white min-h-screen shadow-2xl relative flex flex-col">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-[100]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-extrabold peach-text tracking-wider">YOGESH JEWELLERS</h1>
+            <nav class="flex space-x-6 items-center">
+                <a href="#" class="text-gray-600 hover:text-black font-medium transition-colors">Home</a>
+                <button onclick="toggleCart()" class="text-gray-900 hover:text-gray-600 font-bold flex items-center gap-1 relative transition-colors cursor-pointer">
+                    <i class="ph ph-shopping-cart text-2xl"></i> Cart
+                    <span id="header-cart-count" class="absolute -top-2 -right-3 peach-bg text-white text-xs font-bold px-1.5 py-0.5 rounded-full shadow-sm">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Our Premium Collection</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">Explore our exclusive range of jewelry, crafted with elegance.</p>
+        </div>
         
-        <!-- Header -->
-        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-            <div class="flex items-center gap-3">
-                <a href="index.html" class="text-gray-600 hover:text-black"><i class="ph ph-list text-2xl"></i></a>
-                <h1 class="text-xl font-bold text-gray-900 flex items-center gap-1">
-                    Cart <span id="cart-header-count" class="text-gray-400 font-normal text-lg">0</span>
-                </h1>
-            </div>
-            <a href="index.html" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition">
-                <i class="ph ph-x font-bold"></i>
-            </a>
-        </header>
-
-        <!-- Promo Banner -->
-        <div class="peach-bg text-white text-sm font-medium py-2.5 px-4 flex justify-between items-center">
-            <i class="ph ph-caret-left text-lg cursor-pointer"></i>
-            <span>Extra 5% off on Prepaid Orders</span>
-            <i class="ph ph-caret-right text-lg cursor-pointer"></i>
-        </div>
-
-        <!-- Cart Items Container -->
-        <div id="cart-items" class="px-5 py-2 flex-grow overflow-y-auto hide-scrollbar">
-            <!-- Products will load here via JavaScript -->
-        </div>
-
-        <!-- Cross-sell Section (Static matching UI) -->
-        <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden">
-            <h3 class="text-center font-bold text-gray-800 mb-4">"You will also love these!"</h3>
-            <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
-                <!-- Suggestion 1 -->
-                <div class="min-w-[140px] border border-gray-100 bg-gray-50 p-2 rounded flex flex-col">
-                    <div class="h-32 bg-gray-200 mb-2 rounded overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xs font-bold text-gray-800 leading-tight mb-1 h-8 overflow-hidden">Premium Rudraksha Chain</h4>
-                    <div class="flex gap-1 text-xs mb-3"><span class="font-bold text-gray-800">₹ 399</span><span class="text-gray-400 line-through">₹ 449</span></div>
-                    <button class="w-full peach-bg text-white text-xs font-bold py-2 rounded mt-auto" onclick="alert('Please add from Home Page')">ADD</button>
-                </div>
-                <!-- Suggestion 2 -->
-                <div class="min-w-[140px] border border-gray-100 bg-gray-50 p-2 rounded flex flex-col">
-                    <div class="h-32 bg-gray-200 mb-2 rounded overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=400&auto=format&fit=crop" class="w-full h-full object-cover">
-                    </div>
-                    <h4 class="text-xs font-bold text-gray-800 leading-tight mb-1 h-8 overflow-hidden">Statement Axe Pendant</h4>
-                    <div class="flex gap-1 text-xs mb-3"><span class="font-bold text-gray-800">₹ 629</span><span class="text-gray-400 line-through">₹ 1,049</span></div>
-                    <button class="w-full peach-bg text-white text-xs font-bold py-2 rounded mt-auto" onclick="alert('Please add from Home Page')">ADD</button>
-                </div>
+        <!-- Products Grid Area -->
+        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div class="col-span-full text-center py-10">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
+                <p class="mt-2 text-gray-500">Loading collections...</p>
             </div>
         </div>
-
-        <!-- Footer Notice -->
-        <div class="px-5 py-4 text-gray-500 text-sm border-t border-gray-100 hidden" id="footer-notice">
-            *Offer excludes lab-grown diamond jewellery, 925 sterling silver, and silver coins.
-        </div>
-
-        <!-- Checkout Bottom Section -->
-        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200" id="checkout-section">
-            
-            <!-- Progress Bar -->
-            <div class="mb-5">
-                <p id="discount-msg" class="text-sm font-medium text-gray-800 mb-3 text-center">Add ₹ 901 more Item and get extra 15% off</p>
-                <div class="relative w-full h-1.5 bg-gray-300 rounded-full mb-1 mt-6">
-                    <div id="progress-fill" class="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-500" style="width: 0%;"></div>
-                    <!-- Milestones -->
-                    <div class="absolute -top-3 left-[60%] flex flex-col items-center">
-                        <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
-                        <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 1,500</span>
-                        <span class="text-[9px] text-gray-500 font-bold whitespace-nowrap">15% OFF</span>
-                    </div>
-                    <div class="absolute -top-3 right-0 flex flex-col items-center">
-                        <i class="ph ph-rosette-discount text-xl text-black bg-gray-50 rounded-full"></i>
-                        <span class="text-[10px] text-gray-600 mt-1 whitespace-nowrap">₹ 2,500</span>
-                        <span class="text-[9px] text-gray-500 font-bold whitespace-nowrap">25% OFF</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Summary -->
-            <div class="flex justify-between items-center text-sm text-gray-600 mt-10 mb-3 border-t border-gray-200 pt-4">
-                <span>Shipping</span>
-                <span>CALCULATED AT CHECKOUT</span>
-            </div>
-            <div class="flex justify-between items-center font-bold text-gray-900 text-lg mb-4">
-                <span>Subtotal</span>
-                <span id="subtotal">₹ 0</span>
-            </div>
-
-            <button onclick="checkout()" class="w-full peach-bg text-white font-bold text-lg py-3.5 rounded shadow-sm hover:opacity-90 transition">
-                Checkout
-            </button>
-            <div class="text-center mt-3">
-                <a href="index.html" class="text-gray-500 text-sm hover:text-gray-800">Or continue shopping</a>
-            </div>
-        </div>
-
     </main>
 
-    <!-- Javascript Engine -->
-    <script>
-        function loadCart() {
-            let rawCart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            let cartItemsDiv = document.getElementById('cart-items');
-            
-            // प्रोडक्ट को ग्रुप करना (अगर एक ही अंगूठी 2 बार ऐड की है, तो Quantity 2 हो जाएगी)
-            let cart = [];
-            rawCart.forEach(item => {
-                let existing = cart.find(c => c.name === item.name);
-                if(existing) {
-                    existing.quantity += (item.quantity || 1);
-                } else {
-                    cart.push({ ...item, quantity: item.quantity || 1 });
-                }
-            });
-            // क्लीन किया हुआ कार्ट वापस सेव करें
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-8 text-center">
+        <p>&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
+    </footer>
 
-            // UI अपडेट करना
-            document.getElementById('cart-header-count').innerText = cart.length;
+    <!-- Full Image Modal -->
+    <div id="imageModal" class="hidden fixed inset-0 z-[300] bg-black bg-opacity-90 flex justify-center items-center p-4">
+        <button onclick="closeImage()" class="absolute top-5 right-5 text-white bg-gray-800 rounded-full p-2 hover:bg-red-500 transition cursor-pointer z-[301]">
+            <i class="ph ph-x font-bold text-2xl"></i>
+        </button>
+        <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[300]">
+    </div>
 
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-20">
-                        <i class="ph ph-shopping-cart text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-lg font-bold text-gray-800">Your cart is empty</h3>
-                    </div>`;
-                document.getElementById('checkout-section').style.display = 'none';
-                document.getElementById('cross-sell').style.display = 'none';
-                document.getElementById('footer-notice').style.display = 'none';
-                return;
-            }
+    <!-- CART CONTAINER (यहाँ कार्ट फाइल अपने आप आ जाएगी) -->
+    <div id="cart-container"></div>
 
-            document.getElementById('checkout-section').style.display = 'block';
-            document.getElementById('cross-sell').style.display = 'block';
-            document.getElementById('footer-notice').style.display = 'block';
-            
-            cartItemsDiv.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                let itemTotal = Number(item.price) * item.quantity;
-                total += itemTotal;
-
-                // बिल्कुल डिज़ाइन जैसा प्रोडक्ट कार्ड
-                cartItemsDiv.innerHTML += `
-                    <div class="flex items-start py-5 border-b border-gray-100 relative">
-                        <div class="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden border border-gray-200">
-                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
-                        </div>
-                        
-                        <div class="ml-4 flex-1 pr-6">
-                            <h3 class="text-sm font-bold text-gray-900 leading-tight mb-3 pr-2">${item.name}</h3>
-                            
-                            <div class="flex justify-between items-center">
-                                <!-- Quantity Selector -->
-                                <div class="flex items-center border border-gray-300 rounded-sm">
-                                    <button onclick="updateQty(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition"><i class="ph ph-minus"></i></button>
-                                    <span class="w-8 h-7 flex items-center justify-center text-sm font-medium border-l border-r border-gray-300">${item.quantity}</span>
-                                    <button onclick="updateQty(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition"><i class="ph ph-plus"></i></button>
-                                </div>
-                                
-                                <span class="font-bold text-gray-900">₹ ${itemTotal}</span>
-                            </div>
-                        </div>
-
-                        <!-- Close (Remove) Button -->
-                        <button onclick="removeItem(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1">
-                            <i class="ph ph-x font-bold text-lg"></i>
-                        </button>
-                    </div>
-                `;
-            });
-
-            document.getElementById('subtotal').innerText = "₹ " + total;
-            updateProgressBar(total);
-        }
-
-        // Quantity घटाने-बढ़ाने का फंक्शन
-        function updateQty(index, delta) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart[index].quantity += delta;
-            
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1); // अगर 0 हो जाए तो हटा दें
-            }
-            
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            loadCart();
-        }
-
-        // प्रोडक्ट हटाने का फंक्शन
-        function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            loadCart();
-        }
-
-        // स्मार्ट डिस्काउंट प्रोग्रेस बार
-        function updateProgressBar(total) {
-            let msgElement = document.getElementById('discount-msg');
-            let fillElement = document.getElementById('progress-fill');
-            
-            // Tiers
-            const tier1 = 1500;
-            const tier2 = 2500;
-            
-            if (total < tier1) {
-                let diff = tier1 - total;
-                msgElement.innerHTML = `Add ₹ ${diff} more Item and get extra 15% off`;
-            } else if (total >= tier1 && total < tier2) {
-                let diff = tier2 - total;
-                msgElement.innerHTML = `Add ₹ ${diff} more Item and get extra 25% off <span class="text-green-600 font-bold ml-1">(15% Unlocked!)</span>`;
-            } else {
-                msgElement.innerHTML = `<span class="text-green-600 font-bold">🎉 Congratulations! 25% OFF Unlocked!</span>`;
-            }
-
-            // Calculate Width %
-            let percentage = (total / tier2) * 100;
-            if (percentage > 100) percentage = 100;
-            fillElement.style.width = percentage + "%";
-        }
-
-        function checkout() {
-            alert("Checkout System एकदम परफेक्ट काम कर रहा है! जल्द ही यहाँ पेमेंट गेटवे जुड़ जाएगा।");
-        }
-
-        window.onload = loadCart;
-    </script>
+    <!-- MAIN JAVASCRIPT LOGIC FILE -->
+    <script src="script.js"></script>
 </body>
 </html>
