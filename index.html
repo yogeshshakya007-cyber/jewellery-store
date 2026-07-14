@@ -134,15 +134,11 @@
 
     <!-- JAVASCRIPT ENGINE -->
     <script>
-        // 1. ऑटोमैटिक कचरा साफ़ करने वाला सिस्टम (Corrupt Cart Fixer)
-        try {
-            let checkCart = JSON.parse(localStorage.getItem('y_store_cart'));
-            if (checkCart && !Array.isArray(checkCart)) {
-                localStorage.removeItem('y_store_cart'); // पुरानी गड़बड़ वाली फाइल डिलीट
-            }
-        } catch(e) {
-            localStorage.removeItem('y_store_cart');
-        }
+        // 1. कोई भी एरर आएगा तो स्क्रीन पर साफ़-साफ़ दिखेगा, चक्का नहीं अटकेगा!
+        window.onerror = function(msg) {
+            const container = document.getElementById('product-list');
+            if(container) container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Technical Error: ${msg} <br> कृपया पेज को रीफ्रेश करें।</div>`;
+        };
 
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
@@ -152,7 +148,7 @@
             const container = document.getElementById('product-list');
             try {
                 if (typeof window.supabase === 'undefined') {
-                    throw new Error("Supabase Database load fail ho gaya hai. Network check karein.");
+                    throw new Error("डेटाबेस सर्वर कनेक्ट नहीं हो पाया। अपना इंटरनेट चेक करें।");
                 }
                 supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
                 
@@ -185,11 +181,11 @@
                     `;
                 });
             } catch (error) {
-                // अगर कोई भी गड़बड़ होगी तो लोडिंग का चक्का हट जाएगा और एरर दिखेगा
-                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message} <br> कृप्या पेज को रिफ्रेश करें।</div>`;
+                container.innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">Error: ${error.message}</div>`;
             }
         }
 
+        // कार्ट के बाकी सारे फंक्शन्स 
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const overlay = document.getElementById('cart-overlay');
@@ -213,9 +209,7 @@
             } else {
                 cart.push({ name: name, price: price, image: image, quantity: 1 });
             }
-            
             localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            
             const drawer = document.getElementById('cart-drawer');
             if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
             else renderCart();
@@ -310,19 +304,19 @@
             document.getElementById('fullImage').src = imgUrl;
             document.getElementById('imageModal').classList.remove('hidden');
         }
-        function closeImage() {
-            document.getElementById('imageModal').classList.add('hidden');
-        }
+        function closeImage() { document.getElementById('imageModal').classList.add('hidden'); }
         function checkout() { alert("Checkout Proceeding..."); }
 
-        window.onload = async () => {
+        // 2. तुरंत रन होने वाला सिस्टम (बिना किसी इंतज़ार के)
+        (async function startApp() {
             try {
-                await loadProducts();
-                renderCart(); 
-            } catch(e) {
-                document.getElementById('product-list').innerHTML = `<div class="col-span-full text-center text-red-600 font-bold py-10">System Error: ${e.message}</div>`;
-            }
-        };
+                let checkCart = JSON.parse(localStorage.getItem('y_store_cart'));
+                if (checkCart && !Array.isArray(checkCart)) localStorage.removeItem('y_store_cart');
+            } catch(e) { localStorage.removeItem('y_store_cart'); }
+
+            renderCart();
+            await loadProducts();
+        })();
     </script>
 </body>
 </html>
