@@ -22,7 +22,7 @@
 </head>
 <body class="relative min-h-screen flex flex-col">
 
-    <!-- HEADER -->
+    <!-- HEADER (Frontend - No Changes) -->
     <header class="bg-white shadow-sm sticky top-0 z-[100]">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <h1 class="text-2xl font-extrabold peach-text tracking-wider">YOGESH JEWELLERS</h1>
@@ -36,7 +36,7 @@
         </div>
     </header>
 
-    <!-- MAIN CONTENT (PRODUCTS) -->
+    <!-- MAIN CONTENT (Frontend - No Changes) -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Our Premium Collection</h2>
@@ -55,7 +55,7 @@
         <p class="font-medium">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
     </footer>
 
-    <!-- BIG IMAGE POPUP (For Main Frontend Products) -->
+    <!-- BIG IMAGE POPUP (Frontend - No Changes) -->
     <div id="imageModal" class="hidden fixed inset-0 z-[300] bg-black bg-opacity-90 flex justify-center items-center p-4">
         <button onclick="closeImage()" class="absolute top-5 right-5 text-white bg-gray-800 rounded-full p-2 hover:bg-red-500 transition cursor-pointer z-[301]">
             <i class="ph ph-x font-bold text-2xl"></i>
@@ -63,27 +63,45 @@
         <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[300]">
     </div>
 
+
     <!-- ============================================================== -->
-    <!-- NEW: 5-IMAGE GALLERY MODAL (For "You will also love these!") -->
+    <!-- UPDATED: 5-IMAGE GALLERY MODAL (With Zoom & Smaller Icons) -->
     <!-- ============================================================== -->
-    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4">
-        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800 hover:bg-red-500 rounded-full p-2 transition cursor-pointer z-[401]">
-            <i class="ph ph-x font-bold text-2xl"></i>
+    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden">
+        
+        <!-- Zoom In & Zoom Out Buttons -->
+        <div class="absolute top-5 left-5 flex gap-3 z-[405]">
+            <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In">
+                <i class="ph ph-magnifying-glass-plus font-bold text-lg"></i>
+            </button>
+            <button onclick="zoomGallery(-0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out">
+                <i class="ph ph-magnifying-glass-minus font-bold text-lg"></i>
+            </button>
+        </div>
+
+        <!-- Close Button (Smaller Size) -->
+        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg">
+            <i class="ph ph-x font-bold text-lg"></i>
         </button>
         
-        <div class="relative w-full max-w-2xl flex items-center justify-center">
-            <button onclick="changeGalleryImage(-1)" class="absolute left-0 sm:-left-12 text-white bg-gray-800/60 hover:bg-gray-800 p-2.5 rounded-full cursor-pointer z-[401] transition">
-                <i class="ph ph-caret-left text-3xl"></i>
+        <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
+            <!-- Left Button (Smaller Size) -->
+            <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
+                <i class="ph ph-caret-left text-xl"></i>
             </button>
             
-            <img id="galleryImg" class="max-h-[75vh] max-w-full object-contain rounded-lg shadow-2xl transition-opacity duration-300">
+            <!-- Image with Zoom scaling applied -->
+            <div class="w-full h-full flex justify-center items-center overflow-hidden">
+                <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-300 transform scale-100">
+            </div>
             
-            <button onclick="changeGalleryImage(1)" class="absolute right-0 sm:-right-12 text-white bg-gray-800/60 hover:bg-gray-800 p-2.5 rounded-full cursor-pointer z-[401] transition">
-                <i class="ph ph-caret-right text-3xl"></i>
+            <!-- Right Button (Smaller Size) -->
+            <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
+                <i class="ph ph-caret-right text-xl"></i>
             </button>
         </div>
         
-        <div id="imgCounter" class="absolute bottom-8 text-white font-bold text-sm bg-gray-800 px-5 py-2 rounded-full tracking-wider shadow-lg">1 / 5</div>
+        <div id="imgCounter" class="absolute bottom-8 text-white font-bold text-xs bg-gray-800 px-4 py-1.5 rounded-full tracking-wider shadow-lg z-[405]">1 / 5</div>
     </div>
 
 
@@ -121,11 +139,12 @@
                     
                     <!-- Product 1 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <!-- Image Container with Eye Icon at Top Right -->
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative">
+                        <!-- Image Container with Transparent Eye Icon -->
+                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('rudraksha')" class="absolute top-1.5 right-1.5 bg-white/90 hover:bg-white text-gray-800 p-1.5 rounded-full shadow-md transition cursor-pointer">
-                                <i class="ph ph-eye text-[15px] font-bold"></i>
+                            <!-- Removed white background, made it transparent with drop shadow -->
+                            <button onclick="openGallery('rudraksha')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10">
+                                <i class="ph ph-eye text-[18px] font-bold"></i>
                             </button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">OM Design Rudraksha Pendant</h4>
@@ -133,16 +152,15 @@
                             <span class="text-gray-900 font-bold">₹ 399</span>
                             <span class="text-gray-500 line-through text-[10px]">₹ 449</span>
                         </div>
-                        <!-- ADD Button exactly at the bottom like original -->
                         <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('OM Design Rudraksha Pendant', 399, 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80')">ADD</button>
                     </div>
                     
                     <!-- Product 2 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative">
+                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('axe')" class="absolute top-1.5 right-1.5 bg-white/90 hover:bg-white text-gray-800 p-1.5 rounded-full shadow-md transition cursor-pointer">
-                                <i class="ph ph-eye text-[15px] font-bold"></i>
+                            <button onclick="openGallery('axe')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10">
+                                <i class="ph ph-eye text-[18px] font-bold"></i>
                             </button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Statement Axe of Valor Pendant</h4>
@@ -155,10 +173,10 @@
 
                     <!-- Product 3 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative">
+                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('guardian')" class="absolute top-1.5 right-1.5 bg-white/90 hover:bg-white text-gray-800 p-1.5 rounded-full shadow-md transition cursor-pointer">
-                                <i class="ph ph-eye text-[15px] font-bold"></i>
+                            <button onclick="openGallery('guardian')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10">
+                                <i class="ph ph-eye text-[18px] font-bold"></i>
                             </button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Guardian Blade Vow Pendant</h4>
@@ -171,10 +189,10 @@
 
                     <!-- Product 4 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative">
+                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('ring')" class="absolute top-1.5 right-1.5 bg-white/90 hover:bg-white text-gray-800 p-1.5 rounded-full shadow-md transition cursor-pointer">
-                                <i class="ph ph-eye text-[15px] font-bold"></i>
+                            <button onclick="openGallery('ring')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10">
+                                <i class="ph ph-eye text-[18px] font-bold"></i>
                             </button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Premium Royal Ring</h4>
@@ -192,7 +210,6 @@
             </div>
         </div>
 
-        <!-- FIXED BOTTOM CHECKOUT SECTION (Unchanged, layout exactly as you approved) -->
         <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shrink-0" id="checkout-section">
             <div class="mb-5 px-2">
                 <p id="discount-msg" class="text-[13px] font-bold text-gray-800 mb-12 text-center leading-snug">Add ₹ 901 more Item and get extra 15% off</p>
@@ -246,7 +263,7 @@
             document.getElementById('promo-text').innerText = promos[currentPromo];
         }
 
-        // --- Gallery Modal Logic (5 Images per product) ---
+        // --- Gallery Modal & Zoom Logic ---
         const galleryData = {
             'rudraksha': [
                 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80',
@@ -280,20 +297,34 @@
         
         let currentActiveGallery = [];
         let currentImageIndex = 0;
+        let currentScale = 1; // For Zoom Feature
+
+        function zoomGallery(step) {
+            currentScale += step;
+            if (currentScale < 0.5) currentScale = 0.5;
+            if (currentScale > 3.0) currentScale = 3.0; // Max zoom limit
+            document.getElementById('galleryImg').style.transform = `scale(${currentScale})`;
+        }
 
         function openGallery(productId) {
             currentActiveGallery = galleryData[productId] || galleryData['rudraksha'];
             currentImageIndex = 0;
+            currentScale = 1; // Reset zoom on open
+            document.getElementById('galleryImg').style.transform = 'scale(1)';
             updateGalleryUI();
             document.getElementById('galleryModal').classList.remove('hidden');
         }
 
         function closeGallery() {
             document.getElementById('galleryModal').classList.add('hidden');
+            currentScale = 1; // Reset zoom on close
+            document.getElementById('galleryImg').style.transform = 'scale(1)';
         }
 
         function changeGalleryImage(direction) {
             currentImageIndex = (currentImageIndex + direction + currentActiveGallery.length) % currentActiveGallery.length;
+            currentScale = 1; // Reset zoom when changing image
+            document.getElementById('galleryImg').style.transform = 'scale(1)';
             updateGalleryUI();
         }
 
