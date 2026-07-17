@@ -1,542 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yogesh Jewellers - Premium Collection</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icons -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <!-- Premium Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { font-family: 'Montserrat', sans-serif !important; }
-        body { background-color: #f9fafb; overflow-x: hidden; }
-        .peach-bg { background-color: #e6998c; }
-        .peach-text { color: #e6998c; }
-        .peach-border { border-color: #e6998c; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .peach-hover:hover { background-color: #d8897c; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yogesh Jewellers | Premium Jewellery Collection</title>
+
+<meta name="description" content="Luxury Jewellery Collection by Yogesh Jewellers">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Poppins',sans-serif;
+background:#F8F6F2;
+color:#111111;
+overflow-x:hidden;
+}
+
+h1,h2,h3,h4,h5{
+font-family:'Playfair Display',serif;
+}
+
+:root{
+
+--gold:#C9A227;
+--gold-dark:#A67C00;
+--black:#111111;
+--white:#ffffff;
+--bg:#F8F6F2;
+
+}
+
+.gold{
+color:var(--gold);
+}
+
+.bg-gold{
+background:var(--gold);
+}
+
+.hero-btn{
+
+background:var(--gold);
+color:white;
+padding:14px 34px;
+border-radius:50px;
+font-weight:600;
+transition:.35s;
+
+}
+
+.hero-btn:hover{
+
+background:var(--gold-dark);
+transform:translateY(-3px);
+
+}
+
+.section-title{
+
+font-size:42px;
+font-weight:700;
+
+}
+
+.product-card{
+
+transition:.35s;
+
+}
+
+.product-card:hover{
+
+transform:translateY(-10px);
+box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+</style>
+
 </head>
-<body class="relative min-h-screen flex flex-col bg-gray-50">
-
-    <!-- ============================================================== -->
-    <!-- NEW PROFESSIONAL HEADER -->
-    <!-- ============================================================== -->
-    <header class="bg-white sticky top-0 z-[100] border-b border-gray-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-extrabold peach-text tracking-widest uppercase">Yogesh</div>
-            <nav class="hidden md:flex gap-8 font-bold text-gray-700 text-sm uppercase">
-                <a href="#" class="hover:text-[#e6998c] transition-colors">Shop All</a>
-                <a href="#" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
-                <a href="#" class="hover:text-[#e6998c] transition-colors">Offers</a>
-            </nav>
-            <button onclick="toggleCart()" class="flex items-center gap-2 font-bold text-gray-900 hover:text-gray-600 transition-colors cursor-pointer relative">
-                <i class="ph ph-shopping-bag text-2xl"></i> Cart
-                <span id="header-cart-count" class="absolute -top-1 -right-3 peach-bg text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-sm">0</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- ============================================================== -->
-    <!-- NEW PREMIUM HERO SECTION -->
-    <!-- ============================================================== -->
-    <section class="relative w-full h-[450px] md:h-[550px] bg-gray-900 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-        <div class="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-16 md:pb-24">
-            <h2 class="text-white text-5xl md:text-7xl font-extrabold mb-4 uppercase tracking-tight">Elegance<br><span class="peach-text">Redefined</span></h2>
-            <p class="text-gray-300 text-lg mb-8 max-w-md font-medium">Discover the finest collection of handcrafted jewelry, designed for your special moments.</p>
-            <button class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-8 py-4 font-bold text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
-        </div>
-    </section>
-
-    <!-- ============================================================== -->
-    <!-- MAIN CONTENT (FRONTEND PRODUCTS - NO CHANGES) -->
-    <!-- ============================================================== -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-grow">
-        <div class="text-center mb-12">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Trending Now</h2>
-            <p class="text-gray-500 max-w-2xl mx-auto font-medium">Curated pieces loved by everyone.</p>
-        </div>
-        
-        <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            <div class="col-span-full text-center py-10" id="loading-spinner">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
-                <p class="mt-2 text-gray-500 font-bold">Loading collections...</p>
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-gray-900 text-white py-8 text-center mt-auto">
-        <p class="font-medium">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
-    </footer>
-
-    <!-- BIG IMAGE POPUP (For Main Frontend Products) -->
-    <div id="imageModal" class="hidden fixed inset-0 z-[300] bg-black bg-opacity-90 flex justify-center items-center p-4">
-        <button onclick="closeImage()" class="absolute top-5 right-5 text-white bg-gray-800 rounded-full p-2 hover:bg-red-500 transition cursor-pointer z-[301]">
-            <i class="ph ph-x font-bold text-2xl"></i>
-        </button>
-        <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[300]">
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- 5-IMAGE GALLERY MODAL (WITH ZOOM & SMALL ICONS) -->
-    <!-- ============================================================== -->
-    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden">
-        
-        <!-- Zoom In & Zoom Out Buttons -->
-        <div class="absolute top-5 left-5 flex gap-3 z-[405]">
-            <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In">
-                <i class="ph ph-magnifying-glass-plus font-bold text-lg"></i>
-            </button>
-            <button onclick="zoomGallery(-0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out">
-                <i class="ph ph-magnifying-glass-minus font-bold text-lg"></i>
-            </button>
-        </div>
-
-        <!-- Close Button (Smaller Size) -->
-        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg">
-            <i class="ph ph-x font-bold text-lg"></i>
-        </button>
-        
-        <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
-            <!-- Left Button (Smaller Size) -->
-            <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
-                <i class="ph ph-caret-left text-xl"></i>
-            </button>
-            
-            <!-- Image with Zoom scaling applied -->
-            <div class="w-full h-full flex justify-center items-center overflow-hidden">
-                <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-300 transform scale-100">
-            </div>
-            
-            <!-- Right Button (Smaller Size) -->
-            <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
-                <i class="ph ph-caret-right text-xl"></i>
-            </button>
-        </div>
-        
-        <div id="imgCounter" class="absolute bottom-8 text-white font-bold text-xs bg-gray-800 px-4 py-1.5 rounded-full tracking-wider shadow-lg z-[405]">1 / 5</div>
-    </div>
-
-
-    <!-- ============================================================== -->
-    <!-- PERFECT CART DRAWER -->
-    <!-- ============================================================== -->
-    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
-    <div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
-        
-        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
-            <div class="flex items-center gap-3 text-gray-800">
-                <button onclick="toggleCart()" class="hover:text-black"><i class="ph ph-list text-2xl font-bold"></i></button>
-                <h2 class="text-xl font-bold flex items-center gap-1.5">
-                    Cart <span id="cart-drawer-count" class="text-gray-400 font-normal text-lg">0</span>
-                </h2>
-            </div>
-            <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer">
-                <i class="ph ph-x font-bold text-sm"></i>
-            </button>
-        </header>
-
-        <div class="peach-bg text-white text-[13px] font-medium py-2.5 px-4 flex justify-between items-center shadow-sm z-10 shrink-0">
-            <button onclick="prevPromo()" class="hover:text-gray-200 cursor-pointer p-1"><i class="ph ph-caret-left text-lg"></i></button>
-            <span id="promo-text" class="text-center flex-1 transition-all duration-300">Extra 5% off on Prepaid Orders</span>
-            <button onclick="nextPromo()" class="hover:text-gray-200 cursor-pointer p-1"><i class="ph ph-caret-right text-lg"></i></button>
-        </div>
-
-        <div class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
-            <div id="cart-items" class="px-5 py-2"></div>
-            
-            <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden bg-white">
-                <h3 class="text-center font-bold text-gray-900 mb-5">"You will also love these!"</h3>
-                
-                <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x snap-mandatory pr-5">
-                    
-                    <!-- Product 1 -->
-                    <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <!-- Image Container with Transparent Eye Icon -->
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
-                            <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <!-- Transparent Eye Icon -->
-                            <button onclick="openGallery('rudraksha')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent">
-                                <i class="ph ph-eye text-[18px] font-bold"></i>
-                            </button>
-                        </div>
-                        <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">OM Design Rudraksha Pendant</h4>
-                        <div class="flex gap-1.5 text-[12px] mb-2 items-center">
-                            <span class="text-gray-900 font-bold">₹ 399</span>
-                            <span class="text-gray-500 line-through text-[10px]">₹ 449</span>
-                        </div>
-                        <!-- ADD Button at Bottom -->
-                        <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('OM Design Rudraksha Pendant', 399, 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80')">ADD</button>
-                    </div>
-                    
-                    <!-- Product 2 -->
-                    <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
-                            <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('axe')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent">
-                                <i class="ph ph-eye text-[18px] font-bold"></i>
-                            </button>
-                        </div>
-                        <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Statement Axe of Valor Pendant</h4>
-                        <div class="flex gap-1.5 text-[12px] mb-2 items-center">
-                            <span class="text-gray-900 font-bold">₹ 629</span>
-                            <span class="text-gray-500 line-through text-[10px]">₹ 1,049</span>
-                        </div>
-                        <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('Statement Axe Pendant', 629, 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80')">ADD</button>
-                    </div>
-
-                    <!-- Product 3 -->
-                    <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
-                            <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('guardian')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent">
-                                <i class="ph ph-eye text-[18px] font-bold"></i>
-                            </button>
-                        </div>
-                        <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Guardian Blade Vow Pendant</h4>
-                        <div class="flex gap-1.5 text-[12px] mb-2 items-center">
-                            <span class="text-gray-900 font-bold">₹ 599</span>
-                            <span class="text-gray-500 line-through text-[10px]">₹ 899</span>
-                        </div>
-                        <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('Guardian Blade Pendant', 599, 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80')">ADD</button>
-                    </div>
-
-                    <!-- Product 4 -->
-                    <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
-                            <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('ring')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent">
-                                <i class="ph ph-eye text-[18px] font-bold"></i>
-                            </button>
-                        </div>
-                        <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Premium Royal Ring</h4>
-                        <div class="flex gap-1.5 text-[12px] mb-2 items-center">
-                            <span class="text-gray-900 font-bold">₹ 899</span>
-                            <span class="text-gray-500 line-through text-[10px]">₹ 1,299</span>
-                        </div>
-                        <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('Premium Royal Ring', 899, 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80')">ADD</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="px-5 py-4 text-gray-400 text-[12px] border-t border-gray-100 hidden leading-relaxed" id="footer-notice">
-                *Offer excludes lab-grown diamond jewellery, 925 sterling silver, and silver coins.
-            </div>
-        </div>
-
-        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shrink-0" id="checkout-section">
-            <div class="mb-5 px-2">
-                <p id="discount-msg" class="text-[13px] font-bold text-gray-800 mb-12 text-center leading-snug">Add ₹ 901 more Item and get extra 15% off</p>
-                
-                <div class="relative w-full h-[6px] bg-gray-200 rounded-full mb-1 mt-8">
-                    <div id="progress-fill" class="absolute top-0 left-0 h-full bg-black rounded-full transition-all duration-500" style="width: 0%;"></div>
-                    
-                    <div class="absolute top-1/2 left-[60%] -translate-y-1/2 -translate-x-1/2 flex items-center justify-center">
-                        <span class="absolute bottom-full mb-2 text-[11px] text-gray-600 font-extrabold whitespace-nowrap">₹ 1,500</span>
-                        <i class="ph-fill ph-seal-check text-[22px] text-gray-800 bg-white rounded-full relative z-10 border-2 border-white"></i>
-                        <span class="absolute top-full mt-1.5 text-[10px] text-gray-500 font-bold whitespace-nowrap tracking-wide">15% OFF</span>
-                    </div>
-                    
-                    <div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-1.5 flex items-center justify-center">
-                        <span class="absolute bottom-full mb-2 text-[11px] text-gray-600 font-extrabold whitespace-nowrap">₹ 2,500</span>
-                        <i class="ph-fill ph-seal-check text-[22px] text-gray-800 bg-white rounded-full relative z-10 border-2 border-white"></i>
-                        <span class="absolute top-full mt-1.5 text-[10px] text-gray-500 font-bold whitespace-nowrap tracking-wide">25% OFF</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-between items-center text-[13px] text-gray-500 mt-12 mb-3 border-t border-gray-200 pt-5 font-semibold">
-                <span>Shipping</span>
-                <span>CALCULATED AT CHECKOUT</span>
-            </div>
-            <div class="flex justify-between items-center font-bold text-gray-900 text-[19px] mb-4">
-                <span>Subtotal</span>
-                <span id="subtotal">₹ 0</span>
-            </div>
-            <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-[15px] py-3.5 rounded-sm shadow-sm transition tracking-wide">
-                Checkout
-            </button>
-        </div>
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- JAVASCRIPT ENGINE (All Features Combined) -->
-    <!-- ============================================================== -->
-    <script>
-        // --- Promo Banner Logic ---
-        const promos = [
-            "Extra 5% off on Prepaid Orders",
-            "Free Shipping on orders above ₹999",
-            "Get assured gift on ₹2500+"
-        ];
-        let currentPromo = 0;
-        function nextPromo() {
-            currentPromo = (currentPromo + 1) % promos.length;
-            document.getElementById('promo-text').innerText = promos[currentPromo];
-        }
-        function prevPromo() {
-            currentPromo = (currentPromo - 1 + promos.length) % promos.length;
-            document.getElementById('promo-text').innerText = promos[currentPromo];
-        }
-
-        // --- Gallery Modal & Zoom Logic ---
-        const galleryData = {
-            'rudraksha': [
-                'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80'
-            ],
-            'axe': [
-                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80'
-            ],
-            'guardian': [
-                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80'
-            ],
-            'ring': [
-                'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80',
-                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80'
-            ]
-        };
-        
-        let currentActiveGallery = [];
-        let currentImageIndex = 0;
-        let currentScale = 1; 
-
-        function zoomGallery(step) {
-            currentScale += step;
-            if (currentScale < 0.5) currentScale = 0.5;
-            if (currentScale > 3.0) currentScale = 3.0; 
-            document.getElementById('galleryImg').style.transform = `scale(${currentScale})`;
-        }
-
-        function openGallery(productId) {
-            currentActiveGallery = galleryData[productId] || galleryData['rudraksha'];
-            currentImageIndex = 0;
-            currentScale = 1; 
-            document.getElementById('galleryImg').style.transform = 'scale(1)';
-            updateGalleryUI();
-            document.getElementById('galleryModal').classList.remove('hidden');
-        }
-
-        function closeGallery() {
-            document.getElementById('galleryModal').classList.add('hidden');
-            currentScale = 1; 
-            document.getElementById('galleryImg').style.transform = 'scale(1)';
-        }
-
-        function changeGalleryImage(direction) {
-            currentImageIndex = (currentImageIndex + direction + currentActiveGallery.length) % currentActiveGallery.length;
-            currentScale = 1; 
-            document.getElementById('galleryImg').style.transform = 'scale(1)';
-            updateGalleryUI();
-        }
-
-        function updateGalleryUI() {
-            document.getElementById('galleryImg').src = currentActiveGallery[currentImageIndex];
-            document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
-        }
-
-        // --- Main Frontend Products ---
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-
-        async function loadProducts() {
-            const container = document.getElementById('product-list');
-            try {
-                const response = await fetch(supabaseUrl + '/rest/v1/products?select=*&order=id.desc', {
-                    method: 'GET',
-                    headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' }
-                });
-
-                if (!response.ok) throw new Error("सर्वर से डेटा नहीं मिल पाया।");
-                const data = await response.json();
-                
-                if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
-                    return;
-                }
-
-                container.innerHTML = ''; 
-                data.forEach(product => {
-                    container.innerHTML += `
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
-                            <div class="relative h-64 overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer rounded-t-xl" onclick="openImage('${product.image_url}')">
-                                <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
-                                    <span class="text-white opacity-0 group-hover:opacity-100 bg-black bg-opacity-50 px-4 py-1.5 rounded-full text-sm font-medium shadow-lg"><i class="ph ph-arrows-out-simple"></i> View</span>
-                                </div>
-                            </div>
-                            <div class="p-5 flex flex-col flex-grow">
-                                <h3 class="text-lg font-bold text-gray-900 mb-1 line-clamp-2">${product.name}</h3>
-                                <p class="text-xl font-extrabold text-gray-900 mb-4 mt-auto">₹${product.price}</p>
-                                <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full peach-bg peach-hover text-white font-bold py-3 rounded-lg shadow-sm transition flex justify-center items-center gap-2">
-                                    <i class="ph ph-shopping-bag-open text-xl"></i> Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                });
-            } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-500 py-10"><i class="ph ph-wifi-slash text-5xl mb-3"></i><h3 class="font-bold text-lg">इंटरनेट या नेटवर्क की समस्या</h3><p class="text-sm mt-1">${error.message}</p></div>`;
-            }
-        }
-
-        // --- Cart Functions ---
-        function toggleCart() {
-            const drawer = document.getElementById('cart-drawer');
-            const overlay = document.getElementById('cart-overlay');
-            if (drawer.classList.contains('translate-x-full')) {
-                drawer.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-                renderCart(); 
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                drawer.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
-                document.body.style.overflow = 'auto'; 
-            }
-        }
-
-        function addToCart(name, price, image) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            let existing = cart.find(c => c.name === name);
-            if(existing) {
-                existing.quantity = (existing.quantity || 1) + 1;
-            } else {
-                cart.push({ name: name, price: price, image: image, quantity: 1 });
-            }
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            
-            const drawer = document.getElementById('cart-drawer');
-            if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
-            else renderCart();
-        }
-
-        function renderCart() {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            let cartItemsDiv = document.getElementById('cart-items');
-            
-            let totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-            document.getElementById('header-cart-count').innerText = totalItems;
-            document.getElementById('cart-drawer-count').innerText = totalItems;
-
-            if (cart.length === 0) {
-                cartItemsDiv.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-24">
-                        <i class="ph ph-shopping-cart text-6xl text-gray-300 mb-4"></i>
-                        <h3 class="text-lg font-bold text-gray-800">Your cart is empty</h3>
-                    </div>`;
-                document.getElementById('checkout-section').style.display = 'none';
-                document.getElementById('cross-sell').style.display = 'none';
-                document.getElementById('footer-notice').style.display = 'none';
-                return;
-            }
-
-            document.getElementById('checkout-section').style.display = 'block';
-            document.getElementById('cross-sell').style.display = 'block';
-            document.getElementById('footer-notice').style.display = 'block';
-            cartItemsDiv.innerHTML = '';
-            let total = 0;
-
-            cart.forEach((item, index) => {
-                let qty = item.quantity || 1;
-                let itemTotal = Number(item.price) * qty;
-                total += itemTotal;
-                
-                cartItemsDiv.innerHTML += `
-                    <div class="flex py-5 border-b border-gray-100 relative">
-                        <div class="w-[85px] h-[85px] flex-shrink-0 bg-gray-50 rounded-sm overflow-hidden flex items-center justify-center border border-gray-100">
-                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
-                        </div>
-                        <div class="ml-4 flex-1 flex flex-col justify-between pt-1 pb-1">
-                            <div class="pr-6">
-                                <h3 class="text-[14px] font-bold text-gray-900 leading-snug">${item.name}</h3>
-                            </div>
-                            <div class="flex justify-between items-end mt-2">
-                                <div class="flex items-center border border-gray-300 rounded-sm w-max bg-white">
-                                    <button onclick="updateQty(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition"><i class="ph ph-minus text-sm"></i></button>
-                                    <span class="w-8 h-7 flex items-center justify-center text-[13px] font-bold border-l border-r border-gray-300 text-gray-800">${qty}</span>
-                                    <button onclick="updateQty(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition"><i class="ph ph-plus text-sm"></i></button>
-                                </div>
-                                <span class="font-bold text-gray-900 text-[15px]">₹ ${itemTotal}</span>
-                            </div>
-                        </div>
-                        <button onclick="removeItem(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1 cursor-pointer">
-                            <i class="ph ph-x font-bold text-sm"></i>
-                        </button>
-                    </div>
-                `;
-            });
-            document.getElementById('subtotal').innerText = "₹ " + total;
-            updateProgressBar(total);
-        }
-
-        function updateQty(index, delta) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart[index].quantity = (cart[index].quantity || 1) + delta;
-            if (cart[index].quantity <= 0) cart.splice(index, 1);
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('y_store_cart')) || [];
-            cart.splice(index, 1);
-            localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            renderCart();
-        }
-
-        function updateProgressBar(total) {
-            let msgElement = document.getElementById('discount-msg');
-            let fillElement = document.getElementById('progress-fill');
-            const tier1 = 1500;
-            const tier2 = 2500;
-            if (total < tier1) {
-                msgElement.innerHTML = `Add ₹ ${tier1 - total} more Item and get extra 15% off`;
-            } else if (total >= tier1 && total < tier2) {
-                let diff = tier2 - total;
-                msgElement.innerHTML = `Add ₹ ${diff} more Item and get extra 25% off <br><span class="text-green-600 font-extrabold inline-block mt-1">(15% Unlocked!)</span>`;
-            } else {
-                msgElement.innerHTML = `<span class="text-green-600 font-extrabold text-[14px]">🎉 Congratulations! 25% OFF Unlocked!</span>`;
-            }
-            let percentage = (total / tier2) * 100;
-            fillElement.style.width = (percentage > 100 ? 100 : percentage) + "%";
-        }
-
-        function openImage(imgUrl) {
-            document.getElementById('fullImage').src = imgUrl;
-            document.getElementById('imageModal').classList.remove('hidden');
-        }
-        function closeImage() { document.getElementById('imageModal').classList.add('hidden'); }
-        function checkout() { alert("Checkout System Ready!"); }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                let checkCart = JSON.parse(localStorage.getItem('y_store_cart'));
-                if (checkCart && !Array.isArray(checkCart)) localStorage.removeItem('y_store_cart');
-            } catch(e) { localStorage.removeItem('y_store_cart'); }
-
-            renderCart(); 
-            loadProducts(); 
-        });
-    </script>
-</body>
-</html>
