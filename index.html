@@ -18,16 +18,36 @@
         .peach-border { border-color: #e6998c; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .peach-hover:hover { background-color: #d8897c; }
+        /* Running Bar Animation */
+        @keyframes marquee { 
+            0% { transform: translateX(100%); } 
+            100% { transform: translateX(-100%); } 
+        }
+        .animate-marquee { 
+            animation: marquee 15s linear infinite; 
+            display: flex; 
+            width: max-content; 
+        }
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col bg-gray-50">
 
-    <!-- 1. TOP ANNOUNCEMENT BAR -->
-    <div class="bg-black text-white text-[11px] md:text-[13px] font-medium text-center py-2 tracking-wide z-[101] relative">
-        Monsoon Sale Live - Buy 4 at ₹2999
+    <!-- ============================================================== -->
+    <!-- 1. RUNNING ANNOUNCEMENT BAR (Smooth Scrolling) -->
+    <!-- ============================================================== -->
+    <div class="bg-black text-white text-[12px] md:text-[14px] font-bold py-2.5 z-[101] relative overflow-hidden flex items-center">
+        <div class="whitespace-nowrap animate-marquee flex gap-10">
+            <span class="flex items-center gap-2"><i class="ph ph-sparkle peach-text"></i> Monsoon Sale Live - Buy 4 at ₹2999</span>
+            <span class="flex items-center gap-2"><i class="ph ph-sparkle peach-text"></i> Extra 5% OFF on Prepaid Orders</span>
+            <span class="flex items-center gap-2"><i class="ph ph-sparkle peach-text"></i> Free Shipping on all orders above ₹999</span>
+            <span class="flex items-center gap-2"><i class="ph ph-sparkle peach-text"></i> Monsoon Sale Live - Buy 4 at ₹2999</span>
+            <span class="flex items-center gap-2"><i class="ph ph-sparkle peach-text"></i> Extra 5% OFF on Prepaid Orders</span>
+        </div>
     </div>
 
+    <!-- ============================================================== -->
     <!-- SEARCH OVERLAY (Hidden by default, slides down) -->
+    <!-- ============================================================== -->
     <div id="search-bar" class="fixed top-0 left-0 w-full bg-white shadow-md z-[200] transform -translate-y-full transition-transform duration-300 flex items-center px-4 py-4 md:px-8">
         <i class="ph ph-magnifying-glass text-2xl text-gray-400 mr-3"></i>
         <input type="text" placeholder="Search for jewelry, rings, pendants..." class="flex-grow bg-transparent border-none outline-none text-gray-700 text-sm md:text-base font-medium">
@@ -36,13 +56,14 @@
         </button>
     </div>
 
+    <!-- ============================================================== -->
     <!-- PROFESSIONAL HEADER -->
+    <!-- ============================================================== -->
     <header class="bg-white sticky top-0 z-[100] border-b border-gray-100 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center relative">
             
-            <!-- LEFT: Hamburger & Desktop Links -->
+            <!-- LEFT: Hamburger Menu & Desktop Links -->
             <div class="flex items-center gap-5">
-                <!-- Hamburger Menu Button -->
                 <button onclick="toggleMenu()" class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
                     <i class="ph ph-list text-[28px]"></i>
                 </button>
@@ -59,18 +80,15 @@
 
             <!-- RIGHT: Search, Wishlist, Cart -->
             <div class="flex items-center gap-4 md:gap-5 text-gray-900">
-                <!-- Search Icon -->
                 <button onclick="toggleSearch()" class="hover:text-gray-600 transition-colors cursor-pointer">
                     <i class="ph ph-magnifying-glass text-[24px] md:text-[26px]"></i>
                 </button>
                 
-                <!-- Wishlist Icon -->
                 <button onclick="toggleWishlist()" class="hover:text-gray-600 transition-colors cursor-pointer relative">
                     <i class="ph ph-heart text-[24px] md:text-[26px]"></i>
                     <span class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
                 </button>
                 
-                <!-- Cart Icon -->
                 <button onclick="toggleCart()" class="hover:text-gray-600 transition-colors cursor-pointer relative flex items-center gap-1.5">
                     <i class="ph ph-shopping-bag text-[24px] md:text-[26px]"></i>
                     <span class="hidden md:block font-bold text-sm">Cart</span>
@@ -80,7 +98,9 @@
         </div>
     </header>
 
+    <!-- ============================================================== -->
     <!-- PREMIUM HERO SECTION -->
+    <!-- ============================================================== -->
     <section class="relative w-full h-[450px] md:h-[550px] bg-gray-900 overflow-hidden">
         <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60">
         <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
@@ -91,7 +111,9 @@
         </div>
     </section>
 
+    <!-- ============================================================== -->
     <!-- MAIN CONTENT (FRONTEND PRODUCTS) -->
+    <!-- ============================================================== -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-grow">
         <div class="text-center mb-12">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Trending Now</h2>
@@ -110,7 +132,7 @@
         <p class="font-medium">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
     </footer>
 
-    <!-- BIG IMAGE POPUP -->
+    <!-- BIG IMAGE POPUP (For Main Frontend Products) -->
     <div id="imageModal" class="hidden fixed inset-0 z-[300] bg-black bg-opacity-90 flex justify-center items-center p-4">
         <button onclick="closeImage()" class="absolute top-5 right-5 text-white bg-gray-800 rounded-full p-2 hover:bg-red-500 transition cursor-pointer z-[301]">
             <i class="ph ph-x font-bold text-2xl"></i>
@@ -118,26 +140,43 @@
         <img id="fullImage" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl relative z-[300]">
     </div>
 
+    <!-- ============================================================== -->
     <!-- 5-IMAGE GALLERY MODAL (WITH ZOOM) -->
+    <!-- ============================================================== -->
     <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden">
+        
         <div class="absolute top-5 left-5 flex gap-3 z-[405]">
-            <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg"><i class="ph ph-magnifying-glass-plus font-bold text-lg"></i></button>
-            <button onclick="zoomGallery(-0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg"><i class="ph ph-magnifying-glass-minus font-bold text-lg"></i></button>
+            <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In">
+                <i class="ph ph-magnifying-glass-plus font-bold text-lg"></i>
+            </button>
+            <button onclick="zoomGallery(-0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out">
+                <i class="ph ph-magnifying-glass-minus font-bold text-lg"></i>
+            </button>
         </div>
-        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg"><i class="ph ph-x font-bold text-lg"></i></button>
+
+        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg">
+            <i class="ph ph-x font-bold text-lg"></i>
+        </button>
         
         <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
-            <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-left text-xl"></i></button>
+            <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
+                <i class="ph ph-caret-left text-xl"></i>
+            </button>
+            
             <div class="w-full h-full flex justify-center items-center overflow-hidden">
                 <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-300 transform scale-100">
             </div>
-            <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-right text-xl"></i></button>
+            
+            <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
+                <i class="ph ph-caret-right text-xl"></i>
+            </button>
         </div>
+        
         <div id="imgCounter" class="absolute bottom-8 text-white font-bold text-xs bg-gray-800 px-4 py-1.5 rounded-full tracking-wider shadow-lg z-[405]">1 / 5</div>
     </div>
 
     <!-- ============================================================== -->
-    <!-- NEW: MENU DRAWER (SLIDES FROM LEFT) -->
+    <!-- MENU DRAWER (SLIDES FROM LEFT) -->
     <!-- ============================================================== -->
     <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -161,7 +200,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- NEW: WISHLIST DRAWER (SLIDES FROM RIGHT) -->
+    <!-- WISHLIST DRAWER (SLIDES FROM RIGHT) -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -174,7 +213,6 @@
                 <i class="ph ph-x font-bold text-sm"></i>
             </button>
         </header>
-        <!-- Empty Wishlist State -->
         <div class="flex-grow flex flex-col items-center justify-center px-5 text-center">
             <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-4">
                 <i class="ph ph-heart-break text-4xl text-gray-300"></i>
@@ -217,7 +255,6 @@
                 
                 <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x snap-mandatory pr-5">
                     
-                    <!-- Product 1 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
@@ -233,7 +270,6 @@
                         <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('OM Design Rudraksha Pendant', 399, 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80')">ADD</button>
                     </div>
                     
-                    <!-- Product 2 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
@@ -249,7 +285,6 @@
                         <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('Statement Axe Pendant', 629, 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80')">ADD</button>
                     </div>
 
-                    <!-- Product 3 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
@@ -265,7 +300,6 @@
                         <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('Guardian Blade Pendant', 599, 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80')">ADD</button>
                     </div>
 
-                    <!-- Product 4 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
@@ -324,7 +358,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- JAVASCRIPT ENGINE (All Features Combined) -->
+    <!-- FULL JAVASCRIPT ENGINE -->
     <!-- ============================================================== -->
     <script>
         // --- Navigation Toggles (Menu, Search, Wishlist) ---
@@ -438,7 +472,7 @@
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
 
-        // --- Main Frontend Products ---
+        // --- Main Frontend Products (Supabase) ---
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
