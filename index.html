@@ -23,29 +23,65 @@
 <body class="relative min-h-screen flex flex-col bg-gray-50">
 
     <!-- ============================================================== -->
-    <!-- NEW PROFESSIONAL HEADER -->
+    <!-- 1. TOP ANNOUNCEMENT BAR (New Feature) -->
+    <!-- ============================================================== -->
+    <div class="bg-black text-white text-[11px] md:text-[13px] font-medium text-center py-2 tracking-wide z-[101] relative">
+        Monsoon Sale Live - Buy 4 at ₹2999
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- PROFESSIONAL HEADER (Updated with Hamburger, Search, Wishlist) -->
     <!-- ============================================================== -->
     <header class="bg-white sticky top-0 z-[100] border-b border-gray-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="text-2xl font-extrabold peach-text tracking-widest uppercase">Yogesh</div>
-            <nav class="hidden md:flex gap-8 font-bold text-gray-700 text-sm uppercase">
-                <a href="#" class="hover:text-[#e6998c] transition-colors">Shop All</a>
-                <a href="#" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
-                <a href="#" class="hover:text-[#e6998c] transition-colors">Offers</a>
-            </nav>
-            <button onclick="toggleCart()" class="flex items-center gap-2 font-bold text-gray-900 hover:text-gray-600 transition-colors cursor-pointer relative">
-                <i class="ph ph-shopping-bag text-2xl"></i> Cart
-                <span id="header-cart-count" class="absolute -top-1 -right-3 peach-bg text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-sm">0</span>
-            </button>
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center relative">
+            
+            <!-- LEFT: Hamburger Menu & Desktop Links -->
+            <div class="flex items-center gap-5">
+                <!-- 2. Hamburger Menu Icon -->
+                <button class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
+                    <i class="ph ph-list text-[28px]"></i>
+                </button>
+                <!-- Desktop Links (Hidden on mobile) -->
+                <nav class="hidden lg:flex gap-6 font-bold text-gray-700 text-[13px] uppercase tracking-wide">
+                    <a href="#" class="hover:text-[#e6998c] transition-colors">Shop All</a>
+                    <a href="#" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
+                </nav>
+            </div>
+
+            <!-- CENTER: Logo (Absolute centered on all devices) -->
+            <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase">
+                Yogesh
+            </div>
+
+            <!-- RIGHT: Search, Wishlist, Cart -->
+            <div class="flex items-center gap-4 md:gap-5 text-gray-900">
+                <!-- 3. Search Icon -->
+                <button class="hover:text-gray-600 transition-colors cursor-pointer">
+                    <i class="ph ph-magnifying-glass text-[24px] md:text-[26px]"></i>
+                </button>
+                
+                <!-- 4. Wishlist Icon with Badge -->
+                <button class="hover:text-gray-600 transition-colors cursor-pointer relative">
+                    <i class="ph ph-heart text-[24px] md:text-[26px]"></i>
+                    <span class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
+                </button>
+                
+                <!-- Cart Icon with Badge -->
+                <button onclick="toggleCart()" class="hover:text-gray-600 transition-colors cursor-pointer relative flex items-center gap-1.5">
+                    <i class="ph ph-shopping-bag text-[24px] md:text-[26px]"></i>
+                    <span class="hidden md:block font-bold text-sm">Cart</span>
+                    <span id="header-cart-count" class="absolute -top-1 -right-2 peach-bg text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
+                </button>
+            </div>
         </div>
     </header>
 
     <!-- ============================================================== -->
-    <!-- NEW PREMIUM HERO SECTION -->
+    <!-- PREMIUM HERO SECTION -->
     <!-- ============================================================== -->
     <section class="relative w-full h-[450px] md:h-[550px] bg-gray-900 overflow-hidden">
         <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
         <div class="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-16 md:pb-24">
             <h2 class="text-white text-5xl md:text-7xl font-extrabold mb-4 uppercase tracking-tight">Elegance<br><span class="peach-text">Redefined</span></h2>
             <p class="text-gray-300 text-lg mb-8 max-w-md font-medium">Discover the finest collection of handcrafted jewelry, designed for your special moments.</p>
@@ -54,7 +90,7 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- MAIN CONTENT (FRONTEND PRODUCTS - NO CHANGES) -->
+    <!-- MAIN CONTENT (FRONTEND PRODUCTS) -->
     <!-- ============================================================== -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-grow">
         <div class="text-center mb-12">
@@ -83,11 +119,10 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- 5-IMAGE GALLERY MODAL (WITH ZOOM & SMALL ICONS) -->
+    <!-- 5-IMAGE GALLERY MODAL (WITH ZOOM) -->
     <!-- ============================================================== -->
     <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden">
         
-        <!-- Zoom In & Zoom Out Buttons -->
         <div class="absolute top-5 left-5 flex gap-3 z-[405]">
             <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In">
                 <i class="ph ph-magnifying-glass-plus font-bold text-lg"></i>
@@ -97,23 +132,19 @@
             </button>
         </div>
 
-        <!-- Close Button (Smaller Size) -->
         <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg">
             <i class="ph ph-x font-bold text-lg"></i>
         </button>
         
         <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
-            <!-- Left Button (Smaller Size) -->
             <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
                 <i class="ph ph-caret-left text-xl"></i>
             </button>
             
-            <!-- Image with Zoom scaling applied -->
             <div class="w-full h-full flex justify-center items-center overflow-hidden">
                 <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-300 transform scale-100">
             </div>
             
-            <!-- Right Button (Smaller Size) -->
             <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg">
                 <i class="ph ph-caret-right text-xl"></i>
             </button>
@@ -157,10 +188,8 @@
                     
                     <!-- Product 1 -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
-                        <!-- Image Container with Transparent Eye Icon -->
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <!-- Transparent Eye Icon -->
                             <button onclick="openGallery('rudraksha')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent">
                                 <i class="ph ph-eye text-[18px] font-bold"></i>
                             </button>
@@ -170,7 +199,6 @@
                             <span class="text-gray-900 font-bold">₹ 399</span>
                             <span class="text-gray-500 line-through text-[10px]">₹ 449</span>
                         </div>
-                        <!-- ADD Button at Bottom -->
                         <button class="w-full peach-bg hover:opacity-90 transition text-white text-[12px] font-bold py-1.5 rounded-sm mt-auto" onclick="addToCart('OM Design Rudraksha Pendant', 399, 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80')">ADD</button>
                     </div>
                     
