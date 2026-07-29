@@ -16,7 +16,7 @@
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
         .peach-border { border-color: #e6998c; }
-        /* Hide scrollbar for category slider and other scroll areas */
+        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .peach-hover:hover { background-color: #d8897c; }
@@ -61,7 +61,7 @@
     <!-- ============================================================== -->
     <!-- PROFESSIONAL HEADER -->
     <!-- ============================================================== -->
-    <header class="bg-white sticky top-0 z-[100] border-b border-gray-100 shadow-sm">
+    <header class="bg-white sticky top-0 z-[100] shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center relative">
             <div class="flex items-center gap-5">
                 <button onclick="toggleMenu()" class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
@@ -106,16 +106,13 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- NEW: CIRCULAR CATEGORY SLIDER (Lumibella Style) -->
+    <!-- CIRCULAR CATEGORY SLIDER (Reduced Bottom Padding) -->
     <!-- ============================================================== -->
-    <section class="bg-white py-8 border-b border-gray-100">
+    <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
             
-            <!-- Horizontal Scrollable Container (Left-Right Working) -->
-            <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 justify-start md:justify-center">
-                
-                <!-- Category 1 -->
+            <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
                         <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -123,7 +120,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
 
-                <!-- Category 2 -->
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
                         <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -131,7 +127,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
                 </div>
 
-                <!-- Category 3 -->
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
                         <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -139,7 +134,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
                 </div>
 
-                <!-- Category 4 -->
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
                         <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -147,23 +141,21 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
                 </div>
 
-                <!-- Category 5 -->
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
                         <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Pendants</span>
                 </div>
-                
             </div>
         </div>
     </section>
 
     <!-- ============================================================== -->
-    <!-- MAIN CONTENT (FRONTEND PRODUCTS - Rubans Style) -->
+    <!-- MAIN CONTENT (FRONTEND PRODUCTS) - Reduced Top Padding -->
     <!-- ============================================================== -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 flex-grow bg-white">
-        <div class="text-center mb-12">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-16 flex-grow bg-white">
+        <div class="text-center mb-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">Trending Now</h2>
             <p class="text-gray-500 max-w-2xl mx-auto font-medium">Curated pieces loved by everyone.</p>
         </div>
@@ -209,7 +201,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MENU DRAWER (SLIDES FROM LEFT) -->
+    <!-- MENU DRAWER -->
     <!-- ============================================================== -->
     <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -231,7 +223,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- WISHLIST DRAWER (SLIDES FROM RIGHT) -->
+    <!-- WISHLIST DRAWER -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -276,11 +268,10 @@
             <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden bg-white">
                 <h3 class="text-center font-bold text-gray-900 mb-5">"You will also love these!"</h3>
                 <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x snap-mandatory pr-5">
-                    <!-- Cross Sell Products (Existing setup) -->
+                    <!-- Cross Sell Products -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('rudraksha')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent"><i class="ph ph-eye text-[18px] font-bold"></i></button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">OM Design Rudraksha</h4>
                         <div class="flex gap-1.5 text-[12px] mb-2 items-center">
@@ -291,7 +282,6 @@
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-                            <button onclick="openGallery('axe')" class="absolute top-1 right-1 text-gray-800 hover:text-black p-1 transition cursor-pointer drop-shadow-md z-10 bg-transparent"><i class="ph ph-eye text-[18px] font-bold"></i></button>
                         </div>
                         <h4 class="text-[12px] font-bold text-gray-900 leading-tight mb-1 h-8 overflow-hidden">Statement Axe Valor</h4>
                         <div class="flex gap-1.5 text-[12px] mb-2 items-center">
@@ -402,7 +392,7 @@
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
 
-        // --- NEW: Main Frontend Products (Professional Rubans Style) ---
+        // --- NEW: Main Frontend Products (With Wishlist Icon & Fixed Loading) ---
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
@@ -424,47 +414,49 @@
 
                 container.innerHTML = ''; 
                 data.forEach((product, idx) => {
-                    // Logic for Professional Pricing Display (Like Rubans)
-                    let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); // Demo rating
-                    let originalPrice = Math.round(product.price * 2.5); // Simulated Strikethrough
+                    let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
+                    let originalPrice = Math.round(product.price * 2.5); 
                     let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
-                    let extraOffPrice = Math.round(product.price * 0.75); // 25% extra off
+                    let extraOffPrice = Math.round(product.price * 0.75); 
 
                     container.innerHTML += `
                         <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
                             
-                            <!-- Image Section with Rating & Eye Icon -->
+                            <!-- Image Section with Rating & Icons -->
                             <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
                                 <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                                 
-                                <!-- Rating Badge (Rubans Style) -->
                                 <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
                                     <span class="text-yellow-500 text-sm">★</span> ${rating}
                                 </div>
                                 
-                                <!-- Transparent Eye Icon -->
-                                <button class="absolute top-2 right-2 text-gray-800 hover:text-black p-1.5 transition cursor-pointer drop-shadow-md z-10 bg-transparent opacity-0 group-hover:opacity-100">
-                                    <i class="ph ph-eye text-[20px] font-bold"></i>
-                                </button>
+                                <!-- Top Right Action Icons (Heart & Eye) -->
+                                <div class="absolute top-2 right-2 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                    <!-- Wishlist Heart -->
+                                    <button onclick="event.stopPropagation(); alert('Added to Wishlist!');" class="text-gray-800 hover:text-red-500 transition cursor-pointer drop-shadow-md bg-transparent">
+                                        <i class="ph ph-heart text-[22px] font-bold"></i>
+                                    </button>
+                                    <!-- Quick View Eye -->
+                                    <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="text-gray-800 hover:text-black transition cursor-pointer drop-shadow-md bg-transparent">
+                                        <i class="ph ph-eye text-[22px] font-bold"></i>
+                                    </button>
+                                </div>
                             </div>
 
-                            <!-- Details Section (Rubans Style) -->
+                            <!-- Details Section -->
                             <div class="p-3 md:p-4 flex flex-col flex-grow">
                                 <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${product.name}</h3>
                                 
-                                <!-- Pricing Row -->
                                 <div class="flex items-end gap-1.5 md:gap-2 mb-1">
                                     <span class="text-[15px] md:text-[17px] font-bold text-gray-900">₹${product.price}</span>
                                     <span class="text-[11px] md:text-[12px] text-gray-400 line-through mb-[2px]">₹${originalPrice}</span>
                                     <span class="text-[11px] md:text-[12px] font-bold text-green-600 mb-[2px]">(${discountPercent}% Off)</span>
                                 </div>
 
-                                <!-- Extra Offer -->
                                 <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
                                     25% OFF price ₹${extraOffPrice}
                                 </div>
                                 
-                                <!-- Black Solid Button -->
                                 <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
                                     Add To Cart
                                 </button>
