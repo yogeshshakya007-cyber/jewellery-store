@@ -16,7 +16,6 @@
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
         .peach-border { border-color: #e6998c; }
-        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .peach-hover:hover { background-color: #d8897c; }
@@ -81,7 +80,7 @@
                 </button>
                 <button onclick="toggleWishlist()" class="hover:text-gray-600 transition-colors cursor-pointer relative">
                     <i class="ph ph-heart text-[24px] md:text-[26px]"></i>
-                    <span class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
+                    <span id="header-wishlist-count" class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
                 </button>
                 <button onclick="toggleCart()" class="hover:text-gray-600 transition-colors cursor-pointer relative flex items-center gap-1.5">
                     <i class="ph ph-shopping-bag text-[24px] md:text-[26px]"></i>
@@ -115,7 +114,6 @@
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <!-- Adding onerror to prevent broken images -->
                         <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80'" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
@@ -224,7 +222,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- WISHLIST DRAWER -->
+    <!-- WISHLIST DRAWER (FULLY FUNCTIONAL NOW) -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -235,11 +233,10 @@
             </div>
             <button onclick="toggleWishlist()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
         </header>
-        <div class="flex-grow flex flex-col items-center justify-center px-5 text-center">
-            <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-4"><i class="ph ph-heart-break text-4xl text-gray-300"></i></div>
-            <h3 class="text-lg font-bold text-gray-900 mb-2">No items yet</h3>
-            <p class="text-sm text-gray-500 font-medium max-w-[250px]">Tap the heart icon on any product to save it for later.</p>
-            <button onclick="toggleWishlist()" class="mt-6 border-2 border-gray-900 text-gray-900 font-bold px-6 py-2.5 rounded-sm hover:bg-gray-900 hover:text-white transition">Start Exploring</button>
+        
+        <!-- Here the Wishlist items will be injected by JavaScript -->
+        <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
+            <!-- Default Empty State -->
         </div>
     </div>
 
@@ -393,7 +390,7 @@
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
 
-        // --- NEW: Main Frontend Products (With FIXED ALWAYS VISIBLE ICONS) ---
+        // --- Main Frontend Products ---
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
@@ -419,14 +416,11 @@
                     let originalPrice = Math.round(product.price * 2.5); 
                     let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
                     let extraOffPrice = Math.round(product.price * 0.75); 
-                    
-                    // Added fallback image URL in case of broken link
                     let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
 
                     container.innerHTML += `
                         <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
                             
-                            <!-- Image Section -->
                             <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
                                 <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                                 
@@ -434,20 +428,18 @@
                                     <span class="text-yellow-500 text-sm">★</span> ${rating}
                                 </div>
                                 
-                                <!-- FIXED: ALWAYS VISIBLE Top Right Action Icons -->
                                 <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
-                                    <!-- Wishlist Heart (Always Visible, Circular White Bg) -->
-                                    <button onclick="event.stopPropagation(); alert('Added to Wishlist!');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                    <!-- WISHLIST BUTTON LINKED TO NEW FUNCTION -->
+                                    <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
-                                    <!-- Quick View Eye (Always Visible, Circular White Bg) -->
+                                    
                                     <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Details Section -->
                             <div class="p-3 md:p-4 flex flex-col flex-grow">
                                 <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${product.name}</h3>
                                 
@@ -472,6 +464,85 @@
                 container.innerHTML = `<div class="col-span-full text-center text-red-500 py-10"><i class="ph ph-wifi-slash text-5xl mb-3"></i><h3 class="font-bold text-lg">इंटरनेट या नेटवर्क की समस्या</h3><p class="text-sm mt-1">${error.message}</p></div>`;
             }
         }
+
+        // ==============================================================
+        // NEW: WISHLIST FUNCTIONS
+        // ==============================================================
+        function addToWishlist(name, price, image) {
+            let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            let existing = wishlist.find(w => w.name === name);
+            
+            if (!existing) {
+                wishlist.push({ name: name, price: price, image: image });
+                localStorage.setItem('y_store_wishlist', JSON.stringify(wishlist));
+                
+                // Open Wishlist Drawer directly
+                const drawer = document.getElementById('wishlist-drawer');
+                if (drawer && drawer.classList.contains('translate-x-full')) {
+                    toggleWishlist();
+                } else {
+                    renderWishlist();
+                }
+            } else {
+                alert("यह प्रोडक्ट पहले से ही आपकी Wishlist में है!");
+            }
+        }
+
+        function renderWishlist() {
+            let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            let contentDiv = document.getElementById('wishlist-content');
+            let countSpan = document.getElementById('header-wishlist-count');
+            
+            if (countSpan) countSpan.innerText = wishlist.length;
+
+            if (wishlist.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="flex-grow flex flex-col items-center justify-center px-5 text-center mt-16">
+                        <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-4"><i class="ph ph-heart-break text-4xl text-gray-300"></i></div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">No items yet</h3>
+                        <p class="text-sm text-gray-500 font-medium max-w-[250px]">Tap the heart icon on any product to save it for later.</p>
+                        <button onclick="toggleWishlist()" class="mt-6 border-2 border-gray-900 text-gray-900 font-bold px-6 py-2.5 rounded-sm hover:bg-gray-900 hover:text-white transition">Start Exploring</button>
+                    </div>`;
+                return;
+            }
+
+            let html = '<div class="px-5 py-2">';
+            wishlist.forEach((item, index) => {
+                html += `
+                    <div class="flex py-5 border-b border-gray-100 relative">
+                        <div class="w-[85px] h-[85px] flex-shrink-0 bg-gray-50 rounded-sm overflow-hidden flex items-center justify-center border border-gray-100">
+                            <img src="${item.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="ml-4 flex-1 flex flex-col justify-between pt-1 pb-1">
+                            <div class="pr-6"><h3 class="text-[14px] font-bold text-gray-900 leading-snug">${item.name}</h3></div>
+                            <div class="flex justify-between items-end mt-2">
+                                <span class="font-bold text-gray-900 text-[15px]">₹ ${item.price}</span>
+                                <button onclick="addToCart('${item.name}', ${item.price}, '${item.image}'); removeFromWishlist(${index}, true)" class="text-[11px] font-bold bg-black text-white px-3 py-1.5 rounded-sm hover:bg-gray-800 transition">Move to Cart</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromWishlist(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1 cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
+                    </div>`;
+            });
+            html += '</div>';
+            contentDiv.innerHTML = html;
+        }
+
+        function removeFromWishlist(index, movingToCart = false) {
+            let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            wishlist.splice(index, 1);
+            localStorage.setItem('y_store_wishlist', JSON.stringify(wishlist));
+            
+            renderWishlist();
+            
+            if(movingToCart) {
+                // Close wishlist drawer so cart drawer can be seen clearly
+                const drawer = document.getElementById('wishlist-drawer');
+                const overlay = document.getElementById('wishlist-overlay');
+                drawer.classList.add('translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
 
         // --- Cart Setup ---
         function toggleCart() {
@@ -562,8 +633,18 @@
             try {
                 let checkCart = JSON.parse(localStorage.getItem('y_store_cart'));
                 if (checkCart && !Array.isArray(checkCart)) localStorage.removeItem('y_store_cart');
-            } catch(e) { localStorage.removeItem('y_store_cart'); }
-            renderCart(); loadProducts(); 
+                
+                // Initialize Wishlist structure if broken
+                let checkWishlist = JSON.parse(localStorage.getItem('y_store_wishlist'));
+                if (checkWishlist && !Array.isArray(checkWishlist)) localStorage.removeItem('y_store_wishlist');
+            } catch(e) { 
+                localStorage.removeItem('y_store_cart'); 
+                localStorage.removeItem('y_store_wishlist');
+            }
+            
+            renderCart(); 
+            renderWishlist(); // <--- Now it loads total wishlist items on page load
+            loadProducts(); 
         });
     </script>
 </body>
