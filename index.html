@@ -223,7 +223,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- WISHLIST DRAWER (FIXED HTML ID ADDED HERE) -->
+    <!-- WISHLIST DRAWER -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -235,7 +235,6 @@
             <button onclick="toggleWishlist()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
         </header>
         
-        <!-- THIS ID WAS MISSING PREVIOUSLY -->
         <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
             <!-- Items will be injected here automatically by JS -->
         </div>
@@ -345,7 +344,7 @@
         }
 
         function toggleWishlist() {
-            renderWishlist(); // Ensure it is rendered when opening
+            renderWishlist();
             const drawer = document.getElementById('wishlist-drawer');
             const overlay = document.getElementById('wishlist-overlay');
             drawer.classList.toggle('translate-x-full');
@@ -422,39 +421,30 @@
 
                     container.innerHTML += `
                         <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
-                            
                             <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
                                 <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                                
                                 <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
                                     <span class="text-yellow-500 text-sm">★</span> ${rating}
                                 </div>
-                                
                                 <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
-                                    <!-- WISHLIST BUTTON (ALERT REMOVED) -->
                                     <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
-                                    
                                     <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
                                 </div>
                             </div>
-
                             <div class="p-3 md:p-4 flex flex-col flex-grow">
                                 <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${product.name}</h3>
-                                
                                 <div class="flex items-end gap-1.5 md:gap-2 mb-1">
                                     <span class="text-[15px] md:text-[17px] font-bold text-gray-900">₹${product.price}</span>
                                     <span class="text-[11px] md:text-[12px] text-gray-400 line-through mb-[2px]">₹${originalPrice}</span>
                                     <span class="text-[11px] md:text-[12px] font-bold text-green-600 mb-[2px]">(${discountPercent}% Off)</span>
                                 </div>
-
                                 <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
                                     25% OFF price ₹${extraOffPrice}
                                 </div>
-                                
                                 <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
                                     Add To Cart
                                 </button>
@@ -474,16 +464,13 @@
             let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
             let existing = wishlist.find(w => w.name === name);
             
-            // 1. अगर प्रोडक्ट पहले से नहीं है, तो ऐड करें
             if (!existing) {
                 wishlist.push({ name: name, price: price, image: image });
                 localStorage.setItem('y_store_wishlist', JSON.stringify(wishlist));
             } 
             
-            // 2. विशलिस्ट का डिज़ाइन अपडेट करें
             renderWishlist();
             
-            // 3. दाईं तरफ वाला विशलिस्ट का डब्बा सीधा खोल दें 
             const drawer = document.getElementById('wishlist-drawer');
             if (drawer && drawer.classList.contains('translate-x-full')) {
                 toggleWishlist();
@@ -543,7 +530,6 @@
                 overlay.classList.add('hidden');
             }
         }
-
 
         // --- Cart Setup ---
         function toggleCart() {
