@@ -106,7 +106,7 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- CIRCULAR CATEGORY SLIDER (Reduced Bottom Padding) -->
+    <!-- CIRCULAR CATEGORY SLIDER -->
     <!-- ============================================================== -->
     <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -115,7 +115,8 @@
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
                 <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <!-- Adding onerror to prevent broken images -->
+                        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80'" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
@@ -152,7 +153,7 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- MAIN CONTENT (FRONTEND PRODUCTS) - Reduced Top Padding -->
+    <!-- MAIN CONTENT (FRONTEND PRODUCTS) -->
     <!-- ============================================================== -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-16 flex-grow bg-white">
         <div class="text-center mb-8">
@@ -392,7 +393,7 @@
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
 
-        // --- NEW: Main Frontend Products (With Wishlist Icon & Fixed Loading) ---
+        // --- NEW: Main Frontend Products (With FIXED ALWAYS VISIBLE ICONS) ---
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
@@ -418,27 +419,30 @@
                     let originalPrice = Math.round(product.price * 2.5); 
                     let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
                     let extraOffPrice = Math.round(product.price * 0.75); 
+                    
+                    // Added fallback image URL in case of broken link
+                    let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
 
                     container.innerHTML += `
                         <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
                             
-                            <!-- Image Section with Rating & Icons -->
+                            <!-- Image Section -->
                             <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
-                                <img src="${product.image_url}" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                                <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                                 
                                 <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
                                     <span class="text-yellow-500 text-sm">★</span> ${rating}
                                 </div>
                                 
-                                <!-- Top Right Action Icons (Heart & Eye) -->
-                                <div class="absolute top-2 right-2 flex flex-col gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                                    <!-- Wishlist Heart -->
-                                    <button onclick="event.stopPropagation(); alert('Added to Wishlist!');" class="text-gray-800 hover:text-red-500 transition cursor-pointer drop-shadow-md bg-transparent">
-                                        <i class="ph ph-heart text-[22px] font-bold"></i>
+                                <!-- FIXED: ALWAYS VISIBLE Top Right Action Icons -->
+                                <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
+                                    <!-- Wishlist Heart (Always Visible, Circular White Bg) -->
+                                    <button onclick="event.stopPropagation(); alert('Added to Wishlist!');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                        <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
-                                    <!-- Quick View Eye -->
-                                    <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="text-gray-800 hover:text-black transition cursor-pointer drop-shadow-md bg-transparent">
-                                        <i class="ph ph-eye text-[22px] font-bold"></i>
+                                    <!-- Quick View Eye (Always Visible, Circular White Bg) -->
+                                    <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                        <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
                                 </div>
                             </div>
