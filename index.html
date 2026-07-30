@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- NEW: user-scalable=0 added to prevent full website zoom on mobile -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Yogesh Jewellers - Premium Collection</title>
     <!-- Tailwind CSS -->
@@ -17,11 +16,9 @@
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
         .peach-border { border-color: #e6998c; }
-        /* Hide scrollbar */
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .peach-hover:hover { background-color: #d8897c; }
-        /* Running Bar Animation */
         @keyframes marquee { 
             0% { transform: translateX(100%); } 
             100% { transform: translateX(-100%); } 
@@ -68,9 +65,10 @@
                 <button onclick="toggleMenu()" class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
                     <i class="ph ph-list text-[28px]"></i>
                 </button>
+                <!-- Desktop Menu Links -->
                 <nav class="hidden lg:flex gap-6 font-bold text-gray-700 text-[13px] uppercase tracking-wide">
-                    <a href="#" class="hover:text-[#e6998c] transition-colors">Shop All</a>
-                    <a href="#" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
+                    <a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
+                    <a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
                 </nav>
             </div>
             <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase cursor-pointer" onclick="window.scrollTo(0,0)">
@@ -102,7 +100,7 @@
         <div class="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-12 md:pb-20">
             <h2 class="text-white text-4xl md:text-6xl font-extrabold mb-3 uppercase tracking-tight">Elegance<br><span class="peach-text">Redefined</span></h2>
             <p class="text-gray-300 text-sm md:text-lg mb-6 max-w-md font-medium">Discover the finest collection of handcrafted jewelry, designed for your special moments.</p>
-            <button class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-6 py-3 md:px-8 md:py-4 font-bold text-[14px] md:text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
+            <button onclick="scrollToProducts()" class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-6 py-3 md:px-8 md:py-4 font-bold text-[14px] md:text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
         </div>
     </section>
 
@@ -172,7 +170,7 @@
     <!-- ============================================================== -->
     <!-- PROFESSIONAL FOOTER -->
     <!-- ============================================================== -->
-    <footer class="bg-gray-900 pt-16 pb-8 mt-auto border-t-[3px] peach-border">
+    <footer id="footer-section" class="bg-gray-900 pt-16 pb-8 mt-auto border-t-[3px] peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-8">
                 <div class="text-center md:text-left">
@@ -201,9 +199,9 @@
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Quick Links</h4>
                     <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
-                        <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Shop All</a></li>
-                        <li><a href="#" class="hover:text-[#e6998c] transition inline-block">New Arrivals</a></li>
-                        <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Trending Jewellery</a></li>
+                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">Shop All</a></li>
+                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">New Arrivals</a></li>
+                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">Trending Jewellery</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Special Offers</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">About Us</a></li>
                     </ul>
@@ -212,7 +210,7 @@
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Customer Care</h4>
                     <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
-                        <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Track Your Order</a></li>
+                        <li><a href="#" onclick="alert('Order Tracking System will be integrated soon!'); return false;" class="hover:text-[#e6998c] transition inline-block">Track Your Order</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Shipping & Delivery</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Returns & Exchanges</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Privacy Policy</a></li>
@@ -280,7 +278,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MENU DRAWER -->
+    <!-- MENU DRAWER (NOW WITH WORKING LINKS) -->
     <!-- ============================================================== -->
     <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -289,15 +287,15 @@
             <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
         </header>
         <nav class="flex flex-col px-5 py-6 gap-6 font-bold text-gray-800 text-sm">
-            <a href="#" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Offers & Sale <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Track Order <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Contact Us <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Offers & Sale <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Track Order <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToFooter(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Contact Us <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
         </nav>
         <div class="mt-auto px-5 py-6 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 font-medium">
             <p>Login / Register for personalized experience.</p>
-            <button class="mt-3 w-full bg-black text-white py-3 rounded-sm font-bold uppercase tracking-wide">Login</button>
+            <button onclick="alert('Login System coming soon!'); toggleMenu();" class="mt-3 w-full bg-black text-white py-3 rounded-sm font-bold uppercase tracking-wide">Login</button>
         </div>
     </div>
 
@@ -435,12 +433,19 @@
             }
         }
 
+        function scrollToFooter() {
+            const footerSection = document.getElementById('footer-section');
+            if (footerSection) {
+                footerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
         const promos = ["Extra 5% off on Prepaid Orders", "Free Shipping on orders above ₹999", "Get assured gift on ₹2500+"];
         let currentPromo = 0;
         function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
         function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
 
-        // --- FIXED GALLERY LOGIC (Single Product Focus) ---
+        // --- FIXED GALLERY LOGIC ---
         let currentActiveGallery = [], currentImageIndex = 0, currentScale = 1; 
 
         function zoomGallery(step) {
@@ -450,10 +455,7 @@
             document.getElementById('galleryImg').style.transform = `scale(${currentScale})`;
         }
         
-        // अब गैलरी में सिर्फ वही फोटो खुलेगी जिसपर आपने क्लिक किया है (5 बार)
         function openGallery(imgUrl) {
-            // भविष्य के लिए 5 इमेजेज का सिस्टम रखा है, 
-            // अभी डेटाबेस में 1 फोटो है, तो वही फोटो 5 बार गैलरी में सेट हो जाएगी।
             currentActiveGallery = [imgUrl, imgUrl, imgUrl, imgUrl, imgUrl];
             currentImageIndex = 0; 
             currentScale = 1; 
@@ -491,7 +493,7 @@
 
         galImg.addEventListener('touchmove', (e) => {
             if (e.touches.length === 2 && initDist) {
-                e.preventDefault(); // पेज को ज़ूम/स्क्रॉल होने से रोकेगा
+                e.preventDefault(); 
                 let currDist = Math.hypot(
                     e.touches[0].pageX - e.touches[1].pageX,
                     e.touches[0].pageY - e.touches[1].pageY
@@ -549,8 +551,6 @@
                                     <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
-                                    
-                                    <!-- FIXED: Eye Icon now passes ONLY this specific product's image -->
                                     <button onclick="event.stopPropagation(); openGallery('${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
