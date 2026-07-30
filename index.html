@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- NEW: user-scalable=0 added to prevent full website zoom on mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Yogesh Jewellers - Premium Collection</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Montserrat', sans-serif !important; }
-        body { background-color: #f9fafb; overflow-x: hidden; }
+        body { background-color: #f9fafb; overflow-x: hidden; touch-action: manipulation; }
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
         .peach-border { border-color: #e6998c; }
@@ -113,7 +114,6 @@
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
             
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
-                <!-- Category 1: Necklace -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_15.png" alt="Necklace" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -121,7 +121,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
 
-                <!-- Category 2: Earrings -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_16.png" alt="Earrings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -129,7 +128,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
                 </div>
 
-                <!-- Category 3: Bangles -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_17.png" alt="Bangles" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -137,7 +135,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
                 </div>
 
-                <!-- Category 4: Rings -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_18.png" alt="Rings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -145,7 +142,6 @@
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
                 </div>
 
-                <!-- Category 5: Pendants -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_19.png" alt="Pendants" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -174,7 +170,7 @@
     </main>
 
     <!-- ============================================================== -->
-    <!-- NEW PROFESSIONAL FOOTER -->
+    <!-- PROFESSIONAL FOOTER -->
     <!-- ============================================================== -->
     <footer class="bg-gray-900 pt-16 pb-8 mt-auto border-t-[3px] peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -264,19 +260,19 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- 5-IMAGE GALLERY MODAL (WITH ZOOM) -->
+    <!-- 5-IMAGE GALLERY MODAL (WITH PINCH-TO-ZOOM FIXED) -->
     <!-- ============================================================== -->
-    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden">
+    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden" style="touch-action: none;">
         <div class="absolute top-5 left-5 flex gap-3 z-[405]">
-            <button onclick="zoomGallery(0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In"><i class="ph ph-magnifying-glass-plus font-bold text-lg"></i></button>
-            <button onclick="zoomGallery(-0.25)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out"><i class="ph ph-magnifying-glass-minus font-bold text-lg"></i></button>
+            <button onclick="zoomGallery(0.15)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In"><i class="ph ph-magnifying-glass-plus font-bold text-lg"></i></button>
+            <button onclick="zoomGallery(-0.15)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out"><i class="ph ph-magnifying-glass-minus font-bold text-lg"></i></button>
         </div>
         <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg"><i class="ph ph-x font-bold text-lg"></i></button>
         
         <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
             <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-left text-xl"></i></button>
             <div class="w-full h-full flex justify-center items-center overflow-hidden">
-                <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-300 transform scale-100">
+                <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-200 transform scale-100" style="transform-origin: center;">
             </div>
             <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-right text-xl"></i></button>
         </div>
@@ -318,9 +314,7 @@
             <button onclick="toggleWishlist()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
         </header>
         
-        <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
-            <!-- Items will be injected here automatically by JS -->
-        </div>
+        <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col"></div>
     </div>
 
     <!-- ============================================================== -->
@@ -349,7 +343,6 @@
             <div id="cross-sell" class="px-5 py-6 border-t border-gray-100 hidden bg-white">
                 <h3 class="text-center font-bold text-gray-900 mb-5">"You will also love these!"</h3>
                 <div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2 snap-x snap-mandatory pr-5">
-                    <!-- Cross Sell Products -->
                     <div class="min-w-[130px] w-[130px] bg-white border border-gray-100 p-2 flex flex-col shadow-sm rounded snap-start">
                         <div class="h-[110px] bg-gray-50 mb-2 overflow-hidden flex items-center justify-center rounded-sm relative group">
                             <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
@@ -442,23 +435,12 @@
             }
         }
 
-        // --- Promo Banner Logic ---
         const promos = ["Extra 5% off on Prepaid Orders", "Free Shipping on orders above ₹999", "Get assured gift on ₹2500+"];
         let currentPromo = 0;
         function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
         function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
 
-        // --- UPDATED GALLERY DATA WITH YOUR 5 NEW IMAGES ---
-        // (ये वही 5 इमेजेज हैं जो आपने कैटेगरी के लिए दी थीं)
-        const galleryData = {
-            'product_view': [
-                'image_15.png', // Necklace
-                'image_16.png', // Earrings
-                'image_17.png', // Bangles
-                'image_18.png', // Rings
-                'image_19.png'  // Pendants
-            ]
-        };
+        // --- FIXED GALLERY LOGIC (Single Product Focus) ---
         let currentActiveGallery = [], currentImageIndex = 0, currentScale = 1; 
 
         function zoomGallery(step) {
@@ -468,12 +450,16 @@
             document.getElementById('galleryImg').style.transform = `scale(${currentScale})`;
         }
         
-        // फिक्स: अब यह 'product_view' वाला नया डेटा उठाएगा
-        function openGallery(productId) {
-            currentActiveGallery = galleryData[productId] || galleryData['product_view'];
-            currentImageIndex = 0; currentScale = 1; 
+        // अब गैलरी में सिर्फ वही फोटो खुलेगी जिसपर आपने क्लिक किया है (5 बार)
+        function openGallery(imgUrl) {
+            // भविष्य के लिए 5 इमेजेज का सिस्टम रखा है, 
+            // अभी डेटाबेस में 1 फोटो है, तो वही फोटो 5 बार गैलरी में सेट हो जाएगी।
+            currentActiveGallery = [imgUrl, imgUrl, imgUrl, imgUrl, imgUrl];
+            currentImageIndex = 0; 
+            currentScale = 1; 
             document.getElementById('galleryImg').style.transform = 'scale(1)';
-            updateGalleryUI(); document.getElementById('galleryModal').classList.remove('hidden');
+            updateGalleryUI(); 
+            document.getElementById('galleryModal').classList.remove('hidden');
         }
         
         function closeGallery() {
@@ -489,6 +475,40 @@
             document.getElementById('galleryImg').src = currentActiveGallery[currentImageIndex];
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
+
+        // --- Pinch to Zoom Logic for Product Image Only ---
+        const galImg = document.getElementById('galleryImg');
+        let initDist = null;
+
+        galImg.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                initDist = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+            }
+        }, {passive: false});
+
+        galImg.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initDist) {
+                e.preventDefault(); // पेज को ज़ूम/स्क्रॉल होने से रोकेगा
+                let currDist = Math.hypot(
+                    e.touches[0].pageX - e.touches[1].pageX,
+                    e.touches[0].pageY - e.touches[1].pageY
+                );
+                let diff = currDist - initDist;
+                if(Math.abs(diff) > 5) {
+                    zoomGallery(diff > 0 ? 0.05 : -0.05);
+                    initDist = currDist;
+                }
+            }
+        }, {passive: false});
+
+        galImg.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initDist = null;
+            }
+        });
 
         // --- Main Frontend Products ---
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
@@ -530,8 +550,8 @@
                                         <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
                                     
-                                    <!-- फिक्स: यहाँ अब 'product_view' कॉल हो रहा है -->
-                                    <button onclick="event.stopPropagation(); openGallery('product_view');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                    <!-- FIXED: Eye Icon now passes ONLY this specific product's image -->
+                                    <button onclick="event.stopPropagation(); openGallery('${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
                                 </div>
@@ -564,25 +584,19 @@
         function addToWishlist(name, price, image) {
             let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
             let existing = wishlist.find(w => w.name === name);
-            
             if (!existing) {
                 wishlist.push({ name: name, price: price, image: image });
                 localStorage.setItem('y_store_wishlist', JSON.stringify(wishlist));
             } 
-            
             renderWishlist();
-            
             const drawer = document.getElementById('wishlist-drawer');
-            if (drawer && drawer.classList.contains('translate-x-full')) {
-                toggleWishlist();
-            }
+            if (drawer && drawer.classList.contains('translate-x-full')) { toggleWishlist(); }
         }
 
         function renderWishlist() {
             let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
             let contentDiv = document.getElementById('wishlist-content');
             let countSpan = document.getElementById('header-wishlist-count');
-            
             if (countSpan) countSpan.innerText = wishlist.length;
 
             if (wishlist.length === 0) {
@@ -621,14 +635,11 @@
             let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
             wishlist.splice(index, 1);
             localStorage.setItem('y_store_wishlist', JSON.stringify(wishlist));
-            
             renderWishlist();
-            
             if(movingToCart) {
                 const drawer = document.getElementById('wishlist-drawer');
                 const overlay = document.getElementById('wishlist-overlay');
-                drawer.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
+                drawer.classList.add('translate-x-full'); overlay.classList.add('hidden');
             }
         }
 
@@ -649,7 +660,6 @@
             if(existing) existing.quantity = (existing.quantity || 1) + 1;
             else cart.push({ name: name, price: price, image: image, quantity: 1 });
             localStorage.setItem('y_store_cart', JSON.stringify(cart));
-            
             const drawer = document.getElementById('cart-drawer');
             if (drawer && drawer.classList.contains('translate-x-full')) toggleCart(); else renderCart();
         }
@@ -728,10 +738,7 @@
                 localStorage.removeItem('y_store_cart'); 
                 localStorage.removeItem('y_store_wishlist');
             }
-            
-            renderCart(); 
-            renderWishlist(); 
-            loadProducts(); 
+            renderCart(); renderWishlist(); loadProducts(); 
         });
     </script>
 </body>
