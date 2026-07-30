@@ -26,6 +26,7 @@
             100% { transform: translateX(-100%); } 
         }
         .animate-marquee { 
+            /* Speed set to 25s for readable smooth scrolling */
             animation: marquee 25s linear infinite; 
             display: flex; 
             width: max-content; 
@@ -106,47 +107,54 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- CIRCULAR CATEGORY SLIDER -->
+    <!-- CIRCULAR CATEGORY SLIDER (NOW WORKING & FIXED IMAGES) -->
     <!-- ============================================================== -->
     <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
             
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
-                <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
-                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80" onerror="this.src='https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80'" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                
+                <!-- Category 1: Necklace -->
+                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_15.png" alt="Necklace" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
-                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <!-- Category 2: Earrings -->
+                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_16.png" alt="Earrings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
-                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <!-- Category 3: Bangles -->
+                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_17.png" alt="Bangles" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
-                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <!-- Category 4: Rings -->
+                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_18.png" alt="Rings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
                 </div>
 
-                <div class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
-                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition">
-                        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                <!-- Category 5: Pendants -->
+                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_19.png" alt="Pendants" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Pendants</span>
                 </div>
+
             </div>
         </div>
     </section>
@@ -154,7 +162,7 @@
     <!-- ============================================================== -->
     <!-- MAIN CONTENT (FRONTEND PRODUCTS) -->
     <!-- ============================================================== -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 flex-grow bg-white">
+    <main id="trending-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-20 flex-grow bg-white">
         <div class="text-center mb-8">
             <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">Trending Now</h2>
             <p class="text-gray-500 max-w-2xl mx-auto font-medium">Curated pieces loved by everyone.</p>
@@ -173,7 +181,6 @@
     <!-- ============================================================== -->
     <footer class="bg-gray-900 pt-16 pb-8 mt-auto border-t-[3px] peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Newsletter Section -->
             <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-8">
                 <div class="text-center md:text-left">
                     <h3 class="text-white text-xl md:text-2xl font-bold mb-2 tracking-wide">Subscribe to our Emails</h3>
@@ -185,9 +192,7 @@
                 </div>
             </div>
 
-            <!-- Main Footer Links -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12">
-                <!-- Brand Info -->
                 <div>
                     <h2 class="text-2xl font-extrabold peach-text tracking-widest uppercase mb-6">Yogesh</h2>
                     <p class="text-gray-400 text-sm mb-6 leading-relaxed">
@@ -200,7 +205,6 @@
                     </div>
                 </div>
 
-                <!-- Quick Links -->
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Quick Links</h4>
                     <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
@@ -212,7 +216,6 @@
                     </ul>
                 </div>
 
-                <!-- Customer Care -->
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Customer Care</h4>
                     <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
@@ -224,7 +227,6 @@
                     </ul>
                 </div>
 
-                <!-- Contact Info -->
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Get in Touch</h4>
                     <ul class="flex flex-col gap-4 text-gray-400 text-sm font-medium">
@@ -244,7 +246,6 @@
                 </div>
             </div>
 
-            <!-- Bottom Bar (Copyright & Payments) -->
             <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-5">
                 <p class="text-gray-500 text-[13px] font-medium text-center md:text-left">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center items-center gap-3 text-gray-400">
@@ -435,6 +436,14 @@
             drawer.classList.toggle('translate-x-full');
             overlay.classList.toggle('hidden');
             document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+        }
+        
+        // --- NEW: Scroll to Products Function for Circle Categories ---
+        function scrollToProducts() {
+            const productSection = document.getElementById('trending-section');
+            if (productSection) {
+                productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
         // --- Promo Banner Logic ---
