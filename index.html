@@ -26,7 +26,6 @@
             100% { transform: translateX(-100%); } 
         }
         .animate-marquee { 
-            /* Speed set to 25s for readable smooth scrolling */
             animation: marquee 25s linear infinite; 
             display: flex; 
             width: max-content; 
@@ -107,14 +106,13 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- CIRCULAR CATEGORY SLIDER (NOW WORKING & FIXED IMAGES) -->
+    <!-- CIRCULAR CATEGORY SLIDER -->
     <!-- ============================================================== -->
     <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
             
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
-                
                 <!-- Category 1: Necklace -->
                 <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
@@ -154,7 +152,6 @@
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Pendants</span>
                 </div>
-
             </div>
         </div>
     </section>
@@ -438,7 +435,6 @@
             document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
         }
         
-        // --- NEW: Scroll to Products Function for Circle Categories ---
         function scrollToProducts() {
             const productSection = document.getElementById('trending-section');
             if (productSection) {
@@ -452,10 +448,16 @@
         function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
         function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
 
-        // --- Gallery Modal & Zoom Logic ---
+        // --- UPDATED GALLERY DATA WITH YOUR 5 NEW IMAGES ---
+        // (ये वही 5 इमेजेज हैं जो आपने कैटेगरी के लिए दी थीं)
         const galleryData = {
-            'rudraksha': ['https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80'],
-            'axe': ['https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&w=800&q=80', 'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=800&q=80']
+            'product_view': [
+                'image_15.png', // Necklace
+                'image_16.png', // Earrings
+                'image_17.png', // Bangles
+                'image_18.png', // Rings
+                'image_19.png'  // Pendants
+            ]
         };
         let currentActiveGallery = [], currentImageIndex = 0, currentScale = 1; 
 
@@ -465,12 +467,15 @@
             if (currentScale > 3.0) currentScale = 3.0; 
             document.getElementById('galleryImg').style.transform = `scale(${currentScale})`;
         }
+        
+        // फिक्स: अब यह 'product_view' वाला नया डेटा उठाएगा
         function openGallery(productId) {
-            currentActiveGallery = galleryData[productId] || galleryData['rudraksha'];
+            currentActiveGallery = galleryData[productId] || galleryData['product_view'];
             currentImageIndex = 0; currentScale = 1; 
             document.getElementById('galleryImg').style.transform = 'scale(1)';
             updateGalleryUI(); document.getElementById('galleryModal').classList.remove('hidden');
         }
+        
         function closeGallery() {
             document.getElementById('galleryModal').classList.add('hidden');
             currentScale = 1; document.getElementById('galleryImg').style.transform = 'scale(1)';
@@ -524,7 +529,9 @@
                                     <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-heart text-[18px] font-bold"></i>
                                     </button>
-                                    <button onclick="event.stopPropagation(); openGallery('rudraksha');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                    
+                                    <!-- फिक्स: यहाँ अब 'product_view' कॉल हो रहा है -->
+                                    <button onclick="event.stopPropagation(); openGallery('product_view');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                         <i class="ph ph-eye text-[18px] font-bold"></i>
                                     </button>
                                 </div>
