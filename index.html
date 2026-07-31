@@ -168,41 +168,42 @@
     </main>
 
     <!-- ============================================================== -->
-    <!-- NEW: TRUST BADGES & GUARANTEES SECTION (ADDED HERE) -->
+    <!-- NEW: TRUST BADGES & GUARANTEES SECTION (UPDATED FOR MOBILE) -->
     <!-- ============================================================== -->
-    <section class="bg-white border-t border-gray-100 py-10 md:py-14">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h3 class="text-center font-bold text-xl text-gray-900 mb-8">Why Choose Yogesh Jewellers?</h3>
+    <section class="bg-white border-t border-gray-100 py-8 md:py-14">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <h3 class="text-center font-bold text-[18px] md:text-xl text-gray-900 mb-5 md:mb-8">Why Choose Yogesh Jewellers?</h3>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-0 border border-gray-200 rounded-sm py-6 bg-gray-50/30">
+            <!-- FLEX LAYOUT: Prevents overlap and horizontal bleeding perfectly on all screens -->
+            <div class="flex flex-row justify-between w-full border border-gray-200 rounded-sm py-4 md:py-6 bg-gray-50/30 overflow-hidden">
                 <!-- 1. Free Shipping -->
-                <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
-                    <i class="ph ph-globe-hemisphere-west text-[32px] text-gray-700 mb-3"></i>
-                    <span class="text-[14px] font-bold text-gray-900 leading-tight mb-1.5">Free Shipping</span>
-                    <span class="text-[12px] text-gray-500 leading-tight">Free above ₹999<br>₹49 charges below</span>
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
+                    <i class="ph ph-globe-hemisphere-west text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Free Shipping</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Free above ₹999<br>₹49 charges below</span>
                 </div>
                 
                 <!-- 2. COD Available -->
-                <div class="flex flex-col items-center text-center px-4 md:border-r border-gray-200">
-                    <i class="ph ph-truck text-[32px] text-gray-700 mb-3"></i>
-                    <span class="text-[14px] font-bold text-gray-900 leading-tight mb-1.5">COD Available</span>
-                    <span class="text-[12px] text-gray-500 leading-tight">Pan India Delivery<br><span class="text-[#e6998c] font-bold">5% Prepaid Discount</span></span>
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
+                    <i class="ph ph-truck text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">COD Available</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Pan India Delivery<br><span class="text-[#e6998c] font-bold">5% Prepaid Off</span></span>
                 </div>
                 
                 <!-- 3. Easy Return -->
-                <div class="flex flex-col items-center text-center px-4">
-                    <i class="ph ph-package text-[32px] text-gray-700 mb-3"></i>
-                    <span class="text-[14px] font-bold text-gray-900 leading-tight mb-1.5">Easy Return</span>
-                    <span class="text-[12px] text-gray-500 leading-tight">7 Days Easy<br>Return/Exchange</span>
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4">
+                    <i class="ph ph-package text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Easy Return</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">7 Days Easy<br>Return/Exchange</span>
                 </div>
             </div>
             
             <!-- Prepaid Discount Banner -->
-            <div class="max-w-3xl mx-auto mt-6 bg-red-50 border border-red-100 rounded-sm p-4 flex items-center justify-center gap-4 text-center md:text-left md:justify-start">
-                <div class="w-10 h-10 rounded-full peach-bg text-white flex items-center justify-center font-bold text-lg shrink-0">%</div>
+            <div class="max-w-3xl mx-auto mt-4 md:mt-6 bg-red-50 border border-red-100 rounded-sm p-3 md:p-4 flex items-center justify-center gap-3 md:gap-4 text-center md:text-left md:justify-start">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full peach-bg text-white flex items-center justify-center font-bold text-sm md:text-lg shrink-0">%</div>
                 <div>
-                    <p class="text-sm md:text-base text-gray-900 font-bold mb-1">Pay online and enjoy an instant <span class="peach-text">5% Prepaid Discount</span>.</p>
-                    <p class="text-xs text-gray-500">Secure payment via UPI, Cards, NetBanking & Wallets.</p>
+                    <p class="text-[11px] md:text-base text-gray-900 font-bold mb-0.5 md:mb-1">Pay online and enjoy an instant <span class="peach-text">5% Prepaid Discount</span>.</p>
+                    <p class="text-[9px] md:text-xs text-gray-500">Secure payment via UPI, Cards, NetBanking & Wallets.</p>
                 </div>
             </div>
         </div>
@@ -299,7 +300,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- 5-IMAGE GALLERY MODAL (WITH PINCH-TO-ZOOM FIXED) -->
+    <!-- 5-IMAGE GALLERY MODAL -->
     <!-- ============================================================== -->
     <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden" style="touch-action: none;">
         <div class="absolute top-5 left-5 flex gap-3 z-[405]">
@@ -319,7 +320,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MENU DRAWER (NOW WITH WORKING LINKS) -->
+    <!-- MENU DRAWER -->
     <!-- ============================================================== -->
     <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
