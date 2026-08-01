@@ -67,8 +67,8 @@
                 </button>
                 <!-- Desktop Menu Links -->
                 <nav class="hidden lg:flex gap-6 font-bold text-gray-700 text-[13px] uppercase tracking-wide">
-                    <a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
-                    <a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
+                    <a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
+                    <a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
                 </nav>
             </div>
             <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase cursor-pointer" onclick="window.scrollTo(0,0)">
@@ -100,7 +100,7 @@
         <div class="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-12 md:pb-20">
             <h2 class="text-white text-4xl md:text-6xl font-extrabold mb-3 uppercase tracking-tight">Elegance<br><span class="peach-text">Redefined</span></h2>
             <p class="text-gray-300 text-sm md:text-lg mb-6 max-w-md font-medium">Discover the finest collection of handcrafted jewelry, designed for your special moments.</p>
-            <button onclick="scrollToProducts()" class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-6 py-3 md:px-8 md:py-4 font-bold text-[14px] md:text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
+            <button onclick="scrollToSection('new-arrivals-section')" class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-6 py-3 md:px-8 md:py-4 font-bold text-[14px] md:text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
         </div>
     </section>
 
@@ -112,35 +112,35 @@
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
             
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
-                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_15.png" alt="Necklace" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
 
-                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_16.png" alt="Earrings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
                 </div>
 
-                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_17.png" alt="Bangles" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
                 </div>
 
-                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_18.png" alt="Rings" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
                 </div>
 
-                <div onclick="scrollToProducts()" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_19.png" alt="Pendants" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
@@ -151,7 +151,23 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- MAIN CONTENT (FRONTEND PRODUCTS) -->
+    <!-- NEW ARRIVALS SECTION (ADDED HERE) -->
+    <!-- ============================================================== -->
+    <section id="new-arrivals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 bg-white">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">New Arrivals</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto font-medium">Fresh out of the oven. Grab them before they're gone!</p>
+        </div>
+        
+        <div id="new-arrivals-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            <div class="col-span-full text-center py-6" id="loading-spinner-new">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- MAIN CONTENT (TRENDING NOW) -->
     <!-- ============================================================== -->
     <main id="trending-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-12 flex-grow bg-white">
         <div class="text-center mb-8">
@@ -162,7 +178,6 @@
         <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
             <div class="col-span-full text-center py-10" id="loading-spinner">
                 <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
-                <p class="mt-2 text-gray-500 font-bold">Loading collections...</p>
             </div>
         </div>
     </main>
@@ -205,22 +220,17 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- NEW: CUSTOMER REVIEWS SECTION -->
+    <!-- CUSTOMER REVIEWS SECTION -->
     <!-- ============================================================== -->
     <section class="bg-gray-50 py-10 md:py-16 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <!-- Heading with Horizontal Lines -->
             <div class="flex items-center justify-center gap-3 md:gap-5 mb-14 md:mb-16">
                 <hr class="w-12 md:w-24 border-gray-300">
                 <h3 class="text-[17px] md:text-2xl font-extrabold text-gray-800 uppercase tracking-widest text-center">Customer Reviews</h3>
                 <hr class="w-12 md:w-24 border-gray-300">
             </div>
 
-            <!-- Scrollable Reviews Container -->
             <div class="flex gap-5 md:gap-8 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-6 pt-6 px-2 md:px-4">
-                
-                <!-- Review 1 -->
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Woww..!</h4>
@@ -231,7 +241,6 @@
                     <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Seshadri</span>
                 </div>
 
-                <!-- Review 2 -->
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Beautiful Design</h4>
@@ -242,7 +251,6 @@
                     <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Anjali Verma</span>
                 </div>
 
-                <!-- Review 3 -->
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Fast Delivery</h4>
@@ -253,7 +261,6 @@
                     <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Neha Sharma</span>
                 </div>
 
-                 <!-- Review 4 -->
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=150&q=80" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Worth Every Penny</h4>
@@ -263,7 +270,6 @@
                     </div>
                     <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Priya Singh</span>
                 </div>
-                
             </div>
         </div>
     </section>
@@ -300,9 +306,9 @@
                 <div>
                     <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Quick Links</h4>
                     <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
-                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">Shop All</a></li>
-                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">New Arrivals</a></li>
-                        <li><a href="#" onclick="scrollToProducts(); return false;" class="hover:text-[#e6998c] transition inline-block">Trending Jewellery</a></li>
+                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition inline-block">Shop All</a></li>
+                        <li><a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition inline-block">New Arrivals</a></li>
+                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition inline-block">Trending Jewellery</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Special Offers</a></li>
                         <li><a href="#" class="hover:text-[#e6998c] transition inline-block">About Us</a></li>
                     </ul>
@@ -388,11 +394,11 @@
             <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
         </header>
         <nav class="flex flex-col px-5 py-6 gap-6 font-bold text-gray-800 text-sm">
-            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" onclick="scrollToProducts(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Offers & Sale <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('new-arrivals-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Offers & Sale <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
             <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Track Order <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
-            <a href="#" onclick="scrollToFooter(); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Contact Us <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('footer-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Contact Us <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
         </nav>
         <div class="mt-auto px-5 py-6 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 font-medium">
             <p>Login / Register for personalized experience.</p>
@@ -501,7 +507,6 @@
     <!-- JAVASCRIPT ENGINE -->
     <!-- ============================================================== -->
     <script>
-        // --- Navigation Toggles ---
         function toggleMenu() {
             const drawer = document.getElementById('menu-drawer');
             const overlay = document.getElementById('menu-overlay');
@@ -527,17 +532,10 @@
             document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
         }
         
-        function scrollToProducts() {
-            const productSection = document.getElementById('trending-section');
-            if (productSection) {
-                productSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        function scrollToFooter() {
-            const footerSection = document.getElementById('footer-section');
-            if (footerSection) {
-                footerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }
 
@@ -546,7 +544,6 @@
         function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
         function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
 
-        // --- FIXED GALLERY LOGIC ---
         let currentActiveGallery = [], currentImageIndex = 0, currentScale = 1; 
 
         function zoomGallery(step) {
@@ -579,7 +576,6 @@
             document.getElementById('imgCounter').innerText = (currentImageIndex + 1) + " / 5";
         }
 
-        // --- Pinch to Zoom Logic for Product Image Only ---
         const galImg = document.getElementById('galleryImg');
         let initDist = null;
 
@@ -617,8 +613,51 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
+        function createProductCardHTML(product, idx) {
+            let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
+            let originalPrice = Math.round(product.price * 2.5); 
+            let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
+            let extraOffPrice = Math.round(product.price * 0.75); 
+            let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
+
+            return `
+                <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
+                    <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
+                        <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
+                            <span class="text-yellow-500 text-sm">★</span> ${rating}
+                        </div>
+                        <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
+                            <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                <i class="ph ph-heart text-[18px] font-bold"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); openGallery('${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                <i class="ph ph-eye text-[18px] font-bold"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-3 md:p-4 flex flex-col flex-grow">
+                        <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${product.name}</h3>
+                        <div class="flex items-end gap-1.5 md:gap-2 mb-1">
+                            <span class="text-[15px] md:text-[17px] font-bold text-gray-900">₹${product.price}</span>
+                            <span class="text-[11px] md:text-[12px] text-gray-400 line-through mb-[2px]">₹${originalPrice}</span>
+                            <span class="text-[11px] md:text-[12px] font-bold text-green-600 mb-[2px]">(${discountPercent}% Off)</span>
+                        </div>
+                        <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
+                            25% OFF price ₹${extraOffPrice}
+                        </div>
+                        <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         async function loadProducts() {
-            const container = document.getElementById('product-list');
+            const newArrivalsContainer = document.getElementById('new-arrivals-list');
+            const trendingContainer = document.getElementById('product-list');
+            
             try {
                 const response = await fetch(supabaseUrl + '/rest/v1/products?select=*&order=id.desc', {
                     method: 'GET',
@@ -629,59 +668,30 @@
                 const data = await response.json();
                 
                 if (!data || data.length === 0) {
-                    container.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
+                    newArrivalsContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-4 font-bold">अभी कोई प्रोडक्ट नहीं है।</div>';
+                    trendingContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">अभी कोई प्रोडक्ट उपलब्ध नहीं है।</div>';
                     return;
                 }
 
-                container.innerHTML = ''; 
-                data.forEach((product, idx) => {
-                    let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
-                    let originalPrice = Math.round(product.price * 2.5); 
-                    let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
-                    let extraOffPrice = Math.round(product.price * 0.75); 
-                    let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
-
-                    container.innerHTML += `
-                        <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
-                            <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
-                                <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                                <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
-                                    <span class="text-yellow-500 text-sm">★</span> ${rating}
-                                </div>
-                                <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
-                                    <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
-                                        <i class="ph ph-heart text-[18px] font-bold"></i>
-                                    </button>
-                                    <button onclick="event.stopPropagation(); openGallery('${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
-                                        <i class="ph ph-eye text-[18px] font-bold"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="p-3 md:p-4 flex flex-col flex-grow">
-                                <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${product.name}</h3>
-                                <div class="flex items-end gap-1.5 md:gap-2 mb-1">
-                                    <span class="text-[15px] md:text-[17px] font-bold text-gray-900">₹${product.price}</span>
-                                    <span class="text-[11px] md:text-[12px] text-gray-400 line-through mb-[2px]">₹${originalPrice}</span>
-                                    <span class="text-[11px] md:text-[12px] font-bold text-green-600 mb-[2px]">(${discountPercent}% Off)</span>
-                                </div>
-                                <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
-                                    25% OFF price ₹${extraOffPrice}
-                                </div>
-                                <button onclick="addToCart('${product.name}', ${product.price}, '${product.image_url}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
-                                    Add To Cart
-                                </button>
-                            </div>
-                        </div>
-                    `;
+                const newArrivalsData = data.slice(0, 4);
+                
+                newArrivalsContainer.innerHTML = '';
+                newArrivalsData.forEach((product, idx) => {
+                    newArrivalsContainer.innerHTML += createProductCardHTML(product, idx);
                 });
+
+                trendingContainer.innerHTML = ''; 
+                data.forEach((product, idx) => {
+                    trendingContainer.innerHTML += createProductCardHTML(product, idx);
+                });
+
             } catch (error) {
-                container.innerHTML = `<div class="col-span-full text-center text-red-500 py-10"><i class="ph ph-wifi-slash text-5xl mb-3"></i><h3 class="font-bold text-lg">इंटरनेट या नेटवर्क की समस्या</h3><p class="text-sm mt-1">${error.message}</p></div>`;
+                const errorHTML = `<div class="col-span-full text-center text-red-500 py-10"><i class="ph ph-wifi-slash text-5xl mb-3"></i><h3 class="font-bold text-lg">इंटरनेट या नेटवर्क की समस्या</h3><p class="text-sm mt-1">${error.message}</p></div>`;
+                newArrivalsContainer.innerHTML = errorHTML;
+                trendingContainer.innerHTML = errorHTML;
             }
         }
 
-        // ==============================================================
-        // WISHLIST FUNCTIONS
-        // ==============================================================
         function addToWishlist(name, price, image) {
             let wishlist = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
             let existing = wishlist.find(w => w.name === name);
@@ -744,7 +754,6 @@
             }
         }
 
-        // --- Cart Setup ---
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const overlay = document.getElementById('cart-overlay');
