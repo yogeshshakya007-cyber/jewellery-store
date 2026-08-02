@@ -65,7 +65,6 @@
                 <button onclick="toggleMenu()" class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
                     <i class="ph ph-list text-[28px]"></i>
                 </button>
-                <!-- Desktop Menu Links -->
                 <nav class="hidden lg:flex gap-6 font-bold text-gray-700 text-[13px] uppercase tracking-wide">
                     <a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
                     <a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
@@ -151,7 +150,7 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- NEW ARRIVALS SECTION (ADDED HERE) -->
+    <!-- NEW ARRIVALS SECTION -->
     <!-- ============================================================== -->
     <section id="new-arrivals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-6 bg-white">
         <div class="text-center mb-8">
@@ -613,20 +612,34 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
-        function createProductCardHTML(product, idx) {
+        // UPDATED FUNCTION: Added isNewSection parameter
+        function createProductCardHTML(product, idx, isNewSection = false) {
             let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
             let originalPrice = Math.round(product.price * 2.5); 
             let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
             let extraOffPrice = Math.round(product.price * 0.75); 
             let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
 
+            let badgeHTML = '';
+            if (isNewSection) {
+                // Peach "NEW" badge on Top-Left
+                badgeHTML = `
+                <div class="absolute top-2 left-2 bg-[#e6998c] text-white px-2 py-0.5 rounded shadow-sm text-[10px] font-bold uppercase tracking-wider z-10">
+                    NEW
+                </div>`;
+            } else {
+                // Star Rating badge on Bottom-Left
+                badgeHTML = `
+                <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800 z-10">
+                    <span class="text-yellow-500 text-sm">★</span> ${rating}
+                </div>`;
+            }
+
             return `
                 <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
                     <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
                         <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800">
-                            <span class="text-yellow-500 text-sm">★</span> ${rating}
-                        </div>
+                        ${badgeHTML}
                         <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
                             <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                 <i class="ph ph-heart text-[18px] font-bold"></i>
@@ -677,12 +690,14 @@
                 
                 newArrivalsContainer.innerHTML = '';
                 newArrivalsData.forEach((product, idx) => {
-                    newArrivalsContainer.innerHTML += createProductCardHTML(product, idx);
+                    // Passed 'true' for New Arrivals section
+                    newArrivalsContainer.innerHTML += createProductCardHTML(product, idx, true);
                 });
 
                 trendingContainer.innerHTML = ''; 
                 data.forEach((product, idx) => {
-                    trendingContainer.innerHTML += createProductCardHTML(product, idx);
+                    // Passed 'false' for Trending section
+                    trendingContainer.innerHTML += createProductCardHTML(product, idx, false);
                 });
 
             } catch (error) {
