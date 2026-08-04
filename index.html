@@ -612,7 +612,6 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
-        // UPDATED FUNCTION: Added isNewSection parameter
         function createProductCardHTML(product, idx, isNewSection = false) {
             let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
             let originalPrice = Math.round(product.price * 2.5); 
@@ -621,12 +620,18 @@
             let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
 
             let badgeHTML = '';
+            let actionButtonsClass = 'absolute top-2 right-2 flex flex-col gap-2 z-10';
+
             if (isNewSection) {
-                // Peach "NEW" badge on Top-Left
+                // Diagonal Red "NEW" ribbon on Top-Right
                 badgeHTML = `
-                <div class="absolute top-2 left-2 bg-[#e6998c] text-white px-2 py-0.5 rounded shadow-sm text-[10px] font-bold uppercase tracking-wider z-10">
-                    NEW
+                <div class="absolute top-0 right-0 w-[70px] h-[70px] overflow-hidden z-20 pointer-events-none rounded-tr-sm">
+                    <div class="absolute top-[14px] -right-[20px] w-[100px] bg-[#d93838] text-white text-[9px] font-extrabold uppercase tracking-widest text-center py-1.5 rotate-45 shadow-md">
+                        NEW
+                    </div>
                 </div>`;
+                // Move action buttons to left to avoid overlapping the ribbon
+                actionButtonsClass = 'absolute top-2 left-2 flex flex-col gap-2 z-10';
             } else {
                 // Star Rating badge on Bottom-Left
                 badgeHTML = `
@@ -640,7 +645,7 @@
                     <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openImage('${product.image_url}')">
                         <img src="${product.image_url}" onerror="this.src='${fallbackImg}'" alt="${product.name}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                         ${badgeHTML}
-                        <div class="absolute top-2 right-2 flex flex-col gap-2 z-10">
+                        <div class="${actionButtonsClass}">
                             <button onclick="event.stopPropagation(); addToWishlist('${product.name}', ${product.price}, '${product.image_url}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                 <i class="ph ph-heart text-[18px] font-bold"></i>
                             </button>
@@ -690,13 +695,11 @@
                 
                 newArrivalsContainer.innerHTML = '';
                 newArrivalsData.forEach((product, idx) => {
-                    // Passed 'true' for New Arrivals section
                     newArrivalsContainer.innerHTML += createProductCardHTML(product, idx, true);
                 });
 
                 trendingContainer.innerHTML = ''; 
                 data.forEach((product, idx) => {
-                    // Passed 'false' for Trending section
                     trendingContainer.innerHTML += createProductCardHTML(product, idx, false);
                 });
 
