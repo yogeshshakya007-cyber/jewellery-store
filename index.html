@@ -91,16 +91,11 @@
     </header>
 
     <!-- ============================================================== -->
-    <!-- PREMIUM HERO SECTION -->
+    <!-- PREMIUM HERO SECTION (UPDATED) -->
     <!-- ============================================================== -->
-    <section class="relative w-full h-[350px] md:h-[500px] bg-gray-900 overflow-hidden">
-        <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=1600&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60">
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-        <div class="relative max-w-7xl mx-auto px-4 h-full flex flex-col justify-end pb-12 md:pb-20">
-            <h2 class="text-white text-4xl md:text-6xl font-extrabold mb-3 uppercase tracking-tight">Elegance<br><span class="peach-text">Redefined</span></h2>
-            <p class="text-gray-300 text-sm md:text-lg mb-6 max-w-md font-medium">Discover the finest collection of handcrafted jewelry, designed for your special moments.</p>
-            <button onclick="scrollToSection('new-arrivals-section')" class="bg-[#e6998c] hover:bg-[#d8897c] text-white px-6 py-3 md:px-8 md:py-4 font-bold text-[14px] md:text-[15px] rounded-sm transition tracking-wide w-max shadow-lg">Explore Collection</button>
-        </div>
+    <section class="w-full bg-[#fcf8f6] cursor-pointer border-b border-gray-100" onclick="scrollToSection('new-arrivals-section')">
+        <!-- यहाँ मैंने hero_banner.png का इस्तेमाल किया है, आप अपनी फाइल का नाम इसके अनुसार रख लें -->
+        <img src="hero_banner.png" alt="Jewellery That Tells Your Story" class="w-full h-auto object-contain md:max-h-[600px]">
     </section>
 
     <!-- ============================================================== -->
@@ -612,7 +607,6 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
-        // UPDATED FUNCTION: With smaller responsive mobile NEW badge
         function createProductCardHTML(product, idx, isNewSection = false) {
             let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
             let originalPrice = Math.round(product.price * 2.5); 
