@@ -9,9 +9,10 @@
     <!-- Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <!-- Premium Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     <style>
         * { font-family: 'Montserrat', sans-serif !important; }
+        .font-serif { font-family: 'Playfair Display', serif !important; }
         body { background-color: #f9fafb; overflow-x: hidden; touch-action: manipulation; }
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
@@ -174,6 +175,32 @@
             </div>
         </div>
     </main>
+
+    <!-- ============================================================== -->
+    <!-- NEW: EXCLUSIVE OFFER BANNER (HTML/CSS) -->
+    <!-- ============================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10 bg-white">
+        <div class="w-full bg-[#35101a] flex flex-col md:flex-row items-center overflow-hidden rounded-sm shadow-md">
+            <!-- Image Section -->
+            <div class="w-full md:w-1/2 h-[220px] md:h-[280px] relative">
+                <img src="https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=800&q=80" alt="Exclusive Offer" class="w-full h-full object-cover">
+                <!-- Gradient to blend image with background smoothly -->
+                <div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#35101a] via-transparent to-transparent opacity-90 md:opacity-100"></div>
+                <div class="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-transparent via-transparent to-[#35101a] opacity-60"></div>
+            </div>
+
+            <!-- Text Section -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <hr class="w-6 border-[#d4af37]">
+                    <span class="text-[#d4af37] text-[10px] md:text-[11px] font-bold tracking-[0.2em] uppercase">Exclusive Offer</span>
+                    <hr class="w-6 border-[#d4af37]">
+                </div>
+                <h2 class="text-white text-3xl md:text-4xl lg:text-4xl font-serif mb-8 leading-snug">Extra 5% off on<br>prepaid orders</h2>
+                <button onclick="scrollToSection('new-arrivals-section')" class="border border-white text-white hover:bg-white hover:text-[#35101a] px-8 py-3 text-[11px] md:text-xs font-bold tracking-widest uppercase transition-colors duration-300 rounded-sm">Shop Now</button>
+            </div>
+        </div>
+    </section>
 
     <!-- ============================================================== -->
     <!-- TRUST BADGES & GUARANTEES SECTION -->
@@ -617,17 +644,14 @@
             let actionButtonsClass = 'absolute top-2 right-2 flex flex-col gap-2 z-10';
 
             if (isNewSection) {
-                // Diagonal Red "NEW" ribbon on Top-Right (Mobile Optimized & Smaller)
                 badgeHTML = `
                 <div class="absolute top-0 right-0 w-[45px] h-[45px] md:w-[60px] md:h-[60px] overflow-hidden z-20 pointer-events-none rounded-tr-sm">
                     <div class="absolute top-[8px] -right-[20px] md:top-[12px] md:-right-[22px] w-[70px] md:w-[90px] bg-[#d93838] text-white text-[7px] md:text-[9px] font-bold uppercase tracking-wider text-center py-0.5 md:py-1 rotate-45 shadow-sm">
                         NEW
                     </div>
                 </div>`;
-                // Move action buttons to left to avoid overlapping the ribbon
                 actionButtonsClass = 'absolute top-2 left-2 flex flex-col gap-2 z-10';
             } else {
-                // Star Rating badge on Bottom-Left
                 badgeHTML = `
                 <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800 z-10">
                     <span class="text-yellow-500 text-sm">★</span> ${rating}
