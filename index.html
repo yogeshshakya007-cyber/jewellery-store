@@ -199,7 +199,7 @@
     <!-- ============================================================== -->
     <!-- TRUST BADGES & GUARANTEES SECTION -->
     <!-- ============================================================== -->
-    <section class="bg-white border-t border-gray-100 pt-6 pb-8 md:pt-10 md:pb-14">
+    <section class="bg-white border-t border-gray-100 pt-6 pb-6 md:pt-10 md:pb-10">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-[18px] md:text-xl text-gray-900 mb-5 md:mb-8">Why Choose Yogesh Jewellers?</h3>
             
@@ -234,17 +234,17 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- CUSTOMER REVIEWS SECTION -->
+    <!-- CUSTOMER REVIEWS SECTION (COMPACT SPACING) -->
     <!-- ============================================================== -->
-    <section class="bg-gray-50 py-10 md:py-16 border-t border-gray-200">
+    <section class="bg-gray-50 pt-6 pb-8 md:pt-10 md:pb-10 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-center gap-3 md:gap-5 mb-14 md:mb-16">
+            <div class="flex items-center justify-center gap-3 md:gap-5 mb-10 md:mb-12 mt-4 md:mt-0">
                 <hr class="w-12 md:w-24 border-gray-300">
                 <h3 class="text-[17px] md:text-2xl font-extrabold text-gray-800 uppercase tracking-widest text-center">Customer Reviews</h3>
                 <hr class="w-12 md:w-24 border-gray-300">
             </div>
 
-            <div class="flex gap-5 md:gap-8 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-6 pt-6 px-2 md:px-4">
+            <div class="flex gap-5 md:gap-8 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 pt-6 px-2 md:px-4">
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" loading="lazy" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Woww..!</h4>
@@ -269,9 +269,9 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- PROFESSIONAL FOOTER -->
+    <!-- PROFESSIONAL FOOTER (COMPACT SPACING) -->
     <!-- ============================================================== -->
-    <footer id="footer-section" class="bg-gray-900 pt-16 pb-8 border-t-[3px] peach-border">
+    <footer id="footer-section" class="bg-gray-900 pt-10 pb-8 md:pt-12 border-t-[3px] peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-8">
                 <div class="text-center md:text-left">
@@ -400,7 +400,6 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
-        // SPEED OPTIMIZATION: Added loading="lazy" to products loaded from database
         function createProductCardHTML(product, idx, isNewSection = false) {
             let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
             let originalPrice = Math.round(product.price * 2.5); 
