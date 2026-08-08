@@ -59,7 +59,6 @@
     <!-- SEARCH OVERLAY -->
     <!-- ============================================================== -->
     <div id="search-bar" class="fixed top-0 left-0 w-full bg-white shadow-md z-[200] transform -translate-y-full transition-transform duration-300 flex items-center px-4 py-4 md:px-8">
-        <!-- SVG used instead of Phosphor icon for instant load -->
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         <input type="text" placeholder="Search for jewelry, rings, pendants..." class="flex-grow bg-transparent border-none outline-none text-gray-700 text-sm md:text-base font-medium">
         <button onclick="toggleSearch()" class="text-gray-400 hover:text-red-500 transition cursor-pointer ml-4">
@@ -102,15 +101,14 @@
     </header>
 
     <!-- ============================================================== -->
-    <!-- PREMIUM HERO SECTION (FAST LOAD) -->
+    <!-- PREMIUM HERO SECTION -->
     <!-- ============================================================== -->
     <section class="w-full bg-[#fcf8f6] cursor-pointer border-b border-gray-100" onclick="scrollToSection('new-arrivals-section')">
-        <!-- fetchpriority="high" ensures the main banner loads instantly -->
         <img src="hero_banner.png" alt="Jewellery That Tells Your Story" fetchpriority="high" decoding="async" class="w-full h-auto object-contain md:max-h-[600px]">
     </section>
 
     <!-- ============================================================== -->
-    <!-- CIRCULAR CATEGORY SLIDER (LAZY LOAD IMAGES) -->
+    <!-- CIRCULAR CATEGORY SLIDER -->
     <!-- ============================================================== -->
     <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -188,7 +186,7 @@
     </main>
 
     <!-- ============================================================== -->
-    <!-- EXCLUSIVE OFFER BANNER (IMAGE LAZY LOADED) -->
+    <!-- EXCLUSIVE OFFER BANNER -->
     <!-- ============================================================== -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4 bg-white">
         <div class="w-full overflow-hidden rounded-sm shadow-md cursor-pointer hover:opacity-95 transition-opacity duration-300 bg-gray-50" onclick="scrollToSection('new-arrivals-section')">
@@ -269,52 +267,95 @@
     </section>
 
     <!-- ============================================================== -->
-    <!-- PROFESSIONAL FOOTER -->
+    <!-- PROFESSIONAL FOOTER (ULTRA-PREMIUM) -->
     <!-- ============================================================== -->
-    <footer id="footer-section" class="bg-gray-900 pt-10 pb-8 md:pt-12 border-t-[3px] peach-border">
+    <footer id="footer-section" class="bg-[#0f172a] pt-12 pb-8 border-t-4 peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center border-b border-gray-800 pb-6 mb-6 md:pb-8 md:mb-8 gap-6">
-                <div class="text-center md:text-left">
+            <!-- Newsletter Section -->
+            <div class="flex flex-col lg:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-6">
+                <div class="text-center lg:text-left">
                     <h3 class="text-white text-xl md:text-2xl font-bold mb-2 tracking-wide">Subscribe to our Emails</h3>
-                    <p class="text-gray-400 text-sm md:text-[15px]">Be the first to know about new collections and exclusive offers.</p>
+                    <p class="text-gray-400 text-sm md:text-base">Be the first to know about new collections and exclusive offers.</p>
                 </div>
-                <div class="flex w-full md:w-auto max-w-lg shadow-lg">
-                    <input type="email" placeholder="Your email address" class="w-full bg-white text-gray-900 px-4 py-3 md:py-3.5 outline-none rounded-l-sm text-sm font-medium">
-                    <button class="peach-bg hover:bg-[#d8897c] text-white px-6 py-3 md:py-3.5 font-bold text-sm transition tracking-wider uppercase rounded-r-sm">Subscribe</button>
+                <div class="flex w-full lg:w-auto max-w-lg shadow-lg">
+                    <input id="newsletter-email" type="email" placeholder="Your email address" class="w-full bg-white text-gray-900 px-4 py-3 md:py-3.5 outline-none rounded-l-sm text-sm font-medium focus:ring-2 focus:ring-[#e6998c]">
+                    <button onclick="subscribeNewsletter()" class="peach-bg hover:bg-[#d8897c] text-white px-6 py-3 md:py-3.5 font-bold text-sm transition tracking-wider uppercase rounded-r-sm cursor-pointer">Subscribe</button>
                 </div>
             </div>
 
+            <!-- Main Footer Links -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12">
-                <div>
-                    <h2 class="text-2xl font-extrabold peach-text tracking-widest uppercase mb-6">Yogesh</h2>
+                <!-- Brand Info -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h2 class="text-3xl font-extrabold peach-text tracking-widest uppercase mb-5 font-serif">Yogesh</h2>
                     <p class="text-gray-400 text-sm mb-6 leading-relaxed">
                         Discover the finest collection of handcrafted jewelry, designed for your special moments. Quality and elegance delivered straight to your doorstep.
                     </p>
+                    <!-- Social Icons -->
                     <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] transition cursor-pointer"><i class="ph ph-facebook-logo text-xl"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] transition cursor-pointer"><i class="ph ph-instagram-logo text-xl"></i></a>
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to Facebook...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a>
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to Instagram...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path></svg></a>
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to YouTube...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd"></path></svg></a>
                     </div>
                 </div>
 
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Quick Links</h4>
-                    <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
-                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition inline-block">Shop All</a></li>
-                        <li><a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition inline-block">New Arrivals</a></li>
+                <!-- Quick Links -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Quick Links</h4>
+                    <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
+                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Shop All</a></li>
+                        <li><a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">New Arrivals</a></li>
+                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Bestsellers</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Offers page is coming soon!')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Special Offers</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('About Us page is under construction.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">About Us</a></li>
                     </ul>
                 </div>
 
-                <div>
-                    <h4 class="text-white font-bold mb-6 text-[15px] uppercase tracking-wider">Customer Care</h4>
-                    <ul class="flex flex-col gap-3.5 text-gray-400 text-sm font-medium">
-                        <li><a href="#" onclick="alert('Order Tracking System will be integrated soon!'); return false;" class="hover:text-[#e6998c] transition inline-block">Track Your Order</a></li>
-                        <li><a href="#" class="hover:text-[#e6998c] transition inline-block">Shipping & Delivery</a></li>
+                <!-- Customer Care & Policies -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Customer Care</h4>
+                    <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
+                        <li><a href="javascript:void(0)" onclick="alert('Track Order feature will be live next week!')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Track Your Order</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Shipping policy: We deliver pan-India within 3-5 business days.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Shipping & Delivery</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Returns & Exchanges: 7-day hassle-free returns.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Returns & Exchanges</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Read our detailed Privacy Policy.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Read our Terms & Conditions.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Terms & Conditions</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Frequently Asked Questions are being updated.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Get in Touch</h4>
+                    <ul class="flex flex-col gap-4 text-gray-400 text-sm font-medium items-center md:items-start">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span class="leading-relaxed">Yogesh Jewellers, Bodla, Avas Vikas Colony,<br>Agra, Uttar Pradesh, India</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <!-- email link -->
+                            <a href="mailto:support@yogeshjewellers.com" class="hover:text-[#e6998c] transition-colors">support@yogeshjewellers.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <!-- Clickable phone number -->
+                            <a href="tel:+919876543210" class="hover:text-[#e6998c] transition-colors">+91 98765 43210</a>
+                        </li>
                     </ul>
                 </div>
             </div>
 
+            <!-- Bottom Copyright & Payments -->
             <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-5">
                 <p class="text-gray-500 text-[13px] font-medium text-center md:text-left">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center items-center gap-2.5 text-gray-400">
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1024px-Visa_Inc._logo.svg.png" class="max-h-full max-w-full object-contain" alt="Visa"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1024px-Mastercard-logo.svg.png" class="max-h-full max-w-full object-contain" alt="Mastercard"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1024px-UPI-Logo-vector.svg.png" class="max-h-full max-w-full object-contain" alt="UPI"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/1024px-Rupay-Logo.png" class="max-h-full max-w-full object-contain" alt="RuPay"></div>
+                    <div class="px-2 py-1.5 bg-white rounded flex items-center justify-center h-8 w-14 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1024px-PayPal.svg.png" class="max-h-full max-w-full object-contain" alt="PayPal"></div>
+                </div>
             </div>
         </div>
     </footer>
@@ -328,7 +369,49 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- WISHLIST & CART DRAWERS OMITTED FOR BREVITY BUT KEPT IN CODE -->
+    <!-- 5-IMAGE GALLERY MODAL -->
+    <!-- ============================================================== -->
+    <div id="galleryModal" class="hidden fixed inset-0 z-[400] bg-black bg-opacity-95 flex flex-col justify-center items-center backdrop-blur-sm p-4 overflow-hidden" style="touch-action: none;">
+        <div class="absolute top-5 left-5 flex gap-3 z-[405]">
+            <button onclick="zoomGallery(0.15)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom In"><i class="ph ph-magnifying-glass-plus font-bold text-lg"></i></button>
+            <button onclick="zoomGallery(-0.15)" class="text-white bg-gray-800/80 hover:bg-gray-700 rounded-full p-1.5 transition cursor-pointer shadow-lg" title="Zoom Out"><i class="ph ph-magnifying-glass-minus font-bold text-lg"></i></button>
+        </div>
+        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white bg-gray-800/80 hover:bg-red-500 rounded-full p-1.5 transition cursor-pointer z-[405] shadow-lg"><i class="ph ph-x font-bold text-lg"></i></button>
+        
+        <div class="relative w-full max-w-3xl flex items-center justify-center h-[75vh]">
+            <button onclick="changeGalleryImage(-1)" class="absolute left-2 sm:-left-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-left text-xl"></i></button>
+            <div class="w-full h-full flex justify-center items-center overflow-hidden">
+                <img id="galleryImg" class="max-h-full max-w-full object-contain rounded-lg transition-transform duration-200 transform scale-100" style="transform-origin: center;">
+            </div>
+            <button onclick="changeGalleryImage(1)" class="absolute right-2 sm:-right-8 text-white bg-gray-800/60 hover:bg-gray-800 p-1.5 rounded-full cursor-pointer z-[405] transition shadow-lg"><i class="ph ph-caret-right text-xl"></i></button>
+        </div>
+        <div id="imgCounter" class="absolute bottom-8 text-white font-bold text-xs bg-gray-800 px-4 py-1.5 rounded-full tracking-wider shadow-lg z-[405]">1 / 5</div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MENU DRAWER -->
+    <!-- ============================================================== -->
+    <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
+    <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <header class="flex items-center justify-between px-5 py-5 border-b border-gray-100">
+            <h2 class="text-xl font-extrabold peach-text tracking-widest uppercase">MENU</h2>
+            <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><i class="ph ph-x font-bold text-sm"></i></button>
+        </header>
+        <nav class="flex flex-col px-5 py-6 gap-6 font-bold text-gray-800 text-sm">
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('new-arrivals-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Offers & Sale <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Track Order <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+            <a href="#" onclick="scrollToSection('footer-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Contact Us <i class="ph ph-caret-right text-gray-400 group-hover:text-[#e6998c]"></i></a>
+        </nav>
+        <div class="mt-auto px-5 py-6 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 font-medium">
+            <p>Login / Register for personalized experience.</p>
+            <button onclick="alert('Login System coming soon!'); toggleMenu();" class="mt-3 w-full bg-black text-white py-3 rounded-sm font-bold uppercase tracking-wide">Login</button>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- WISHLIST DRAWER -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -341,6 +424,9 @@
         <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col"></div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- PERFECT CART DRAWER -->
+    <!-- ============================================================== -->
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
         <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
@@ -391,6 +477,18 @@
             const section = document.getElementById(sectionId);
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Newsletter Javascript function
+        function subscribeNewsletter() {
+            let emailInput = document.getElementById('newsletter-email');
+            let email = emailInput.value.trim();
+            if(email && email.includes('@')) {
+                alert("Thank you for subscribing, " + email + "! 🎉 Please check your inbox for your 5% discount code.");
+                emailInput.value = '';
+            } else {
+                alert("Please enter a valid email address.");
             }
         }
 
