@@ -5,11 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Yogesh Jewellers - Premium Collection</title>
     
-    <!-- Speed & Performance -->
+    <!-- SPEED OPTIMIZATION: Preconnect to fast-load external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://fzzwioyhmuanfvpotfit.supabase.co">
+    <link rel="preconnect" href="https://images.unsplash.com">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
+    <!-- Premium Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     
     <style>
@@ -18,89 +25,819 @@
         body { background-color: #f9fafb; overflow-x: hidden; touch-action: manipulation; }
         .peach-bg { background-color: #e6998c; }
         .peach-text { color: #e6998c; }
+        .peach-border { border-color: #e6998c; }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .peach-hover:hover { background-color: #d8897c; }
+        @keyframes marquee { 
+            0% { transform: translateX(100%); } 
+            100% { transform: translateX(-100%); } 
+        }
+        .animate-marquee { 
+            animation: marquee 25s linear infinite; 
+            display: flex; 
+            width: max-content; 
+        }
     </style>
 </head>
 <body class="relative min-h-screen flex flex-col bg-gray-50">
 
-    <!-- Header, Hero, Category, Sections... (Keeping your structure intact) -->
-    <!-- ... (आपका पूरा Header, Hero, Category Slider यहाँ पहले जैसा ही रहेगा) ... -->
-
-    <!-- NEW ARRIVALS & TRENDING SECTIONS (With Logic) -->
-    <section id="new-arrivals-section" class="max-w-7xl mx-auto px-4 pt-6 pb-2 bg-white">
-        <h2 class="text-2xl font-extrabold text-center mb-5">New Arrivals</h2>
-        <div id="new-arrivals-list" class="grid grid-cols-2 gap-4"></div>
-    </section>
-
-    <main id="trending-section" class="max-w-7xl mx-auto px-4 pt-4 pb-8 bg-white">
-        <h2 class="text-2xl font-extrabold text-center mb-5">Trending Now</h2>
-        <div id="product-list" class="grid grid-cols-2 gap-4"></div>
-    </main>
-
-    <!-- EXCLUSIVE OFFER BANNER -->
-    <section class="max-w-7xl mx-auto px-4 py-4 bg-white">
-        <div class="w-full overflow-hidden rounded-sm shadow-md cursor-pointer" onclick="scrollToSection('new-arrivals-section')">
-            <img src="mid_banner.png" alt="Exclusive Offer" class="w-full h-auto object-contain">
-        </div>
-    </section>
-
-    <!-- FOOTER (Professional Design) -->
-    <footer class="bg-[#0f172a] pt-12 pb-8 border-t-4 peach-border">
-        <!-- ... (आपका नया प्रोफेशनल फुटर) ... -->
-    </footer>
-
-    <!-- PRODUCT GALLERY MODAL (Zoom & 5 Images) -->
-    <div id="gallery-modal" class="hidden fixed inset-0 z-[1000] bg-black bg-opacity-95 flex flex-col items-center justify-center">
-        <button onclick="closeGallery()" class="absolute top-5 right-5 text-white text-4xl">×</button>
-        <div class="relative w-full max-w-lg">
-            <img id="modal-img" src="" class="w-full h-auto transition-transform duration-300">
-        </div>
-        <div class="mt-4 flex gap-2">
-            <!-- 5 Angle Thumbnails -->
-            <button onclick="changeGallery(0)" class="w-12 h-12 bg-white"></button>
-            <!-- ... (5 buttons) ... -->
+    <!-- ============================================================== -->
+    <!-- RUNNING ANNOUNCEMENT BAR -->
+    <!-- ============================================================== -->
+    <div class="bg-black text-white text-[12px] md:text-[14px] font-bold py-2.5 z-[101] relative overflow-hidden flex items-center">
+        <div class="whitespace-nowrap animate-marquee flex gap-10">
+            <span class="flex items-center gap-2"><svg class="w-4 h-4 peach-text" fill="currentColor" viewBox="0 0 256 256"><path d="M236.24,115.76a14,14,0,0,1,0,24.48l-49,28.53-28.53,49a14,14,0,0,1-24.48,0l-28.53-49-49-28.53a14,14,0,0,1,0-24.48l49-28.53,28.53-49a14,14,0,0,1,24.48,0l28.53,49Z"></path></svg> Monsoon Sale Live - Buy 4 at ₹2999</span>
+            <span class="flex items-center gap-2"><svg class="w-4 h-4 peach-text" fill="currentColor" viewBox="0 0 256 256"><path d="M236.24,115.76a14,14,0,0,1,0,24.48l-49,28.53-28.53,49a14,14,0,0,1-24.48,0l-28.53-49-49-28.53a14,14,0,0,1,0-24.48l49-28.53,28.53-49a14,14,0,0,1,24.48,0l28.53,49Z"></path></svg> Extra 5% OFF on Prepaid Orders</span>
+            <span class="flex items-center gap-2"><svg class="w-4 h-4 peach-text" fill="currentColor" viewBox="0 0 256 256"><path d="M236.24,115.76a14,14,0,0,1,0,24.48l-49,28.53-28.53,49a14,14,0,0,1-24.48,0l-28.53-49-49-28.53a14,14,0,0,1,0-24.48l49-28.53,28.53-49a14,14,0,0,1,24.48,0l28.53,49Z"></path></svg> Free Shipping on all orders above ₹999</span>
+            <span class="flex items-center gap-2"><svg class="w-4 h-4 peach-text" fill="currentColor" viewBox="0 0 256 256"><path d="M236.24,115.76a14,14,0,0,1,0,24.48l-49,28.53-28.53,49a14,14,0,0,1-24.48,0l-28.53-49-49-28.53a14,14,0,0,1,0-24.48l49-28.53,28.53-49a14,14,0,0,1,24.48,0l28.53,49Z"></path></svg> Monsoon Sale Live - Buy 4 at ₹2999</span>
         </div>
     </div>
 
+    <!-- ============================================================== -->
+    <!-- SEARCH OVERLAY (FIXED FOR TYPING LOGIC) -->
+    <!-- ============================================================== -->
+    <div id="search-bar" class="fixed top-0 left-0 w-full bg-white shadow-md z-[200] transform -translate-y-full transition-transform duration-300 flex items-center px-4 py-4 md:px-8">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search for jewelry, rings, pendants..." class="flex-grow bg-transparent border-none outline-none text-gray-700 text-sm md:text-base font-medium">
+        <button onclick="toggleSearch()" class="text-gray-400 hover:text-red-500 transition cursor-pointer ml-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- PROFESSIONAL HEADER -->
+    <!-- ============================================================== -->
+    <header class="bg-white sticky top-0 z-[100] shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center relative">
+            <div class="flex items-center gap-5">
+                <button onclick="toggleMenu()" class="text-gray-900 hover:text-gray-600 transition-colors cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                </button>
+                <nav class="hidden lg:flex gap-6 font-bold text-gray-700 text-[13px] uppercase tracking-wide">
+                    <a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
+                    <a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
+                </nav>
+            </div>
+            <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase cursor-pointer" onclick="window.scrollTo(0,0)">
+                Yogesh
+            </div>
+            <div class="flex items-center gap-4 md:gap-5 text-gray-900">
+                <button onclick="toggleSearch()" class="hover:text-gray-600 transition-colors cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
+                <button onclick="toggleWishlist()" class="hover:text-gray-600 transition-colors cursor-pointer relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                    <span id="header-wishlist-count" class="absolute -top-1 -right-2 bg-black text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
+                </button>
+                <button onclick="toggleCart()" class="hover:text-gray-600 transition-colors cursor-pointer relative flex items-center gap-1.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                    <span class="hidden md:block font-bold text-sm">Cart</span>
+                    <span id="header-cart-count" class="absolute -top-1 -right-2 peach-bg text-white text-[9px] font-bold w-[18px] h-[18px] flex items-center justify-center rounded-full shadow-sm">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================================== -->
+    <!-- PREMIUM HERO SECTION -->
+    <!-- ============================================================== -->
+    <section class="w-full bg-[#fcf8f6] cursor-pointer border-b border-gray-100" onclick="scrollToSection('new-arrivals-section')">
+        <img src="hero_banner.png" alt="Jewellery That Tells Your Story" fetchpriority="high" decoding="async" class="w-full h-auto object-contain md:max-h-[600px]">
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- CIRCULAR CATEGORY SLIDER -->
+    <!-- ============================================================== -->
+    <section class="bg-white pt-8 pb-2">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
+            
+            <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_15.png" alt="Necklace" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
+                </div>
+
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_16.png" alt="Earrings" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
+                </div>
+
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_17.png" alt="Bangles" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
+                </div>
+
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_18.png" alt="Rings" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
+                </div>
+
+                <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
+                    <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
+                        <img src="image_19.png" alt="Pendants" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
+                    </div>
+                    <span class="text-[13px] md:text-sm font-semibold text-gray-800">Pendants</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- NEW ARRIVALS SECTION -->
+    <!-- ============================================================== -->
+    <section id="new-arrivals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2 bg-white">
+        <div class="text-center mb-5">
+            <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">New Arrivals</h2>
+            <p class="text-sm md:text-base text-gray-500 max-w-2xl mx-auto font-medium">Fresh out of the oven. Grab them before they're gone!</p>
+        </div>
+        <div id="new-arrivals-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            <div class="col-span-full text-center py-6" id="loading-spinner-new">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- MAIN CONTENT (TRENDING NOW) -->
+    <!-- ============================================================== -->
+    <main id="trending-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 flex-grow bg-white">
+        <div class="text-center mb-5">
+            <h2 id="trending-title" class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Trending Now</h2>
+            <p id="trending-desc" class="text-sm md:text-base text-gray-500 max-w-2xl mx-auto font-medium">Curated pieces loved by everyone.</p>
+        </div>
+        <div id="product-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            <div class="col-span-full text-center py-10" id="loading-spinner">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 peach-border"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================== -->
+    <!-- EXCLUSIVE OFFER BANNER -->
+    <!-- ============================================================== -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4 bg-white">
+        <div class="w-full overflow-hidden rounded-sm shadow-md cursor-pointer hover:opacity-95 transition-opacity duration-300 bg-gray-50" onclick="scrollToSection('new-arrivals-section')">
+            <img src="mid_banner.png" alt="Extra 5% off on prepaid orders" loading="lazy" decoding="async" class="w-full h-auto object-contain">
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TRUST BADGES & GUARANTEES SECTION -->
+    <!-- ============================================================== -->
+    <section class="bg-white border-t border-gray-100 pt-6 pb-6 md:pt-10 md:pb-10">
+        <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <h3 class="text-center font-bold text-[18px] md:text-xl text-gray-900 mb-5 md:mb-8">Why Choose Yogesh Jewellers?</h3>
+            
+            <div class="flex flex-row justify-between w-full border border-gray-200 rounded-sm py-4 md:py-6 bg-gray-50/30 overflow-hidden">
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
+                    <i class="ph ph-globe-hemisphere-west text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Free Shipping</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Free above ₹999<br>₹49 charges below</span>
+                </div>
+                
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
+                    <i class="ph ph-truck text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">COD Available</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Pan India Delivery<br><span class="text-[#e6998c] font-bold">5% Prepaid Off</span></span>
+                </div>
+                
+                <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4">
+                    <i class="ph ph-package text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Easy Return</span>
+                    <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">7 Days Easy<br>Return/Exchange</span>
+                </div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto mt-4 md:mt-6 bg-red-50 border border-red-100 rounded-sm p-3 md:p-4 flex items-center justify-center gap-3 md:gap-4 text-center md:text-left md:justify-start">
+                <div class="w-8 h-8 md:w-10 md:h-10 rounded-full peach-bg text-white flex items-center justify-center font-bold text-sm md:text-lg shrink-0">%</div>
+                <div>
+                    <p class="text-[11px] md:text-base text-gray-900 font-bold mb-0.5 md:mb-1">Pay online and enjoy an instant <span class="peach-text">5% Prepaid Discount</span>.</p>
+                    <p class="text-[9px] md:text-xs text-gray-500">Secure payment via UPI, Cards, NetBanking & Wallets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- CUSTOMER REVIEWS SECTION -->
+    <!-- ============================================================== -->
+    <section class="bg-gray-50 pt-6 pb-8 md:pt-10 md:pb-10 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-center gap-3 md:gap-5 mb-10 md:mb-12 mt-4 md:mt-0">
+                <hr class="w-12 md:w-24 border-gray-300">
+                <h3 class="text-[17px] md:text-2xl font-extrabold text-gray-800 uppercase tracking-widest text-center">Customer Reviews</h3>
+                <hr class="w-12 md:w-24 border-gray-300">
+            </div>
+
+            <div class="flex gap-5 md:gap-8 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 pt-6 px-2 md:px-4">
+                <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" loading="lazy" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
+                    <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Woww..!</h4>
+                    <p class="text-[13px] md:text-[14px] text-gray-600 leading-relaxed mb-4 flex-grow">Woww...fully satisfied with these earrings. Loved it looks exactly same as shown in the images and the main point is very light weight also it's packaging is good.</p>
+                    <div class="flex text-yellow-400 text-[16px] md:text-[18px] mb-2">
+                        <span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span>
+                    </div>
+                    <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Seshadri</span>
+                </div>
+
+                <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80" loading="lazy" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
+                    <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Beautiful Design</h4>
+                    <p class="text-[13px] md:text-[14px] text-gray-600 leading-relaxed mb-4 flex-grow">The quality of the necklace is premium. I wore it to a wedding and got so many compliments. Highly recommended for festive seasons!</p>
+                    <div class="flex text-yellow-400 text-[16px] md:text-[18px] mb-2">
+                        <span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span><span class="text-xl">★</span>
+                    </div>
+                    <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Anjali Verma</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- PROFESSIONAL FOOTER -->
+    <!-- ============================================================== -->
+    <footer id="footer-section" class="bg-[#0f172a] pt-12 pb-8 border-t-4 peach-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-6">
+                <div class="text-center lg:text-left">
+                    <h3 class="text-white text-xl md:text-2xl font-bold mb-2 tracking-wide">Subscribe to our Emails</h3>
+                    <p class="text-gray-400 text-sm md:text-base">Be the first to know about new collections and exclusive offers.</p>
+                </div>
+                <div class="flex w-full lg:w-auto max-w-lg shadow-lg">
+                    <input id="newsletter-email" type="email" placeholder="Your email address" class="w-full bg-white text-gray-900 px-4 py-3 md:py-3.5 outline-none rounded-l-sm text-sm font-medium focus:ring-2 focus:ring-[#e6998c]">
+                    <button onclick="subscribeNewsletter()" class="peach-bg hover:bg-[#d8897c] text-white px-6 py-3 md:py-3.5 font-bold text-sm transition tracking-wider uppercase rounded-r-sm cursor-pointer">Subscribe</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12">
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <h2 class="text-3xl font-extrabold peach-text tracking-widest uppercase mb-5 font-serif">Yogesh</h2>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+                        Discover the finest collection of handcrafted jewelry, designed for your special moments. Quality and elegance delivered straight to your doorstep.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to Facebook...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a>
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to Instagram...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"></path></svg></a>
+                    </div>
+                </div>
+
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Quick Links</h4>
+                    <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
+                        <li><a href="#" onclick="scrollToSection('trending-section'); return false;" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Shop All</a></li>
+                        <li><a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">New Arrivals</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Offers page is coming soon!')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Special Offers</a></li>
+                    </ul>
+                </div>
+
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Customer Care</h4>
+                    <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
+                        <li><a href="javascript:void(0)" onclick="alert('Track Order feature will be live next week!')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Track Your Order</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Shipping policy: We deliver pan-India within 3-5 business days.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Shipping & Delivery</a></li>
+                        <li><a href="javascript:void(0)" onclick="alert('Returns & Exchanges: 7-day hassle-free returns.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Returns & Exchanges</a></li>
+                    </ul>
+                </div>
+
+                <div class="text-center md:text-left">
+                    <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Get in Touch</h4>
+                    <ul class="flex flex-col gap-4 text-gray-400 text-sm font-medium items-center md:items-start">
+                        <li class="flex items-start gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                            <span class="leading-relaxed">Yogesh Jewellers, Bodla, Avas Vikas Colony,<br>Agra, Uttar Pradesh, India</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <a href="mailto:support@yogeshjewellers.com" class="hover:text-[#e6998c] transition-colors">support@yogeshjewellers.com</a>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <svg class="w-5 h-5 text-[#e6998c] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            <a href="tel:+919876543210" class="hover:text-[#e6998c] transition-colors">+91 98765 43210</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-5">
+                <p class="text-gray-500 text-[13px] font-medium text-center md:text-left">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
+                <div class="flex flex-wrap justify-center items-center gap-2.5 text-gray-400">
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1024px-Visa_Inc._logo.svg.png" class="max-h-full max-w-full object-contain" alt="Visa"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1024px-Mastercard-logo.svg.png" class="max-h-full max-w-full object-contain" alt="Mastercard"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1024px-UPI-Logo-vector.svg.png" class="max-h-full max-w-full object-contain" alt="UPI"></div>
+                    <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/1024px-Rupay-Logo.png" class="max-h-full max-w-full object-contain" alt="RuPay"></div>
+                    <div class="px-2 py-1.5 bg-white rounded flex items-center justify-center h-8 w-14 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1024px-PayPal.svg.png" class="max-h-full max-w-full object-contain" alt="PayPal"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================== -->
+    <!-- 5-IMAGE GALLERY MODAL & ZOOM SYSTEM (NEW FEATURE 4 & 5) -->
+    <!-- ============================================================== -->
+    <div id="newGalleryModal" class="hidden fixed inset-0 z-[5000] bg-black bg-opacity-95 flex flex-col justify-center items-center touch-none">
+        <!-- Close Button -->
+        <button onclick="closeNewGallery()" class="absolute top-4 right-4 text-white hover:text-red-500 z-[5010] p-2 bg-gray-800/50 rounded-full cursor-pointer">
+            <svg class="w-6 h-6 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+        
+        <!-- Zoom Controls -->
+        <div class="absolute top-4 left-4 flex gap-4 z-[5010]">
+            <button onclick="zoomNewGallery(0.2)" class="bg-gray-800/80 text-white rounded-full p-2.5 hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg></button>
+            <button onclick="zoomNewGallery(-0.2)" class="bg-gray-800/80 text-white rounded-full p-2.5 hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM7 10h6"></path></svg></button>
+        </div>
+
+        <!-- Image Area & Next/Prev Navigation -->
+        <div class="relative w-full max-w-4xl h-[70vh] flex items-center justify-center overflow-hidden mt-10">
+            <!-- Left Arrow -->
+            <button onclick="navNewGallery(-1)" class="absolute left-2 md:left-4 z-[5010] text-white bg-gray-800/80 p-3 rounded-full hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
+            
+            <!-- Image Container -->
+            <div class="w-full h-full flex justify-center items-center overflow-hidden px-14">
+                <img id="newGalleryImg" src="" class="max-w-full max-h-full object-contain transition-transform duration-300 transform scale-100 cursor-move">
+            </div>
+
+            <!-- Right Arrow -->
+            <button onclick="navNewGallery(1)" class="absolute right-2 md:right-4 z-[5010] text-white bg-gray-800/80 p-3 rounded-full hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
+        </div>
+
+        <!-- Gallery Tracker -->
+        <div class="absolute bottom-6 flex gap-3 z-[5010]">
+            <div class="text-white text-sm bg-gray-800/80 px-4 py-1.5 rounded-full font-bold tracking-widest border border-gray-600 shadow-lg"><span id="gallery-counter">1</span> / 5</div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MENU DRAWER -->
+    <!-- ============================================================== -->
+    <div id="menu-overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
+    <div id="menu-drawer" class="fixed top-0 left-0 w-[280px] h-full bg-white z-[200] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <header class="flex items-center justify-between px-5 py-5 border-b border-gray-100">
+            <h2 class="text-xl font-extrabold peach-text tracking-widest uppercase">MENU</h2>
+            <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><svg class="w-4 h-4 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
+        </header>
+        <nav class="flex flex-col px-5 py-6 gap-6 font-bold text-gray-800 text-sm">
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
+            <a href="#" onclick="scrollToSection('new-arrivals-section'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">New Arrivals</a>
+            <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">Track Order</a>
+        </nav>
+        <div class="mt-auto px-5 py-6 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 font-medium">
+            <p>Login / Register for personalized experience.</p>
+            <button onclick="alert('Login System coming soon!'); toggleMenu();" class="mt-3 w-full bg-black text-white py-3 rounded-sm font-bold uppercase tracking-wide">Login</button>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- WISHLIST DRAWER (FEATURE 2 LOGIC FIX) -->
+    <!-- ============================================================== -->
+    <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
+    <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
+            <div class="flex items-center gap-3 text-gray-800">
+                <svg class="w-6 h-6 text-[#e6998c]" fill="currentColor" viewBox="0 0 24 24"><path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                <h2 class="text-xl font-bold">Wishlist</h2>
+            </div>
+            <button onclick="toggleWishlist()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer">X</button>
+        </header>
+        <div id="wishlist-content" class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col"></div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- PERFECT CART DRAWER (FEATURE 3 LOGIC FIX) -->
+    <!-- ============================================================== -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
+            <h2 class="text-xl font-bold flex items-center gap-1.5">Cart <span id="cart-drawer-count" class="text-gray-400 font-normal text-lg">0</span></h2>
+            <button onclick="toggleCart()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer">X</button>
+        </header>
+        
+        <div class="peach-bg text-white text-[13px] font-medium py-2.5 px-4 flex justify-between items-center shadow-sm z-10 shrink-0">
+            <button onclick="prevPromo()" class="hover:text-gray-200 cursor-pointer p-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg></button>
+            <span id="promo-text" class="text-center flex-1 transition-all duration-300">Extra 5% off on Prepaid Orders</span>
+            <button onclick="nextPromo()" class="hover:text-gray-200 cursor-pointer p-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg></button>
+        </div>
+
+        <div class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
+            <div id="cart-items" class="px-5 py-2"></div>
+        </div>
+        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shrink-0" id="checkout-section">
+            <div class="flex justify-between items-center font-bold text-gray-900 text-[19px] mb-4">
+                <span>Subtotal</span><span id="subtotal">₹ 0</span>
+            </div>
+            <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-[15px] py-3.5 rounded-sm shadow-sm transition tracking-wide">Checkout</button>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- JAVASCRIPT ENGINE (WITH ALL FIXES APPLIED) -->
+    <!-- ============================================================== -->
     <script>
-        let products = [];
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        // GLOBAL DATA STORAGE FOR SEARCH
+        let allProductsData = []; 
 
-        // SEARCH SUGGESTION LOGIC
-        function filterProducts() {
-            let query = document.getElementById('search-input').value.toLowerCase();
-            renderProducts(products.filter(p => p.name.toLowerCase().includes(query)));
+        function toggleMenu() {
+            const drawer = document.getElementById('menu-drawer');
+            const overlay = document.getElementById('menu-overlay');
+            drawer.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.style.overflow = drawer.classList.contains('-translate-x-full') ? 'auto' : 'hidden';
         }
 
-        // ADD TO CART & WISHLIST LOGIC
-        function addToCart(p) {
-            cart.push(p);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            alert("Added to cart!");
+        function toggleSearch() {
+            const searchBar = document.getElementById('search-bar');
+            searchBar.classList.toggle('-translate-y-full');
+            if(!searchBar.classList.contains('-translate-y-full')) {
+                setTimeout(() => document.getElementById('search-input').focus(), 300);
+            }
         }
 
-        function addToWishlist(p) {
-            wishlist.push(p);
-            localStorage.setItem('wishlist', JSON.stringify(wishlist));
-            alert("Added to wishlist!");
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) { section.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
         }
 
-        // FULL VIEW & ZOOM LOGIC
-        function openGallery(product) {
-            document.getElementById('modal-img').src = product.image_url;
-            document.getElementById('gallery-modal').classList.remove('hidden');
+        function subscribeNewsletter() {
+            let emailInput = document.getElementById('newsletter-email');
+            let email = emailInput.value.trim();
+            if(email && email.includes('@')) {
+                alert("Thank you for subscribing, " + email + "! 🎉 Please check your inbox for your 5% discount code.");
+                emailInput.value = '';
+            } else {
+                alert("Please enter a valid email address.");
+            }
         }
 
-        function closeGallery() { document.getElementById('gallery-modal').classList.add('hidden'); }
+        const promos = ["Extra 5% off on Prepaid Orders", "Free Shipping on orders above ₹999", "Get assured gift on ₹2500+"];
+        let currentPromo = 0;
+        function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
+        function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
+
+        // ==========================================
+        // FEATURE 4 & 5: FULL VIEW & 5-IMAGE GALLERY
+        // ==========================================
+        let currentGalleryImages = [];
+        let currentGIndex = 0;
+        let currentGZoom = 1;
+
+        function openNewGallery(imgUrl) {
+            // We use the same image 5 times to simulate 5 angles since DB only gives 1 image
+            currentGalleryImages = [imgUrl, imgUrl, imgUrl, imgUrl, imgUrl]; 
+            currentGIndex = 0;
+            currentGZoom = 1;
+            updateNewGalleryUI();
+            document.getElementById('newGalleryModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNewGallery() {
+            document.getElementById('newGalleryModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function navNewGallery(dir) {
+            currentGIndex = (currentGIndex + dir + currentGalleryImages.length) % currentGalleryImages.length;
+            currentGZoom = 1; // reset zoom
+            updateNewGalleryUI();
+        }
+
+        function zoomNewGallery(amount) {
+            currentGZoom += amount;
+            if(currentGZoom < 0.5) currentGZoom = 0.5; // max zoom out
+            if(currentGZoom > 3.0) currentGZoom = 3.0; // max zoom in
+            document.getElementById('newGalleryImg').style.transform = `scale(${currentGZoom})`;
+        }
+
+        function updateNewGalleryUI() {
+            document.getElementById('newGalleryImg').src = currentGalleryImages[currentGIndex];
+            document.getElementById('newGalleryImg').style.transform = `scale(${currentGZoom})`;
+            document.getElementById('gallery-counter').innerText = currentGIndex + 1;
+        }
+
+        // ==========================================
+        // PRODUCT CARDS & SUPABASE LOGIC
+        // ==========================================
+        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
+
+        function escapeHTML(str) {
+            return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+        }
+
+        function createProductCardHTML(product, idx, isNewSection = false) {
+            let rating = (4.0 + (idx % 10) * 0.1).toFixed(1); 
+            let originalPrice = Math.round(product.price * 2.5); 
+            let discountPercent = Math.round(((originalPrice - product.price) / originalPrice) * 100);
+            let extraOffPrice = Math.round(product.price * 0.75); 
+            let fallbackImg = "https://images.unsplash.com/photo-1599643478524-fb66f72400de?auto=format&fit=crop&w=400&q=80";
+
+            let badgeHTML = '';
+            let actionButtonsClass = 'absolute top-2 right-2 flex flex-col gap-2 z-10';
+
+            if (isNewSection) {
+                badgeHTML = `
+                <div class="absolute top-0 right-0 w-[45px] h-[45px] md:w-[60px] md:h-[60px] overflow-hidden z-20 pointer-events-none rounded-tr-sm">
+                    <div class="absolute top-[8px] -right-[20px] md:top-[12px] md:-right-[22px] w-[70px] md:w-[90px] bg-[#d93838] text-white text-[7px] md:text-[9px] font-bold uppercase tracking-wider text-center py-0.5 md:py-1 rotate-45 shadow-sm">
+                        NEW
+                    </div>
+                </div>`;
+                actionButtonsClass = 'absolute top-2 left-2 flex flex-col gap-2 z-10';
+            } else {
+                badgeHTML = `
+                <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800 z-10">
+                    <span class="text-yellow-500 text-sm">★</span> ${rating}
+                </div>`;
+            }
+
+            // Fixed function calls with properly escaped parameters
+            let safeName = escapeHTML(product.name);
+            let imgUrl = escapeHTML(product.image_url);
+
+            return `
+                <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
+                    <!-- FEATURE 4 & 5: Gallery opening correctly -->
+                    <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openNewGallery('${imgUrl}')">
+                        <img src="${imgUrl}" onerror="this.src='${fallbackImg}'" alt="${safeName}" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
+                        ${badgeHTML}
+                        <div class="${actionButtonsClass}">
+                            <!-- FEATURE 2: Wishlist perfectly working -->
+                            <button onclick="event.stopPropagation(); addToWishlist('${safeName}', ${product.price}, '${imgUrl}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                <svg class="w-4 h-4 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            </button>
+                            <button onclick="event.stopPropagation(); openNewGallery('${imgUrl}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-black w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
+                                <svg class="w-4 h-4 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-3 md:p-4 flex flex-col flex-grow">
+                        <h3 class="text-[13px] md:text-[14px] text-gray-800 leading-tight mb-2 line-clamp-2 h-[36px] font-medium">${safeName}</h3>
+                        <div class="flex items-end gap-1.5 md:gap-2 mb-1">
+                            <span class="text-[15px] md:text-[17px] font-bold text-gray-900">₹${product.price}</span>
+                            <span class="text-[11px] md:text-[12px] text-gray-400 line-through mb-[2px]">₹${originalPrice}</span>
+                            <span class="text-[11px] md:text-[12px] font-bold text-green-600 mb-[2px]">(${discountPercent}% Off)</span>
+                        </div>
+                        <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
+                            25% OFF price ₹${extraOffPrice}
+                        </div>
+                        <!-- FEATURE 3: Cart perfectly working -->
+                        <button onclick="addToCart('${safeName}', ${product.price}, '${imgUrl}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
+                            Add To Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
 
         async function loadProducts() {
-            // ... Supabase data fetch ...
-            // RENDER LOGIC:
-            // productList.map(p => `...card with click events like onclick="addToCart(${p})" ...`)
+            const newArrivalsContainer = document.getElementById('new-arrivals-list');
+            const trendingContainer = document.getElementById('product-list');
+            
+            try {
+                const response = await fetch(supabaseUrl + '/rest/v1/products?select=*&order=id.desc', {
+                    method: 'GET',
+                    headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' }
+                });
+
+                if (!response.ok) throw new Error("Network response was not ok");
+                allProductsData = await response.json(); // Global save for search
+                
+                if (!allProductsData || allProductsData.length === 0) {
+                    newArrivalsContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-4 font-bold">No products found.</div>';
+                    trendingContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">No products available.</div>';
+                    return;
+                }
+
+                const newArrivalsData = allProductsData.slice(0, 4);
+                
+                newArrivalsContainer.innerHTML = '';
+                newArrivalsData.forEach((product, idx) => {
+                    newArrivalsContainer.innerHTML += createProductCardHTML(product, idx, true);
+                });
+
+                trendingContainer.innerHTML = ''; 
+                allProductsData.forEach((product, idx) => {
+                    trendingContainer.innerHTML += createProductCardHTML(product, idx, false);
+                });
+
+            } catch (error) {
+                console.log(error);
+                trendingContainer.innerHTML = `<div class="col-span-full text-center text-red-500 py-10">Network Error. Please try again.</div>`;
+            }
         }
 
-        loadProducts();
+        // ==========================================
+        // FEATURE 1: SEARCH SUGGESTIONS LOGIC
+        // ==========================================
+        function handleSearch() {
+            let query = document.getElementById('search-input').value.toLowerCase();
+            const trendingContainer = document.getElementById('product-list');
+            const newArrivalsSection = document.getElementById('new-arrivals-section');
+            const trendingTitle = document.getElementById('trending-title');
+            const trendingDesc = document.getElementById('trending-desc');
+
+            if(query === "") {
+                // If empty, show default state
+                newArrivalsSection.style.display = 'block';
+                trendingTitle.innerText = "Trending Now";
+                trendingDesc.innerText = "Curated pieces loved by everyone.";
+                trendingContainer.innerHTML = '';
+                allProductsData.forEach((product, idx) => {
+                    trendingContainer.innerHTML += createProductCardHTML(product, idx, false);
+                });
+                return;
+            }
+
+            // Hide New Arrivals when searching
+            newArrivalsSection.style.display = 'none';
+            trendingTitle.innerText = "Search Results";
+            trendingDesc.innerText = `Showing results for "${query}"`;
+
+            let filtered = allProductsData.filter(p => p.name.toLowerCase().includes(query));
+            trendingContainer.innerHTML = '';
+            
+            if(filtered.length === 0) {
+                trendingContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-10 font-bold text-lg">No matching products found.</div>';
+            } else {
+                filtered.forEach((product, idx) => {
+                    trendingContainer.innerHTML += createProductCardHTML(product, idx, false);
+                });
+            }
+        }
+
+        // ==========================================
+        // WISHLIST LOGIC
+        // ==========================================
+        function toggleWishlist() {
+            renderWishlist();
+            const drawer = document.getElementById('wishlist-drawer');
+            const overlay = document.getElementById('wishlist-overlay');
+            drawer.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+        }
+
+        function addToWishlist(name, price, image) {
+            let wishlistLocal = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            let existing = wishlistLocal.find(w => w.name === name);
+            if (!existing) {
+                wishlistLocal.push({ name: name, price: price, image: image });
+                localStorage.setItem('y_store_wishlist', JSON.stringify(wishlistLocal));
+                alert("Successfully added to your wishlist! ❤️");
+            } else {
+                alert("This item is already in your wishlist!");
+            }
+            renderWishlist();
+        }
+
+        function renderWishlist() {
+            let wishlistLocal = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            let contentDiv = document.getElementById('wishlist-content');
+            let countSpan = document.getElementById('header-wishlist-count');
+            if (countSpan) countSpan.innerText = wishlistLocal.length;
+
+            if (wishlistLocal.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="flex-grow flex flex-col items-center justify-center px-5 text-center mt-20">
+                        <div class="w-24 h-24 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg></div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">No items yet</h3>
+                        <p class="text-sm text-gray-500 font-medium max-w-[250px]">Tap the heart icon on any product to save it for later.</p>
+                        <button onclick="toggleWishlist()" class="mt-6 border-2 border-gray-900 text-gray-900 font-bold px-6 py-2.5 rounded-sm hover:bg-gray-900 hover:text-white transition">Start Exploring</button>
+                    </div>`;
+                return;
+            }
+
+            let html = '<div class="px-5 py-2">';
+            wishlistLocal.forEach((item, index) => {
+                html += `
+                    <div class="flex py-5 border-b border-gray-100 relative">
+                        <div class="w-[85px] h-[85px] flex-shrink-0 bg-gray-50 rounded-sm overflow-hidden flex items-center justify-center border border-gray-100">
+                            <img src="${item.image}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="ml-4 flex-1 flex flex-col justify-between pt-1 pb-1">
+                            <div class="pr-6"><h3 class="text-[14px] font-bold text-gray-900 leading-snug">${item.name}</h3></div>
+                            <div class="flex justify-between items-end mt-2">
+                                <span class="font-bold text-gray-900 text-[15px]">₹ ${item.price}</span>
+                                <button onclick="addToCart('${escapeHTML(item.name)}', ${item.price}, '${item.image}'); removeFromWishlist(${index}, true)" class="text-[11px] font-bold bg-black text-white px-3 py-1.5 rounded-sm hover:bg-gray-800 transition cursor-pointer">Move to Cart</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromWishlist(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1 cursor-pointer">X</button>
+                    </div>`;
+            });
+            html += '</div>';
+            contentDiv.innerHTML = html;
+        }
+
+        function removeFromWishlist(index, movingToCart = false) {
+            let wishlistLocal = JSON.parse(localStorage.getItem('y_store_wishlist')) || [];
+            wishlistLocal.splice(index, 1);
+            localStorage.setItem('y_store_wishlist', JSON.stringify(wishlistLocal));
+            renderWishlist();
+            if(movingToCart) {
+                const drawer = document.getElementById('wishlist-drawer');
+                const overlay = document.getElementById('wishlist-overlay');
+                drawer.classList.add('translate-x-full'); overlay.classList.add('hidden');
+                document.body.style.overflow = 'auto'; 
+            }
+        }
+
+        // ==========================================
+        // CART LOGIC
+        // ==========================================
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-overlay');
+            if (drawer.classList.contains('translate-x-full')) {
+                drawer.classList.remove('translate-x-full'); overlay.classList.remove('hidden'); renderCart(); document.body.style.overflow = 'hidden'; 
+            } else {
+                drawer.classList.add('translate-x-full'); overlay.classList.add('hidden'); document.body.style.overflow = 'auto'; 
+            }
+        }
+
+        function addToCart(name, price, image) {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            let existing = cartLocal.find(c => c.name === name);
+            if(existing) existing.quantity = (existing.quantity || 1) + 1;
+            else cartLocal.push({ name: name, price: price, image: image, quantity: 1 });
+            
+            localStorage.setItem('y_store_cart', JSON.stringify(cartLocal));
+            
+            // Re-render and open cart automatically
+            renderCart();
+            const drawer = document.getElementById('cart-drawer');
+            if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
+        }
+
+        function renderCart() {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            let cartItemsDiv = document.getElementById('cart-items');
+            let totalItems = cartLocal.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            
+            document.getElementById('header-cart-count').innerText = totalItems;
+            document.getElementById('cart-drawer-count').innerText = totalItems;
+
+            if (cartLocal.length === 0) {
+                cartItemsDiv.innerHTML = `<div class="flex flex-col items-center justify-center py-24"><svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><h3 class="text-lg font-bold text-gray-800">Your cart is empty</h3></div>`;
+                document.getElementById('checkout-section').style.display = 'none'; 
+                return;
+            }
+
+            document.getElementById('checkout-section').style.display = 'block'; 
+            cartItemsDiv.innerHTML = ''; 
+            let total = 0;
+
+            cartLocal.forEach((item, index) => {
+                let qty = item.quantity || 1; 
+                let itemTotal = Number(item.price) * qty; 
+                total += itemTotal;
+                
+                cartItemsDiv.innerHTML += `
+                    <div class="flex py-5 border-b border-gray-100 relative">
+                        <div class="w-[85px] h-[85px] flex-shrink-0 bg-gray-50 rounded-sm overflow-hidden flex items-center justify-center border border-gray-100"><img src="${item.image}" class="w-full h-full object-cover"></div>
+                        <div class="ml-4 flex-1 flex flex-col justify-between pt-1 pb-1">
+                            <div class="pr-6"><h3 class="text-[14px] font-bold text-gray-900 leading-snug">${item.name}</h3></div>
+                            <div class="flex justify-between items-end mt-2">
+                                <div class="flex items-center border border-gray-300 rounded-sm w-max bg-white">
+                                    <button onclick="updateQty(${index}, -1)" class="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition cursor-pointer">-</button>
+                                    <span class="w-8 h-7 flex items-center justify-center text-[13px] font-bold border-l border-r border-gray-300 text-gray-800">${qty}</span>
+                                    <button onclick="updateQty(${index}, 1)" class="w-7 h-7 flex items-center justify-center text-gray-500 hover:bg-gray-50 transition cursor-pointer">+</button>
+                                </div>
+                                <span class="font-bold text-gray-900 text-[15px]">₹ ${itemTotal}</span>
+                            </div>
+                        </div>
+                        <button onclick="removeItem(${index})" class="absolute top-4 right-0 text-gray-400 hover:text-red-500 transition p-1 cursor-pointer">X</button>
+                    </div>`;
+            });
+            document.getElementById('subtotal').innerText = "₹ " + total;
+        }
+
+        function updateQty(index, delta) {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            cartLocal[index].quantity = (cartLocal[index].quantity || 1) + delta;
+            if (cartLocal[index].quantity <= 0) cartLocal.splice(index, 1);
+            localStorage.setItem('y_store_cart', JSON.stringify(cartLocal)); 
+            renderCart();
+        }
+        function removeItem(index) {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            cartLocal.splice(index, 1); 
+            localStorage.setItem('y_store_cart', JSON.stringify(cartLocal)); 
+            renderCart();
+        }
+
+        function checkout() { alert("Checkout System Ready!"); }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCart(); renderWishlist(); loadProducts(); 
+        });
     </script>
 </body>
 </html>
