@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Yogesh Jewellers - Premium Collection</title>
     
-    <!-- SPEED OPTIMIZATION: Preconnect to fast-load external resources -->
+    <!-- SPEED OPTIMIZATION -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://unpkg.com">
@@ -14,9 +14,7 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
-    <!-- Premium Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
     
     <style>
@@ -42,9 +40,7 @@
 </head>
 <body class="relative min-h-screen flex flex-col bg-gray-50">
 
-    <!-- ============================================================== -->
     <!-- RUNNING ANNOUNCEMENT BAR -->
-    <!-- ============================================================== -->
     <div class="bg-black text-white text-[12px] md:text-[14px] font-bold py-2.5 z-[101] relative overflow-hidden flex items-center">
         <div class="whitespace-nowrap animate-marquee flex gap-10">
             <span class="flex items-center gap-2"><svg class="w-4 h-4 peach-text" fill="currentColor" viewBox="0 0 256 256"><path d="M236.24,115.76a14,14,0,0,1,0,24.48l-49,28.53-28.53,49a14,14,0,0,1-24.48,0l-28.53-49-49-28.53a14,14,0,0,1,0-24.48l49-28.53,28.53-49a14,14,0,0,1,24.48,0l28.53,49Z"></path></svg> Monsoon Sale Live - Buy 4 at ₹2999</span>
@@ -54,9 +50,7 @@
         </div>
     </div>
 
-    <!-- ============================================================== -->
-    <!-- SEARCH OVERLAY (FIXED FOR TYPING LOGIC) -->
-    <!-- ============================================================== -->
+    <!-- SEARCH OVERLAY -->
     <div id="search-bar" class="fixed top-0 left-0 w-full bg-white shadow-md z-[200] transform -translate-y-full transition-transform duration-300 flex items-center px-4 py-4 md:px-8">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
         <input type="text" id="search-input" onkeyup="handleSearch()" placeholder="Search for jewelry, rings, pendants..." class="flex-grow bg-transparent border-none outline-none text-gray-700 text-sm md:text-base font-medium">
@@ -65,9 +59,7 @@
         </button>
     </div>
 
-    <!-- ============================================================== -->
-    <!-- PROFESSIONAL HEADER -->
-    <!-- ============================================================== -->
+    <!-- HEADER -->
     <header class="bg-white sticky top-0 z-[100] shadow-sm">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center relative">
             <div class="flex items-center gap-5">
@@ -79,7 +71,7 @@
                     <a href="#" onclick="scrollToSection('new-arrivals-section'); return false;" class="hover:text-[#e6998c] transition-colors">New Arrival</a>
                 </nav>
             </div>
-            <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase cursor-pointer" onclick="window.scrollTo(0,0)">
+            <div class="absolute left-1/2 -translate-x-1/2 text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase cursor-pointer font-serif" onclick="window.scrollTo(0,0)">
                 Yogesh
             </div>
             <div class="flex items-center gap-4 md:gap-5 text-gray-900">
@@ -99,20 +91,15 @@
         </div>
     </header>
 
-    <!-- ============================================================== -->
-    <!-- PREMIUM HERO SECTION -->
-    <!-- ============================================================== -->
+    <!-- HERO SECTION -->
     <section class="w-full bg-[#fcf8f6] cursor-pointer border-b border-gray-100" onclick="scrollToSection('new-arrivals-section')">
         <img src="hero_banner.png" alt="Jewellery That Tells Your Story" fetchpriority="high" decoding="async" class="w-full h-auto object-contain md:max-h-[600px]">
     </section>
 
-    <!-- ============================================================== -->
-    <!-- CIRCULAR CATEGORY SLIDER -->
-    <!-- ============================================================== -->
+    <!-- CATEGORY SLIDER -->
     <section class="bg-white pt-8 pb-2">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-xl md:text-2xl text-gray-900 mb-6">Shop By Category</h3>
-            
             <div class="flex gap-6 md:gap-10 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-2 justify-start md:justify-center">
                 <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
@@ -120,28 +107,24 @@
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Necklace</span>
                 </div>
-
                 <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_16.png" alt="Earrings" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Earrings</span>
                 </div>
-
                 <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_17.png" alt="Bangles" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Bangles</span>
                 </div>
-
                 <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_18.png" alt="Rings" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
                     </div>
                     <span class="text-[13px] md:text-sm font-semibold text-gray-800">Rings</span>
                 </div>
-
                 <div onclick="scrollToSection('trending-section')" class="flex flex-col items-center gap-3 min-w-[85px] cursor-pointer snap-start group">
                     <div class="w-[85px] h-[85px] md:w-[100px] md:h-[100px] bg-white rounded-full overflow-hidden border border-gray-200 shadow-sm group-hover:shadow-md transition flex items-center justify-center">
                         <img src="image_19.png" alt="Pendants" loading="lazy" decoding="async" class="w-full h-full object-contain p-2 group-hover:scale-110 transition duration-500">
@@ -152,9 +135,7 @@
         </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- NEW ARRIVALS SECTION -->
-    <!-- ============================================================== -->
     <section id="new-arrivals-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-2 bg-white">
         <div class="text-center mb-5">
             <h2 class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">New Arrivals</h2>
@@ -167,9 +148,7 @@
         </div>
     </section>
 
-    <!-- ============================================================== -->
-    <!-- MAIN CONTENT (TRENDING NOW) -->
-    <!-- ============================================================== -->
+    <!-- TRENDING NOW SECTION -->
     <main id="trending-section" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-2 flex-grow bg-white">
         <div class="text-center mb-5">
             <h2 id="trending-title" class="text-2xl md:text-3xl font-extrabold text-gray-900 mb-1">Trending Now</h2>
@@ -182,42 +161,34 @@
         </div>
     </main>
 
-    <!-- ============================================================== -->
     <!-- EXCLUSIVE OFFER BANNER -->
-    <!-- ============================================================== -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4 bg-white">
         <div class="w-full overflow-hidden rounded-sm shadow-md cursor-pointer hover:opacity-95 transition-opacity duration-300 bg-gray-50" onclick="scrollToSection('new-arrivals-section')">
             <img src="mid_banner.png" alt="Extra 5% off on prepaid orders" loading="lazy" decoding="async" class="w-full h-auto object-contain">
         </div>
     </section>
 
-    <!-- ============================================================== -->
-    <!-- TRUST BADGES & GUARANTEES SECTION -->
-    <!-- ============================================================== -->
+    <!-- TRUST BADGES -->
     <section class="bg-white border-t border-gray-100 pt-6 pb-6 md:pt-10 md:pb-10">
         <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <h3 class="text-center font-bold text-[18px] md:text-xl text-gray-900 mb-5 md:mb-8">Why Choose Yogesh Jewellers?</h3>
-            
             <div class="flex flex-row justify-between w-full border border-gray-200 rounded-sm py-4 md:py-6 bg-gray-50/30 overflow-hidden">
                 <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
-                    <i class="ph ph-globe-hemisphere-west text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-gray-700 mb-1.5 md:mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Free Shipping</span>
                     <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Free above ₹999<br>₹49 charges below</span>
                 </div>
-                
                 <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4 border-r border-gray-200">
-                    <i class="ph ph-truck text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-gray-700 mb-1.5 md:mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
                     <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">COD Available</span>
                     <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">Pan India Delivery<br><span class="text-[#e6998c] font-bold">5% Prepaid Off</span></span>
                 </div>
-                
                 <div class="flex-1 flex flex-col items-center text-center px-1 sm:px-2 md:px-4">
-                    <i class="ph ph-package text-[24px] md:text-[32px] text-gray-700 mb-1.5 md:mb-3"></i>
+                    <svg class="w-6 h-6 md:w-8 md:h-8 text-gray-700 mb-1.5 md:mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                     <span class="text-[9px] sm:text-[11px] md:text-[14px] font-bold text-gray-900 leading-tight mb-1 whitespace-nowrap">Easy Return</span>
                     <span class="text-[8px] sm:text-[10px] md:text-[12px] text-gray-500 leading-tight">7 Days Easy<br>Return/Exchange</span>
                 </div>
             </div>
-            
             <div class="max-w-3xl mx-auto mt-4 md:mt-6 bg-red-50 border border-red-100 rounded-sm p-3 md:p-4 flex items-center justify-center gap-3 md:gap-4 text-center md:text-left md:justify-start">
                 <div class="w-8 h-8 md:w-10 md:h-10 rounded-full peach-bg text-white flex items-center justify-center font-bold text-sm md:text-lg shrink-0">%</div>
                 <div>
@@ -228,9 +199,7 @@
         </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- CUSTOMER REVIEWS SECTION -->
-    <!-- ============================================================== -->
     <section class="bg-gray-50 pt-6 pb-8 md:pt-10 md:pb-10 border-t border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-center gap-3 md:gap-5 mb-10 md:mb-12 mt-4 md:mt-0">
@@ -238,7 +207,6 @@
                 <h3 class="text-[17px] md:text-2xl font-extrabold text-gray-800 uppercase tracking-widest text-center">Customer Reviews</h3>
                 <hr class="w-12 md:w-24 border-gray-300">
             </div>
-
             <div class="flex gap-5 md:gap-8 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-4 pt-6 px-2 md:px-4">
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80" loading="lazy" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
@@ -249,7 +217,6 @@
                     </div>
                     <span class="text-[13px] md:text-[14px] font-bold text-green-600">- Seshadri</span>
                 </div>
-
                 <div class="min-w-[280px] w-[280px] md:min-w-[340px] md:w-[340px] bg-white rounded-sm p-6 relative flex flex-col items-center text-center shadow-sm border border-gray-100 snap-center mt-6">
                     <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=150&q=80" loading="lazy" alt="Customer" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover absolute -top-10 md:-top-12 border-4 border-white shadow-sm">
                     <h4 class="text-[16px] md:text-[18px] font-bold text-gray-900 mt-6 md:mt-8 mb-2">Beautiful Design</h4>
@@ -263,9 +230,7 @@
         </div>
     </section>
 
-    <!-- ============================================================== -->
     <!-- PROFESSIONAL FOOTER -->
-    <!-- ============================================================== -->
     <footer id="footer-section" class="bg-[#0f172a] pt-12 pb-8 border-t-4 peach-border">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col lg:flex-row justify-between items-center border-b border-gray-800 pb-10 mb-10 gap-6">
@@ -278,19 +243,16 @@
                     <button onclick="subscribeNewsletter()" class="peach-bg hover:bg-[#d8897c] text-white px-6 py-3 md:py-3.5 font-bold text-sm transition tracking-wider uppercase rounded-r-sm cursor-pointer">Subscribe</button>
                 </div>
             </div>
-
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-12 mb-12">
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
                     <h2 class="text-3xl font-extrabold peach-text tracking-widest uppercase mb-5 font-serif">Yogesh</h2>
-                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">
-                        Discover the finest collection of handcrafted jewelry, designed for your special moments. Quality and elegance delivered straight to your doorstep.
-                    </p>
+                    <p class="text-gray-400 text-sm mb-6 leading-relaxed">Discover the finest collection of handcrafted jewelry, designed for your special moments. Quality and elegance delivered straight to your doorstep.</p>
                     <div class="flex gap-4">
                         <a href="javascript:void(0)" onclick="alert('Redirecting to Facebook...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path></svg></a>
                         <a href="javascript:void(0)" onclick="alert('Redirecting to Instagram...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"></path></svg></a>
+                        <a href="javascript:void(0)" onclick="alert('Redirecting to YouTube...')" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white hover:bg-[#e6998c] hover:-translate-y-1 transition-all duration-300 shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd"></path></svg></a>
                     </div>
                 </div>
-
                 <div class="text-center md:text-left">
                     <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Quick Links</h4>
                     <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
@@ -299,7 +261,6 @@
                         <li><a href="javascript:void(0)" onclick="alert('Offers page is coming soon!')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Special Offers</a></li>
                     </ul>
                 </div>
-
                 <div class="text-center md:text-left">
                     <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Customer Care</h4>
                     <ul class="flex flex-col gap-3 text-gray-400 text-sm font-medium">
@@ -308,7 +269,6 @@
                         <li><a href="javascript:void(0)" onclick="alert('Returns & Exchanges: 7-day hassle-free returns.')" class="hover:text-[#e6998c] hover:pl-2 transition-all inline-block">Returns & Exchanges</a></li>
                     </ul>
                 </div>
-
                 <div class="text-center md:text-left">
                     <h4 class="text-white font-bold mb-5 text-[15px] uppercase tracking-wider">Get in Touch</h4>
                     <ul class="flex flex-col gap-4 text-gray-400 text-sm font-medium items-center md:items-start">
@@ -327,7 +287,6 @@
                     </ul>
                 </div>
             </div>
-
             <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-800 gap-5">
                 <p class="text-gray-500 text-[13px] font-medium text-center md:text-left">&copy; 2026 Yogesh Jewellers. All rights reserved.</p>
                 <div class="flex flex-wrap justify-center items-center gap-2.5 text-gray-400">
@@ -335,42 +294,29 @@
                     <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1024px-Mastercard-logo.svg.png" class="max-h-full max-w-full object-contain" alt="Mastercard"></div>
                     <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1024px-UPI-Logo-vector.svg.png" class="max-h-full max-w-full object-contain" alt="UPI"></div>
                     <div class="px-3 py-1.5 bg-white rounded flex items-center justify-center h-8 w-12 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Rupay-Logo.png/1024px-Rupay-Logo.png" class="max-h-full max-w-full object-contain" alt="RuPay"></div>
-                    <div class="px-2 py-1.5 bg-white rounded flex items-center justify-center h-8 w-14 shadow-sm"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1024px-PayPal.svg.png" class="max-h-full max-w-full object-contain" alt="PayPal"></div>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- ============================================================== -->
-    <!-- 5-IMAGE GALLERY MODAL & ZOOM SYSTEM (NEW FEATURE 4 & 5) -->
+    <!-- 5-IMAGE GALLERY MODAL & ZOOM SYSTEM -->
     <!-- ============================================================== -->
     <div id="newGalleryModal" class="hidden fixed inset-0 z-[5000] bg-black bg-opacity-95 flex flex-col justify-center items-center touch-none">
-        <!-- Close Button -->
         <button onclick="closeNewGallery()" class="absolute top-4 right-4 text-white hover:text-red-500 z-[5010] p-2 bg-gray-800/50 rounded-full cursor-pointer">
             <svg class="w-6 h-6 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
-        
-        <!-- Zoom Controls -->
         <div class="absolute top-4 left-4 flex gap-4 z-[5010]">
             <button onclick="zoomNewGallery(0.2)" class="bg-gray-800/80 text-white rounded-full p-2.5 hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg></button>
             <button onclick="zoomNewGallery(-0.2)" class="bg-gray-800/80 text-white rounded-full p-2.5 hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM7 10h6"></path></svg></button>
         </div>
-
-        <!-- Image Area & Next/Prev Navigation -->
         <div class="relative w-full max-w-4xl h-[70vh] flex items-center justify-center overflow-hidden mt-10">
-            <!-- Left Arrow -->
             <button onclick="navNewGallery(-1)" class="absolute left-2 md:left-4 z-[5010] text-white bg-gray-800/80 p-3 rounded-full hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg></button>
-            
-            <!-- Image Container -->
             <div class="w-full h-full flex justify-center items-center overflow-hidden px-14">
                 <img id="newGalleryImg" src="" class="max-w-full max-h-full object-contain transition-transform duration-300 transform scale-100 cursor-move">
             </div>
-
-            <!-- Right Arrow -->
             <button onclick="navNewGallery(1)" class="absolute right-2 md:right-4 z-[5010] text-white bg-gray-800/80 p-3 rounded-full hover:bg-gray-700 cursor-pointer shadow-lg border border-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></button>
         </div>
-
-        <!-- Gallery Tracker -->
         <div class="absolute bottom-6 flex gap-3 z-[5010]">
             <div class="text-white text-sm bg-gray-800/80 px-4 py-1.5 rounded-full font-bold tracking-widest border border-gray-600 shadow-lg"><span id="gallery-counter">1</span> / 5</div>
         </div>
@@ -386,9 +332,9 @@
             <button onclick="toggleMenu()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer"><svg class="w-4 h-4 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
         </header>
         <nav class="flex flex-col px-5 py-6 gap-6 font-bold text-gray-800 text-sm">
-            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">Shop All</a>
-            <a href="#" onclick="scrollToSection('new-arrivals-section'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">New Arrivals</a>
-            <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="hover:text-[#e6998c] transition-colors">Track Order</a>
+            <a href="#" onclick="scrollToSection('trending-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Shop All <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+            <a href="#" onclick="scrollToSection('new-arrivals-section'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">New Arrivals <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
+            <a href="#" onclick="alert('Order Tracking System will be integrated soon!'); toggleMenu(); return false;" class="flex items-center justify-between hover:text-[#e6998c] transition-colors group">Track Order <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg></a>
         </nav>
         <div class="mt-auto px-5 py-6 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 font-medium">
             <p>Login / Register for personalized experience.</p>
@@ -397,7 +343,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- WISHLIST DRAWER (FEATURE 2 LOGIC FIX) -->
+    <!-- WISHLIST DRAWER -->
     <!-- ============================================================== -->
     <div id="wishlist-overlay" onclick="toggleWishlist()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="wishlist-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -412,7 +358,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- PERFECT CART DRAWER (FEATURE 3 LOGIC FIX) -->
+    <!-- CART DRAWER -->
     <!-- ============================================================== -->
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
     <div id="cart-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
@@ -430,19 +376,118 @@
         <div class="flex-grow overflow-y-auto hide-scrollbar bg-white flex flex-col">
             <div id="cart-items" class="px-5 py-2"></div>
         </div>
-        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shrink-0" id="checkout-section">
+        <div class="bg-gray-50 px-5 py-5 border-t border-gray-200 shrink-0" id="cart-summary-section">
             <div class="flex justify-between items-center font-bold text-gray-900 text-[19px] mb-4">
                 <span>Subtotal</span><span id="subtotal">₹ 0</span>
             </div>
-            <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-[15px] py-3.5 rounded-sm shadow-sm transition tracking-wide">Checkout</button>
+            <!-- OPEN CHECKOUT PAGE FROM CART -->
+            <button onclick="checkout()" class="w-full peach-bg peach-hover text-white font-bold text-[15px] py-3.5 rounded-sm shadow-sm transition tracking-wide uppercase">Checkout</button>
         </div>
     </div>
 
     <!-- ============================================================== -->
-    <!-- JAVASCRIPT ENGINE (WITH ALL FIXES APPLIED) -->
+    <!-- PROFESSIONAL CHECKOUT PAGE (FULL SCREEN OVERLAY) -->
+    <!-- ============================================================== -->
+    <div id="checkout-overlay" class="hidden fixed inset-0 bg-gray-50 z-[1000] overflow-y-auto w-full h-full flex flex-col">
+        <!-- Checkout Header -->
+        <header class="bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+            <button onclick="closeCheckout()" class="text-gray-600 hover:text-black flex items-center gap-1 font-semibold text-sm cursor-pointer">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg> Back to Cart
+            </button>
+            <h1 class="text-xl md:text-2xl font-extrabold peach-text tracking-widest uppercase font-serif">Yogesh</h1>
+            <div class="w-20 flex justify-end">
+                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            </div> 
+        </header>
+
+        <!-- Checkout Content -->
+        <div class="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 p-4 md:p-8">
+            <!-- Left: Forms -->
+            <div class="flex-1 space-y-6 md:space-y-8">
+                <!-- Contact -->
+                <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm">
+                    <h2 class="text-lg font-bold mb-4 text-gray-800">Contact Information</h2>
+                    <input type="email" placeholder="Email or mobile phone number" class="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                </div>
+
+                <!-- Shipping Address -->
+                <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm">
+                    <h2 class="text-lg font-bold mb-4 text-gray-800">Shipping Address</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" placeholder="First Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" placeholder="Last Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" placeholder="Address" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" placeholder="Apartment, suite, etc. (optional)" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" placeholder="City" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <select class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] bg-white">
+                            <option>Uttar Pradesh</option>
+                            <option>Delhi</option>
+                            <option>Maharashtra</option>
+                            <option>Rajasthan</option>
+                            <option>Gujarat</option>
+                        </select>
+                        <input type="text" placeholder="PIN Code" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                    </div>
+                </div>
+
+                <!-- Payment -->
+                <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm">
+                    <h2 class="text-lg font-bold mb-4 text-gray-800">Payment Method</h2>
+                    <p class="text-xs text-gray-500 mb-4">All transactions are secure and encrypted.</p>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-4 border border-gray-200 rounded-sm cursor-pointer hover:bg-gray-50 transition" onclick="updateCheckoutTotals('prepaid')">
+                            <input type="radio" name="payment_method" value="prepaid" checked class="w-4 h-4 text-[#e6998c] focus:ring-[#e6998c]">
+                            <div class="ml-3 flex-1">
+                                <span class="font-bold text-sm block text-gray-800">Pay Online (UPI, Cards, NetBanking)</span>
+                                <span class="text-[11px] text-green-700 font-extrabold mt-1 inline-block bg-green-50 px-2 py-0.5 rounded border border-green-200">Save 5% Extra Automatically</span>
+                            </div>
+                            <div class="hidden md:flex gap-1">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/UPI-Logo-vector.svg/1024px-UPI-Logo-vector.svg.png" class="h-4">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/1024px-Visa_Inc._logo.svg.png" class="h-4">
+                            </div>
+                        </label>
+                        <label class="flex items-center p-4 border border-gray-200 rounded-sm cursor-pointer hover:bg-gray-50 transition" onclick="updateCheckoutTotals('cod')">
+                            <input type="radio" name="payment_method" value="cod" class="w-4 h-4 text-[#e6998c] focus:ring-[#e6998c]">
+                            <div class="ml-3 flex-1">
+                                <span class="font-bold text-sm block text-gray-800">Cash on Delivery (COD)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Pay Button (Mobile) -->
+                <button onclick="placeOrder()" class="lg:hidden w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mb-10">Complete Order</button>
+            </div>
+
+            <!-- Right: Order Summary -->
+            <div class="w-full lg:w-[400px] xl:w-[450px]">
+                <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm lg:sticky lg:top-24">
+                    <h2 class="text-lg font-bold mb-4 text-gray-800">Order Summary</h2>
+                    <div id="checkout-items" class="max-h-[350px] overflow-y-auto mb-4 border-b border-gray-100 pb-4 hide-scrollbar">
+                        <!-- JS injected checkout items -->
+                    </div>
+                    
+                    <div class="space-y-3 text-sm font-medium text-gray-600">
+                        <div class="flex justify-between"><span>Subtotal</span><span id="checkout-subtotal" class="font-bold text-gray-900">₹0</span></div>
+                        <div class="flex justify-between"><span>Shipping</span><span id="checkout-shipping" class="font-bold text-gray-900">₹0</span></div>
+                        <div id="checkout-discount-row" class="flex justify-between text-green-600"><span>Prepaid Discount (5%)</span><span id="checkout-discount" class="font-bold">-₹0</span></div>
+                        <div class="border-t border-gray-200 pt-4 flex justify-between items-center mt-2">
+                            <span class="text-lg font-bold text-gray-900">Total</span>
+                            <span id="checkout-total" class="text-2xl font-extrabold text-gray-900">₹0</span>
+                        </div>
+                    </div>
+
+                    <!-- Pay Button (Desktop) -->
+                    <button onclick="placeOrder()" class="hidden lg:block w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mt-6">Complete Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- JAVASCRIPT ENGINE -->
     <!-- ============================================================== -->
     <script>
-        // GLOBAL DATA STORAGE FOR SEARCH
         let allProductsData = []; 
 
         function toggleMenu() {
@@ -482,15 +527,12 @@
         function nextPromo() { currentPromo = (currentPromo + 1) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
         function prevPromo() { currentPromo = (currentPromo - 1 + promos.length) % promos.length; document.getElementById('promo-text').innerText = promos[currentPromo]; }
 
-        // ==========================================
-        // FEATURE 4 & 5: FULL VIEW & 5-IMAGE GALLERY
-        // ==========================================
+        // GALLERY ZOOM
         let currentGalleryImages = [];
         let currentGIndex = 0;
         let currentGZoom = 1;
 
         function openNewGallery(imgUrl) {
-            // We use the same image 5 times to simulate 5 angles since DB only gives 1 image
             currentGalleryImages = [imgUrl, imgUrl, imgUrl, imgUrl, imgUrl]; 
             currentGIndex = 0;
             currentGZoom = 1;
@@ -506,14 +548,14 @@
 
         function navNewGallery(dir) {
             currentGIndex = (currentGIndex + dir + currentGalleryImages.length) % currentGalleryImages.length;
-            currentGZoom = 1; // reset zoom
+            currentGZoom = 1; 
             updateNewGalleryUI();
         }
 
         function zoomNewGallery(amount) {
             currentGZoom += amount;
-            if(currentGZoom < 0.5) currentGZoom = 0.5; // max zoom out
-            if(currentGZoom > 3.0) currentGZoom = 3.0; // max zoom in
+            if(currentGZoom < 0.5) currentGZoom = 0.5; 
+            if(currentGZoom > 3.0) currentGZoom = 3.0; 
             document.getElementById('newGalleryImg').style.transform = `scale(${currentGZoom})`;
         }
 
@@ -523,9 +565,7 @@
             document.getElementById('gallery-counter').innerText = currentGIndex + 1;
         }
 
-        // ==========================================
-        // PRODUCT CARDS & SUPABASE LOGIC
-        // ==========================================
+        // SUPABASE LOGIC
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
 
@@ -544,32 +584,21 @@
             let actionButtonsClass = 'absolute top-2 right-2 flex flex-col gap-2 z-10';
 
             if (isNewSection) {
-                badgeHTML = `
-                <div class="absolute top-0 right-0 w-[45px] h-[45px] md:w-[60px] md:h-[60px] overflow-hidden z-20 pointer-events-none rounded-tr-sm">
-                    <div class="absolute top-[8px] -right-[20px] md:top-[12px] md:-right-[22px] w-[70px] md:w-[90px] bg-[#d93838] text-white text-[7px] md:text-[9px] font-bold uppercase tracking-wider text-center py-0.5 md:py-1 rotate-45 shadow-sm">
-                        NEW
-                    </div>
-                </div>`;
+                badgeHTML = `<div class="absolute top-0 right-0 w-[45px] h-[45px] md:w-[60px] md:h-[60px] overflow-hidden z-20 pointer-events-none rounded-tr-sm"><div class="absolute top-[8px] -right-[20px] md:top-[12px] md:-right-[22px] w-[70px] md:w-[90px] bg-[#d93838] text-white text-[7px] md:text-[9px] font-bold uppercase tracking-wider text-center py-0.5 md:py-1 rotate-45 shadow-sm">NEW</div></div>`;
                 actionButtonsClass = 'absolute top-2 left-2 flex flex-col gap-2 z-10';
             } else {
-                badgeHTML = `
-                <div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800 z-10">
-                    <span class="text-yellow-500 text-sm">★</span> ${rating}
-                </div>`;
+                badgeHTML = `<div class="absolute bottom-2 left-2 bg-white/95 backdrop-blur px-2 py-1 rounded shadow-sm text-[11px] font-bold flex items-center gap-1 text-gray-800 z-10"><span class="text-yellow-500 text-sm">★</span> ${rating}</div>`;
             }
 
-            // Fixed function calls with properly escaped parameters
             let safeName = escapeHTML(product.name);
             let imgUrl = escapeHTML(product.image_url);
 
             return `
                 <div class="bg-white rounded border border-gray-100 hover:shadow-lg transition-all duration-300 flex flex-col h-full overflow-hidden group">
-                    <!-- FEATURE 4 & 5: Gallery opening correctly -->
                     <div class="relative h-[220px] md:h-[280px] overflow-hidden bg-gray-50 flex justify-center items-center cursor-pointer" onclick="openNewGallery('${imgUrl}')">
                         <img src="${imgUrl}" onerror="this.src='${fallbackImg}'" alt="${safeName}" loading="lazy" decoding="async" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500">
                         ${badgeHTML}
                         <div class="${actionButtonsClass}">
-                            <!-- FEATURE 2: Wishlist perfectly working -->
                             <button onclick="event.stopPropagation(); addToWishlist('${safeName}', ${product.price}, '${imgUrl}');" class="bg-white/90 hover:bg-white text-gray-800 hover:text-red-500 w-8 h-8 flex items-center justify-center rounded-full shadow-md transition cursor-pointer">
                                 <svg class="w-4 h-4 font-bold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                             </button>
@@ -588,7 +617,6 @@
                         <div class="text-[11px] md:text-[12px] font-bold text-red-900 mb-4 mt-auto tracking-wide">
                             25% OFF price ₹${extraOffPrice}
                         </div>
-                        <!-- FEATURE 3: Cart perfectly working -->
                         <button onclick="addToCart('${safeName}', ${product.price}, '${imgUrl}')" class="w-full bg-black hover:bg-gray-800 text-white font-bold py-2.5 md:py-3 rounded-sm shadow-sm transition text-[13px] md:text-sm tracking-wide">
                             Add To Cart
                         </button>
@@ -607,8 +635,8 @@
                     headers: { 'apikey': supabaseKey, 'Authorization': 'Bearer ' + supabaseKey, 'Content-Type': 'application/json' }
                 });
 
-                if (!response.ok) throw new Error("Network response was not ok");
-                allProductsData = await response.json(); // Global save for search
+                if (!response.ok) throw new Error("Network error");
+                allProductsData = await response.json(); 
                 
                 if (!allProductsData || allProductsData.length === 0) {
                     newArrivalsContainer.innerHTML = '<div class="col-span-full text-center text-gray-500 py-4 font-bold">No products found.</div>';
@@ -629,14 +657,10 @@
                 });
 
             } catch (error) {
-                console.log(error);
                 trendingContainer.innerHTML = `<div class="col-span-full text-center text-red-500 py-10">Network Error. Please try again.</div>`;
             }
         }
 
-        // ==========================================
-        // FEATURE 1: SEARCH SUGGESTIONS LOGIC
-        // ==========================================
         function handleSearch() {
             let query = document.getElementById('search-input').value.toLowerCase();
             const trendingContainer = document.getElementById('product-list');
@@ -645,7 +669,6 @@
             const trendingDesc = document.getElementById('trending-desc');
 
             if(query === "") {
-                // If empty, show default state
                 newArrivalsSection.style.display = 'block';
                 trendingTitle.innerText = "Trending Now";
                 trendingDesc.innerText = "Curated pieces loved by everyone.";
@@ -656,7 +679,6 @@
                 return;
             }
 
-            // Hide New Arrivals when searching
             newArrivalsSection.style.display = 'none';
             trendingTitle.innerText = "Search Results";
             trendingDesc.innerText = `Showing results for "${query}"`;
@@ -673,16 +695,14 @@
             }
         }
 
-        // ==========================================
         // WISHLIST LOGIC
-        // ==========================================
         function toggleWishlist() {
             renderWishlist();
             const drawer = document.getElementById('wishlist-drawer');
             const overlay = document.getElementById('wishlist-overlay');
             drawer.classList.toggle('translate-x-full');
             overlay.classList.toggle('hidden');
-            document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+            document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'hidden' : 'auto';
         }
 
         function addToWishlist(name, price, image) {
@@ -745,13 +765,10 @@
                 const drawer = document.getElementById('wishlist-drawer');
                 const overlay = document.getElementById('wishlist-overlay');
                 drawer.classList.add('translate-x-full'); overlay.classList.add('hidden');
-                document.body.style.overflow = 'auto'; 
             }
         }
 
-        // ==========================================
         // CART LOGIC
-        // ==========================================
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
             const overlay = document.getElementById('cart-overlay');
@@ -769,9 +786,8 @@
             else cartLocal.push({ name: name, price: price, image: image, quantity: 1 });
             
             localStorage.setItem('y_store_cart', JSON.stringify(cartLocal));
-            
-            // Re-render and open cart automatically
             renderCart();
+            
             const drawer = document.getElementById('cart-drawer');
             if (drawer && drawer.classList.contains('translate-x-full')) toggleCart();
         }
@@ -786,11 +802,11 @@
 
             if (cartLocal.length === 0) {
                 cartItemsDiv.innerHTML = `<div class="flex flex-col items-center justify-center py-24"><svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><h3 class="text-lg font-bold text-gray-800">Your cart is empty</h3></div>`;
-                document.getElementById('checkout-section').style.display = 'none'; 
+                document.getElementById('cart-summary-section').style.display = 'none'; 
                 return;
             }
 
-            document.getElementById('checkout-section').style.display = 'block'; 
+            document.getElementById('cart-summary-section').style.display = 'block'; 
             cartItemsDiv.innerHTML = ''; 
             let total = 0;
 
@@ -833,7 +849,99 @@
             renderCart();
         }
 
-        function checkout() { alert("Checkout System Ready!"); }
+        // ==========================================
+        // CHECKOUT PAGE LOGIC (NEW)
+        // ==========================================
+        function checkout() { 
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            if(cartLocal.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            // Hide Cart Drawer
+            document.getElementById('cart-drawer').classList.add('translate-x-full');
+            document.getElementById('cart-overlay').classList.add('hidden');
+            
+            // Show Checkout Page
+            document.getElementById('checkout-overlay').classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Keep body frozen
+            
+            renderCheckout();
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-overlay').classList.add('hidden');
+            // Show Cart Drawer again
+            document.getElementById('cart-overlay').classList.remove('hidden');
+            document.getElementById('cart-drawer').classList.remove('translate-x-full');
+        }
+
+        function renderCheckout() {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            let checkoutItemsDiv = document.getElementById('checkout-items');
+            checkoutItemsDiv.innerHTML = '';
+            
+            cartLocal.forEach(item => {
+                let qty = item.quantity || 1;
+                let itemTotal = Number(item.price) * qty;
+                checkoutItemsDiv.innerHTML += `
+                    <div class="flex items-center gap-4 py-3">
+                        <div class="w-16 h-16 bg-gray-50 rounded border border-gray-200 flex-shrink-0 relative">
+                            <img src="${item.image}" class="w-full h-full object-cover rounded">
+                            <span class="absolute -top-2 -right-2 bg-gray-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">${qty}</span>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-gray-800 line-clamp-1">${item.name}</h4>
+                        </div>
+                        <span class="text-sm font-bold text-gray-900">₹${itemTotal}</span>
+                    </div>
+                `;
+            });
+
+            // Update totals based on current radio selection
+            updateCheckoutTotals();
+        }
+
+        function updateCheckoutTotals(paymentType = null) {
+            let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            let subtotal = cartLocal.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
+            
+            let shipping = subtotal >= 999 ? 0 : 49;
+            
+            // Find which payment method is selected
+            if (!paymentType) {
+                let checkedRadio = document.querySelector('input[name="payment_method"]:checked');
+                paymentType = checkedRadio ? checkedRadio.value : 'prepaid';
+            }
+
+            let discount = 0;
+            let discountRow = document.getElementById('checkout-discount-row');
+            
+            if (paymentType === 'prepaid') {
+                discount = Math.round(subtotal * 0.05); // 5% discount
+                discountRow.classList.remove('hidden');
+            } else {
+                discountRow.classList.add('hidden');
+            }
+
+            let finalTotal = subtotal + shipping - discount;
+
+            document.getElementById('checkout-subtotal').innerText = "₹" + subtotal;
+            document.getElementById('checkout-shipping').innerText = shipping === 0 ? "Free" : "₹" + shipping;
+            document.getElementById('checkout-discount').innerText = "-₹" + discount;
+            document.getElementById('checkout-total').innerText = "₹" + finalTotal;
+        }
+
+        function placeOrder() {
+            alert("🎉 Order Placed Successfully!\n\nThank you for shopping with Yogesh Jewellers. Your order ID is #YG" + Math.floor(1000 + Math.random() * 9000) + ".\nWe will contact you shortly.");
+            
+            // Clear Cart and Close Checkout
+            localStorage.removeItem('y_store_cart');
+            document.getElementById('checkout-overlay').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+            renderCart();
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             renderCart(); renderWishlist(); loadProducts(); 
