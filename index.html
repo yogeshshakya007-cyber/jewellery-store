@@ -365,6 +365,20 @@
     </div>
 
     <!-- ============================================================== -->
+    <!-- MY ORDERS DRAWER -->
+    <!-- ============================================================== -->
+    <div id="orders-overlay" onclick="toggleOrders()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
+    <div id="orders-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
+        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
+            <h2 class="text-xl font-bold flex items-center gap-1.5">My Orders</h2>
+            <button onclick="toggleOrders()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer">X</button>
+        </header>
+        <div id="orders-content" class="flex-grow overflow-y-auto bg-gray-50 p-4 space-y-4">
+            <!-- JS Injected Order History -->
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
     <!-- CART DRAWER -->
     <!-- ============================================================== -->
     <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
@@ -393,21 +407,7 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- MY ORDERS DRAWER (NEW FEATURE) -->
-    <!-- ============================================================== -->
-    <div id="orders-overlay" onclick="toggleOrders()" class="fixed inset-0 bg-black bg-opacity-60 z-[150] hidden transition-opacity"></div>
-    <div id="orders-drawer" class="fixed top-0 right-0 w-full sm:w-[420px] h-full bg-white z-[200] transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
-        <header class="flex items-center justify-between px-5 py-4 border-b border-gray-100 bg-white shrink-0">
-            <h2 class="text-xl font-bold flex items-center gap-1.5">My Orders</h2>
-            <button onclick="toggleOrders()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200 transition cursor-pointer">X</button>
-        </header>
-        <div id="orders-content" class="flex-grow overflow-y-auto bg-gray-50 p-4 space-y-4">
-            <!-- JS Injected Order History -->
-        </div>
-    </div>
-
-    <!-- ============================================================== -->
-    <!-- PROFESSIONAL CHECKOUT PAGE (FULL SCREEN OVERLAY) -->
+    <!-- PROFESSIONAL CHECKOUT PAGE -->
     <!-- ============================================================== -->
     <div id="checkout-overlay" class="hidden fixed inset-0 bg-gray-50 z-[1000] overflow-y-auto w-full h-full flex flex-col">
         <!-- Checkout Header -->
@@ -428,26 +428,25 @@
                 <!-- Contact -->
                 <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm">
                     <h2 class="text-lg font-bold mb-4 text-gray-800">Contact Information</h2>
-                    <input type="email" placeholder="Email or mobile phone number" class="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                    <input type="email" id="checkout-email" placeholder="Email or mobile phone number" class="w-full border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
                 </div>
 
                 <!-- Shipping Address -->
                 <div class="bg-white p-5 md:p-6 rounded-sm border border-gray-100 shadow-sm">
                     <h2 class="text-lg font-bold mb-4 text-gray-800">Shipping Address</h2>
                     <div class="grid grid-cols-2 gap-4">
-                        <input type="text" placeholder="First Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
-                        <input type="text" placeholder="Last Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
-                        <input type="text" placeholder="Address" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
-                        <input type="text" placeholder="Apartment, suite, etc. (optional)" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
-                        <input type="text" placeholder="City" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
-                        <select class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] bg-white">
-                            <option>Uttar Pradesh</option>
-                            <option>Delhi</option>
-                            <option>Maharashtra</option>
-                            <option>Rajasthan</option>
-                            <option>Gujarat</option>
+                        <input type="text" id="checkout-fname" placeholder="First Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" id="checkout-lname" placeholder="Last Name" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" id="checkout-address" placeholder="Address" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" id="checkout-city" placeholder="City" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <select id="checkout-state" class="col-span-2 md:col-span-1 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] bg-white">
+                            <option value="Uttar Pradesh">Uttar Pradesh</option>
+                            <option value="Delhi">Delhi</option>
+                            <option value="Maharashtra">Maharashtra</option>
+                            <option value="Rajasthan">Rajasthan</option>
+                            <option value="Gujarat">Gujarat</option>
                         </select>
-                        <input type="text" placeholder="PIN Code" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
+                        <input type="text" id="checkout-pin" placeholder="PIN Code" class="col-span-2 border border-gray-300 rounded-sm p-3 text-sm focus:outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c]">
                     </div>
                 </div>
 
@@ -477,7 +476,7 @@
                 </div>
 
                 <!-- Pay Button (Mobile) -->
-                <button onclick="placeOrder()" class="lg:hidden w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mb-10">Complete Order</button>
+                <button id="place-order-btn-mobile" onclick="placeOrder(this)" class="lg:hidden w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mb-10">Complete Order</button>
             </div>
 
             <!-- Right: Order Summary -->
@@ -499,7 +498,7 @@
                     </div>
 
                     <!-- Pay Button (Desktop) -->
-                    <button onclick="placeOrder()" class="hidden lg:block w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mt-6">Complete Order</button>
+                    <button id="place-order-btn-desktop" onclick="placeOrder(this)" class="hidden lg:block w-full peach-bg hover:bg-[#d8897c] text-white font-bold py-4 rounded-sm shadow-md transition text-lg tracking-wide uppercase mt-6">Complete Order</button>
                 </div>
             </div>
         </div>
@@ -808,6 +807,66 @@
             }
         }
 
+        // MY ORDERS LOGIC
+        function toggleOrders() {
+            renderOrders();
+            const drawer = document.getElementById('orders-drawer');
+            const overlay = document.getElementById('orders-overlay');
+            drawer.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
+        }
+
+        function renderOrders() {
+            let ordersLocal = JSON.parse(localStorage.getItem('y_store_orders')) || [];
+            let contentDiv = document.getElementById('orders-content');
+            
+            if (ordersLocal.length === 0) {
+                contentDiv.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 text-center">
+                        <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                        <h3 class="text-lg font-bold text-gray-800 mb-2">No orders yet</h3>
+                        <p class="text-sm text-gray-500">Looks like you haven't made your choices yet.</p>
+                        <button onclick="toggleOrders(); scrollToSection('trending-section');" class="mt-6 border border-gray-900 text-gray-900 font-bold px-6 py-2 rounded-sm hover:bg-gray-900 hover:text-white transition cursor-pointer">Start Shopping</button>
+                    </div>`;
+                return;
+            }
+
+            let html = '';
+            ordersLocal.forEach(order => {
+                let itemsHtml = order.items.map(item => `
+                    <div class="flex items-center gap-3 mt-3">
+                        <img src="${item.image}" class="w-12 h-12 rounded border border-gray-200 object-cover">
+                        <div class="flex-1">
+                            <p class="text-[13px] font-bold text-gray-800 line-clamp-1">${item.name}</p>
+                            <p class="text-xs text-gray-500">Qty: ${item.quantity || 1}</p>
+                        </div>
+                    </div>
+                `).join('');
+
+                html += `
+                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-3">
+                            <div>
+                                <span class="text-xs text-gray-500 block">Order ID</span>
+                                <span class="font-bold text-gray-900">${order.orderId}</span>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs text-gray-500 block">${order.date}</span>
+                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100 uppercase tracking-wider">${order.status}</span>
+                            </div>
+                        </div>
+                        ${itemsHtml}
+                        <div class="flex justify-between items-center border-t border-gray-100 pt-3 mt-3">
+                            <span class="text-sm font-bold text-gray-600">Total Paid</span>
+                            <span class="font-extrabold text-gray-900 text-base">${order.total}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            contentDiv.innerHTML = html;
+        }
+
         // CART LOGIC
         function toggleCart() {
             const drawer = document.getElementById('cart-drawer');
@@ -889,71 +948,7 @@
             renderCart();
         }
 
-        // ==========================================
-        // MY ORDERS LOGIC
-        // ==========================================
-        function toggleOrders() {
-            renderOrders();
-            const drawer = document.getElementById('orders-drawer');
-            const overlay = document.getElementById('orders-overlay');
-            drawer.classList.toggle('translate-x-full');
-            overlay.classList.toggle('hidden');
-            document.body.style.overflow = drawer.classList.contains('translate-x-full') ? 'auto' : 'hidden';
-        }
-
-        function renderOrders() {
-            let ordersLocal = JSON.parse(localStorage.getItem('y_store_orders')) || [];
-            let contentDiv = document.getElementById('orders-content');
-            
-            if (ordersLocal.length === 0) {
-                contentDiv.innerHTML = `
-                    <div class="flex flex-col items-center justify-center py-20 text-center">
-                        <svg class="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">No orders yet</h3>
-                        <p class="text-sm text-gray-500">Looks like you haven't made your choices yet.</p>
-                        <button onclick="toggleOrders(); scrollToSection('trending-section');" class="mt-6 border border-gray-900 text-gray-900 font-bold px-6 py-2 rounded-sm hover:bg-gray-900 hover:text-white transition cursor-pointer">Start Shopping</button>
-                    </div>`;
-                return;
-            }
-
-            let html = '';
-            ordersLocal.forEach(order => {
-                let itemsHtml = order.items.map(item => `
-                    <div class="flex items-center gap-3 mt-3">
-                        <img src="${item.image}" class="w-12 h-12 rounded border border-gray-200 object-cover">
-                        <div class="flex-1">
-                            <p class="text-[13px] font-bold text-gray-800 line-clamp-1">${item.name}</p>
-                            <p class="text-xs text-gray-500">Qty: ${item.quantity || 1}</p>
-                        </div>
-                    </div>
-                `).join('');
-
-                html += `
-                    <div class="bg-white p-4 rounded border border-gray-200 shadow-sm">
-                        <div class="flex justify-between items-center border-b border-gray-100 pb-3 mb-3">
-                            <div>
-                                <span class="text-xs text-gray-500 block">Order ID</span>
-                                <span class="font-bold text-gray-900">${order.orderId}</span>
-                            </div>
-                            <div class="text-right">
-                                <span class="text-xs text-gray-500 block">${order.date}</span>
-                                <span class="text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded border border-green-100 uppercase tracking-wider">${order.status}</span>
-                            </div>
-                        </div>
-                        ${itemsHtml}
-                        <div class="flex justify-between items-center border-t border-gray-100 pt-3 mt-3">
-                            <span class="text-sm font-bold text-gray-600">Total Paid</span>
-                            <span class="font-extrabold text-gray-900 text-base">${order.total}</span>
-                        </div>
-                    </div>
-                `;
-            });
-            contentDiv.innerHTML = html;
-        }
-
-        // ==========================================
         // CHECKOUT PAGE LOGIC 
-        // ==========================================
         function checkout() { 
             let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
             if(cartLocal.length === 0) {
@@ -1030,42 +1025,102 @@
             document.getElementById('checkout-total').innerText = "₹" + finalTotal;
         }
 
-        // ==========================================
-        // CUSTOM SUCCESS MODAL & SAVING ORDER LOGIC
-        // ==========================================
-        function placeOrder() {
+        // SUPABASE DATABASE POST (SAVING ORDER)
+        async function placeOrder(btnElement) {
             let cartLocal = JSON.parse(localStorage.getItem('y_store_cart')) || [];
+            if(cartLocal.length === 0) return alert("Your cart is empty!");
+
+            // Grab form details
+            let email = document.getElementById('checkout-email').value;
+            let fname = document.getElementById('checkout-fname').value;
+            let lname = document.getElementById('checkout-lname').value;
+            let address = document.getElementById('checkout-address').value;
+            let city = document.getElementById('checkout-city').value;
+            let state = document.getElementById('checkout-state').value;
+            let pin = document.getElementById('checkout-pin').value;
+
+            // Basic Validation
+            if(!fname || !address || !pin || !email) {
+                alert("Please fill in all mandatory fields (Name, Email/Phone, Address, PIN Code).");
+                return;
+            }
+
+            let customer_details = {
+                name: fname + " " + lname,
+                email_phone: email,
+                address: address,
+                city: city,
+                state: state,
+                pin: pin
+            };
+
             let finalTotal = document.getElementById('checkout-total').innerText;
+            let checkedRadio = document.querySelector('input[name="payment_method"]:checked');
+            let payment_mode = checkedRadio ? checkedRadio.value : 'prepaid';
             
-            // 1. Generate Order ID
-            let orderId = "#YG" + Math.floor(1000 + Math.random() * 9000);
-            
-            // 2. Save Order to Database (Local Storage)
-            let newOrder = {
-                orderId: orderId,
-                date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
-                total: finalTotal,
+            let orderId = "YG" + Math.floor(100000 + Math.random() * 900000); 
+
+            let orderData = {
+                order_id: orderId,
+                customer_details: customer_details,
                 items: cartLocal,
+                total_amount: finalTotal,
+                payment_mode: payment_mode,
                 status: 'Processing'
             };
-            let ordersLocal = JSON.parse(localStorage.getItem('y_store_orders')) || [];
-            ordersLocal.unshift(newOrder); // Add to the top of the list
-            localStorage.setItem('y_store_orders', JSON.stringify(ordersLocal));
 
-            // 3. Update UI
-            document.getElementById('success-order-id').innerText = orderId;
-            localStorage.removeItem('y_store_cart'); // Clear Cart
-            
-            // 4. Hide Checkout and Show Success Modal
-            document.getElementById('checkout-overlay').classList.add('hidden');
-            document.getElementById('order-success-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            // Loading state on button
+            let originalText = btnElement.innerText;
+            btnElement.innerText = "Processing...";
+            btnElement.disabled = true;
+
+            try {
+                // Post to Supabase "orders" table
+                const response = await fetch(supabaseUrl + '/rest/v1/orders', {
+                    method: 'POST',
+                    headers: { 
+                        'apikey': supabaseKey, 
+                        'Authorization': 'Bearer ' + supabaseKey, 
+                        'Content-Type': 'application/json',
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) throw new Error("Order posting failed");
+
+                // Save to 'My Orders' history locally for the customer
+                let ordersLocal = JSON.parse(localStorage.getItem('y_store_orders')) || [];
+                ordersLocal.unshift({
+                    orderId: "#" + orderId,
+                    date: new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }),
+                    total: finalTotal,
+                    items: cartLocal,
+                    status: 'Processing'
+                });
+                localStorage.setItem('y_store_orders', JSON.stringify(ordersLocal));
+
+                // Show Custom Success Popup
+                document.getElementById('success-order-id').innerText = "#" + orderId;
+                localStorage.removeItem('y_store_cart'); 
+                
+                document.getElementById('checkout-overlay').classList.add('hidden');
+                document.getElementById('order-success-modal').classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+
+            } catch (error) {
+                console.error(error);
+                alert("Something went wrong while placing the order. Please check your internet connection.");
+            } finally {
+                btnElement.innerText = originalText;
+                btnElement.disabled = false;
+            }
         }
 
         function closeSuccessModal() {
             document.getElementById('order-success-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-            renderCart(); // Reset cart UI
+            document.body.style.overflow = 'auto'; 
+            renderCart(); 
         }
 
         document.addEventListener('DOMContentLoaded', () => {
