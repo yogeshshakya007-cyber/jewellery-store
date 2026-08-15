@@ -3,84 +3,1968 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jewellery Store - Premium Admin Panel</title>
+
+    <title>Yogesh Jewellers - Admin Dashboard</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: #f8f9fb;
+        }
+
+        .sidebar {
+            background: #111214;
+        }
+
+        .coral {
+            background: #f47f70;
+        }
+
+        .coral-text {
+            color: #f47f70;
+        }
+
+        .coral-light {
+            background: #fff0ed;
+        }
+
+        .sidebar-item {
+            transition: all .2s ease;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(244,127,112,.15);
+        }
+
+        .sidebar-item.active {
+            background: linear-gradient(90deg, #f47f70, #ff927f);
+            box-shadow: 0 8px 20px rgba(244,127,112,.20);
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #edf0f3;
+            box-shadow: 0 3px 15px rgba(0,0,0,.035);
+        }
+
+        .modal-bg {
+            background: rgba(0,0,0,.55);
+            backdrop-filter: blur(4px);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform .3s ease;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay {
+                display: none;
+            }
+
+            .mobile-overlay.show {
+                display: block;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gray-50 p-4 font-sans">
-    <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl p-6 mt-10 border border-gray-100">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center border-b pb-4">Seller Dashboard<br><span class="text-sm font-normal text-gray-500">Add New Jewellery Design</span></h2>
-        
-        <div id="message" class="hidden mb-4 p-3 rounded text-center font-bold text-sm"></div>
 
-        <form id="add-product-form" class="space-y-5">
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">Product Name (गहने का नाम)</label>
-                <input type="text" id="name" required class="border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="e.g. Premium Royal Ring">
-            </div>
-            
-            <div>
-                <label class="block text-gray-700 text-sm font-bold mb-2">Price (कीमत ₹ में)</label>
-                <input type="number" id="price" required class="border border-gray-300 rounded-lg w-full py-2.5 px-3 text-gray-700 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500" placeholder="e.g. 1499">
-            </div>
-            
-            <div class="bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Upload Image (फाइल मैनेजर से फोटो चुनें)</label>
-                <input type="file" id="image_file" required class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-yellow-50 file:text-yellow-700 hover:file:bg-yellow-100 cursor-pointer">
+<body class="text-gray-900">
+
+<!-- ========================================================= -->
+<!-- MOBILE OVERLAY -->
+<!-- ========================================================= -->
+
+<div id="mobileOverlay"
+     class="mobile-overlay fixed inset-0 bg-black/50 z-40 md:hidden"
+     onclick="closeSidebar()"></div>
+
+
+<!-- ========================================================= -->
+<!-- SIDEBAR -->
+<!-- ========================================================= -->
+
+<aside id="sidebar"
+       class="sidebar fixed left-0 top-0 bottom-0 w-[270px] z-50 text-white flex flex-col">
+
+    <!-- Logo -->
+
+    <div class="px-6 py-7 border-b border-white/10">
+
+        <div class="flex items-center gap-3">
+
+            <div class="text-[#f47f70] text-4xl">
+                ♢
             </div>
 
-            <button type="submit" id="submit-btn" class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none shadow-md transition duration-200 flex justify-center items-center">
-                <span>Upload & Save Product</span>
-            </button>
-        </form>
+            <div>
+                <div class="text-3xl font-semibold"
+                     style="font-family:Georgia,serif;">
+                    Yogesh
+                </div>
+
+                <div class="text-xs tracking-[4px] text-gray-300">
+                    JEWELLERS
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
-    <script>
-        document.getElementById('add-product-form').addEventListener('submit', async function(e) {
+
+    <!-- Navigation -->
+
+    <nav class="flex-1 px-4 py-6 overflow-y-auto scrollbar-hide">
+
+        <p class="text-[10px] uppercase tracking-widest text-gray-500 px-3 mb-3">
+            Main Menu
+        </p>
+
+
+        <button onclick="showSection('dashboard')"
+                id="nav-dashboard"
+                class="sidebar-item active w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">⌂</span>
+            <span class="font-medium text-sm">Dashboard</span>
+
+        </button>
+
+
+        <button onclick="showSection('products')"
+                id="nav-products"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">▣</span>
+            <span class="font-medium text-sm">Products</span>
+
+            <span class="ml-auto text-gray-400">›</span>
+
+        </button>
+
+
+        <button onclick="showSection('orders')"
+                id="nav-orders"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">♧</span>
+            <span class="font-medium text-sm">Orders</span>
+
+            <span class="ml-auto text-gray-400">›</span>
+
+        </button>
+
+
+        <button onclick="showSection('categories')"
+                id="nav-categories"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">▦</span>
+            <span class="font-medium text-sm">Categories</span>
+
+        </button>
+
+
+        <button onclick="showSection('banners')"
+                id="nav-banners"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">▧</span>
+            <span class="font-medium text-sm">Banners</span>
+
+        </button>
+
+
+        <button onclick="showSection('customers')"
+                id="nav-customers"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">♙</span>
+            <span class="font-medium text-sm">Customers</span>
+
+        </button>
+
+
+        <button onclick="showSection('reports')"
+                id="nav-reports"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">▥</span>
+            <span class="font-medium text-sm">Reports</span>
+
+        </button>
+
+
+        <button onclick="showSection('settings')"
+                id="nav-settings"
+                class="sidebar-item w-full flex items-center gap-4 px-4 py-3.5 rounded-xl mb-2 text-left">
+
+            <span class="text-xl">⚙</span>
+            <span class="font-medium text-sm">Settings</span>
+
+        </button>
+
+
+        <!-- Quick Actions -->
+
+        <div class="mt-8">
+
+            <p class="text-[10px] uppercase tracking-widest text-gray-500 px-3 mb-3">
+                Quick Actions
+            </p>
+
+
+            <button onclick="openProductModal()"
+                    class="w-full flex items-center gap-4 px-3 py-3 text-left text-sm hover:text-[#f47f70]">
+
+                <span class="w-8 h-8 rounded-full border border-[#f47f70] flex items-center justify-center coral-text">
+                    +
+                </span>
+
+                Add New Product
+
+            </button>
+
+
+            <button onclick="showSection('categories')"
+                    class="w-full flex items-center gap-4 px-3 py-3 text-left text-sm hover:text-[#f47f70]">
+
+                <span class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center">
+                    +
+                </span>
+
+                Add New Category
+
+            </button>
+
+
+            <button onclick="showSection('banners')"
+                    class="w-full flex items-center gap-4 px-3 py-3 text-left text-sm hover:text-[#f47f70]">
+
+                <span class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center">
+                    ↑
+                </span>
+
+                Upload Banner
+
+            </button>
+
+
+            <button onclick="showSection('orders')"
+                    class="w-full flex items-center gap-4 px-3 py-3 text-left text-sm hover:text-[#f47f70]">
+
+                <span class="w-8 h-8 rounded-full border border-gray-600 flex items-center justify-center">
+                    ≡
+                </span>
+
+                View Orders
+
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Bottom Brand Card -->
+
+    <div class="p-4">
+
+        <div class="border border-white/10 rounded-xl p-4">
+
+            <div class="flex items-center gap-3">
+
+                <div class="w-10 h-10 rounded-full bg-[#f47f70]/10 flex items-center justify-center text-[#f47f70] text-xl">
+                    ♕
+                </div>
+
+                <div>
+
+                    <p class="text-sm font-semibold">
+                        Yogesh Jewellers
+                    </p>
+
+                    <p class="text-[10px] text-gray-400">
+                        Premium Collection ✨
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+
+<!-- ========================================================= -->
+<!-- MAIN AREA -->
+<!-- ========================================================= -->
+
+<main class="md:ml-[270px] min-h-screen">
+
+
+    <!-- TOP HEADER -->
+
+    <header class="h-[75px] bg-white border-b border-gray-100 flex items-center justify-between px-5 md:px-8 sticky top-0 z-30">
+
+        <div class="flex items-center gap-4">
+
+            <button onclick="openSidebar()"
+                    class="md:hidden text-2xl">
+                ☰
+            </button>
+
+            <div>
+
+                <h1 id="pageTitle"
+                    class="text-xl md:text-2xl font-bold">
+                    Admin Dashboard
+                </h1>
+
+            </div>
+
+        </div>
+
+
+        <div class="flex items-center gap-3 md:gap-6">
+
+
+            <!-- View Website -->
+
+            <a href="index.html"
+               target="_blank"
+               class="hidden sm:flex items-center gap-2 coral-light coral-text px-5 py-3 rounded-xl text-xs font-semibold">
+
+                View Website ↗
+
+            </a>
+
+
+            <!-- Notification -->
+
+            <button class="relative text-xl">
+
+                ♧
+
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white text-[9px] w-4 h-4 rounded-full flex items-center justify-center">
+                    5
+                </span>
+
+            </button>
+
+
+            <!-- Admin -->
+
+            <div class="flex items-center gap-2">
+
+                <div class="w-10 h-10 rounded-full bg-[#ffe3de] flex items-center justify-center coral-text font-bold">
+                    Y
+                </div>
+
+                <div class="hidden sm:block">
+
+                    <p class="text-xs font-bold">
+                        Yogesh Shakya
+                    </p>
+
+                    <p class="text-[10px] text-gray-400">
+                        Admin
+                    </p>
+
+                </div>
+
+                <span class="hidden sm:block">
+                   ⌄
+                </span>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ===================================================== -->
+    <!-- DASHBOARD -->
+    <!-- ===================================================== -->
+
+    <section id="section-dashboard"
+             class="section p-5 md:p-8">
+
+
+        <!-- Welcome -->
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-7">
+
+            <div>
+
+                <h2 class="text-2xl md:text-3xl font-bold">
+                    Welcome back, Yogesh! 👋
+                </h2>
+
+                <p class="text-gray-500 text-sm mt-1">
+                    Here's what's happening with your store today.
+                </p>
+
+            </div>
+
+
+            <button class="border border-gray-200 bg-white px-4 py-3 rounded-xl text-xs font-medium">
+
+                📅 8 May, 2025 - 15 May, 2025
+                <span class="ml-2">⌄</span>
+
+            </button>
+
+        </div>
+
+
+
+        <!-- STATS -->
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-6">
+
+
+            <!-- Products -->
+
+            <div class="card rounded-2xl p-5">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-14 h-14 rounded-full bg-[#fff0ed] coral-text flex items-center justify-center text-2xl">
+                        ♧
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-gray-500">
+                            Total Products
+                        </p>
+
+                        <h3 id="totalProducts"
+                            class="text-2xl font-bold mt-1">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <p class="text-xs text-green-600 mt-4">
+                    ↑ Products in store
+                </p>
+
+            </div>
+
+
+
+            <!-- Orders -->
+
+            <div class="card rounded-2xl p-5">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-14 h-14 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center text-2xl">
+                        ♧
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-gray-500">
+                            Total Orders
+                        </p>
+
+                        <h3 id="totalOrders"
+                            class="text-2xl font-bold mt-1">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <p class="text-xs text-green-600 mt-4">
+                    ↑ Orders received
+                </p>
+
+            </div>
+
+
+
+            <!-- Sales -->
+
+            <div class="card rounded-2xl p-5">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-14 h-14 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-2xl">
+                        ₹
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-gray-500">
+                            Total Sales
+                        </p>
+
+                        <h3 id="totalSales"
+                            class="text-2xl font-bold mt-1">
+                            ₹0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <p class="text-xs text-green-600 mt-4">
+                    ↑ Store revenue
+                </p>
+
+            </div>
+
+
+
+            <!-- New Orders -->
+
+            <div class="card rounded-2xl p-5">
+
+                <div class="flex items-center gap-4">
+
+                    <div class="w-14 h-14 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">
+                        🛒
+                    </div>
+
+                    <div>
+
+                        <p class="text-xs text-gray-500">
+                            New Orders
+                        </p>
+
+                        <h3 id="newOrders"
+                            class="text-2xl font-bold mt-1">
+                            0
+                        </h3>
+
+                    </div>
+
+                </div>
+
+                <button onclick="showSection('orders')"
+                        class="text-xs text-blue-600 mt-4">
+                    View new orders
+                </button>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ANALYTICS -->
+
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-6">
+
+
+            <!-- Sales Overview -->
+
+            <div class="card rounded-2xl p-5 xl:col-span-2">
+
+                <div class="flex items-center justify-between mb-6">
+
+                    <h3 class="font-bold text-lg">
+                        Sales Overview
+                    </h3>
+
+                    <select class="border border-gray-200 rounded-lg px-3 py-2 text-xs outline-none">
+
+                        <option>This Week</option>
+                        <option>This Month</option>
+                        <option>This Year</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="h-[240px] flex items-end gap-3 md:gap-7 border-b border-gray-100 px-2">
+
+                    <div class="flex-1 h-[30%] bg-[#f47f70]/20 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹12K</span>
+                    </div>
+
+                    <div class="flex-1 h-[50%] bg-[#f47f70]/30 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹21K</span>
+                    </div>
+
+                    <div class="flex-1 h-[46%] bg-[#f47f70]/30 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹20K</span>
+                    </div>
+
+                    <div class="flex-1 h-[65%] bg-[#f47f70]/50 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹27K</span>
+                    </div>
+
+                    <div class="flex-1 h-[58%] bg-[#f47f70]/50 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹24K</span>
+                    </div>
+
+                    <div class="flex-1 h-[70%] bg-[#f47f70]/70 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹29K</span>
+                    </div>
+
+                    <div class="flex-1 h-[42%] bg-[#f47f70]/30 rounded-t-xl relative">
+                        <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[9px]">₹15K</span>
+                    </div>
+
+                </div>
+
+
+                <div class="grid grid-cols-7 text-[10px] text-gray-400 text-center mt-3">
+
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                    <span>Sun</span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Categories -->
+
+            <div class="card rounded-2xl p-5">
+
+                <div class="flex items-center justify-between mb-5">
+
+                    <h3 class="font-bold text-lg">
+                        Top Categories
+                    </h3>
+
+                    <select class="border border-gray-200 rounded-lg px-2 py-2 text-xs">
+                        <option>This Week</option>
+                    </select>
+
+                </div>
+
+
+                <div class="flex justify-center py-4">
+
+                    <div class="w-44 h-44 rounded-full"
+                         style="background:conic-gradient(#f47f70 0deg 115deg,#9b6cff 115deg 205deg,#8bd34b 205deg 270deg,#ffd65c 270deg 322deg,#54c4ca 322deg 360deg);">
+
+                        <div class="w-24 h-24 bg-white rounded-full relative top-10 left-10"></div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="space-y-3 text-xs">
+
+                    <div class="flex justify-between">
+                        <span>🟠 Necklaces</span>
+                        <span>29.6%</span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>🟣 Earrings</span>
+                        <span>25.0%</span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>🟢 Bangles</span>
+                        <span>16.4%</span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>🟡 Rings</span>
+                        <span>14.5%</span>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <span>🔵 Pendants</span>
+                        <span>14.5%</span>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PRODUCTS + ORDERS -->
+
+        <div class="grid grid-cols-1 xl:grid-cols-2 gap-5">
+
+
+            <!-- Recent Products -->
+
+            <div class="card rounded-2xl overflow-hidden">
+
+                <div class="p-5 flex items-center justify-between">
+
+                    <h3 class="font-bold text-lg">
+                        Recently Added Products
+                    </h3>
+
+                    <button onclick="showSection('products')"
+                            class="coral-text text-xs font-semibold">
+                        View All
+                    </button>
+
+                </div>
+
+
+                <div id="recentProducts"
+                     class="overflow-x-auto">
+
+                    <div class="p-8 text-center text-gray-400 text-sm">
+                        Loading products...
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Recent Orders -->
+
+            <div class="card rounded-2xl overflow-hidden">
+
+                <div class="p-5 flex items-center justify-between">
+
+                    <h3 class="font-bold text-lg">
+                        Recent Orders
+                    </h3>
+
+                    <button onclick="showSection('orders')"
+                            class="coral-text text-xs font-semibold">
+                        View All
+                    </button>
+
+                </div>
+
+
+                <div id="recentOrders"
+                     class="p-5">
+
+                    <div class="border border-gray-100 rounded-xl p-5 text-center text-gray-400 text-sm">
+                        Order data will appear here.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- PRODUCTS SECTION -->
+    <!-- ===================================================== -->
+
+    <section id="section-products"
+             class="section hidden p-5 md:p-8">
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-7">
+
+            <div>
+
+                <h2 class="text-2xl font-bold">
+                    Products
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Manage your jewellery collection.
+                </p>
+
+            </div>
+
+
+            <button onclick="openProductModal()"
+                    class="coral text-white px-5 py-3 rounded-xl text-sm font-semibold shadow-lg">
+
+                + Add New Product
+
+            </button>
+
+        </div>
+
+
+        <div class="card rounded-2xl overflow-hidden">
+
+            <div class="p-5 border-b border-gray-100">
+
+                <input type="search"
+                       id="productSearch"
+                       oninput="filterProducts()"
+                       placeholder="Search products..."
+                       class="w-full md:w-80 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#f47f70]">
+
+            </div>
+
+
+            <div id="productsTable"
+                 class="overflow-x-auto">
+
+                <div class="p-10 text-center text-gray-400">
+                    Loading products...
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- ORDERS -->
+    <!-- ===================================================== -->
+
+    <section id="section-orders"
+             class="section hidden p-5 md:p-8">
+
+        <h2 class="text-2xl font-bold">
+            Orders
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1 mb-7">
+            Manage customer orders.
+        </p>
+
+
+        <div class="card rounded-2xl p-8 text-center">
+
+            <div class="text-5xl mb-4">
+                🛍️
+            </div>
+
+            <h3 class="font-bold text-lg">
+                Orders Management
+            </h3>
+
+            <p class="text-gray-500 text-sm mt-2">
+                Your Supabase orders will be connected here in the next step.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- CATEGORIES -->
+    <!-- ===================================================== -->
+
+    <section id="section-categories"
+             class="section hidden p-5 md:p-8">
+
+        <h2 class="text-2xl font-bold">
+            Categories
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1 mb-7">
+            Jewellery categories.
+        </p>
+
+
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+
+            <div class="card rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">💎</div>
+                <p class="font-semibold text-sm">Necklaces</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">✨</div>
+                <p class="font-semibold text-sm">Earrings</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">⭕</div>
+                <p class="font-semibold text-sm">Bangles</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">💍</div>
+                <p class="font-semibold text-sm">Rings</p>
+            </div>
+
+            <div class="card rounded-2xl p-6 text-center">
+                <div class="text-4xl mb-3">📿</div>
+                <p class="font-semibold text-sm">Pendants</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- BANNERS -->
+    <!-- ===================================================== -->
+
+    <section id="section-banners"
+             class="section hidden p-5 md:p-8">
+
+        <div class="flex justify-between items-center mb-7">
+
+            <div>
+
+                <h2 class="text-2xl font-bold">
+                    Homepage Banners
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Manage your website banners.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="card rounded-2xl p-8 text-center">
+
+            <div class="text-5xl mb-4">
+                🖼️
+            </div>
+
+            <h3 class="font-bold">
+                Banner Management
+            </h3>
+
+            <p class="text-sm text-gray-500 mt-2">
+                Banner upload and management will be added next.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- CUSTOMERS -->
+    <!-- ===================================================== -->
+
+    <section id="section-customers"
+             class="section hidden p-5 md:p-8">
+
+        <h2 class="text-2xl font-bold">
+            Customers
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1 mb-7">
+            Customer information and activity.
+        </p>
+
+
+        <div class="card rounded-2xl p-8 text-center">
+
+            <div class="text-5xl mb-4">
+                👥
+            </div>
+
+            <h3 class="font-bold">
+                Customer Management
+            </h3>
+
+            <p class="text-sm text-gray-500 mt-2">
+                Customer management will be connected with your order data.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- REPORTS -->
+    <!-- ===================================================== -->
+
+    <section id="section-reports"
+             class="section hidden p-5 md:p-8">
+
+        <h2 class="text-2xl font-bold">
+            Reports
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1 mb-7">
+            Store performance reports.
+        </p>
+
+
+        <div class="card rounded-2xl p-8 text-center">
+
+            <div class="text-5xl mb-4">
+                📊
+            </div>
+
+            <h3 class="font-bold">
+                Reports Dashboard
+            </h3>
+
+            <p class="text-sm text-gray-500 mt-2">
+                Advanced sales reports will be added after order integration.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================== -->
+    <!-- SETTINGS -->
+    <!-- ===================================================== -->
+
+    <section id="section-settings"
+             class="section hidden p-5 md:p-8">
+
+        <h2 class="text-2xl font-bold">
+            Settings
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1 mb-7">
+            Store settings.
+        </p>
+
+
+        <div class="card rounded-2xl p-6">
+
+            <h3 class="font-bold mb-5">
+                Store Information
+            </h3>
+
+            <div class="grid md:grid-cols-2 gap-5">
+
+                <div>
+
+                    <label class="text-xs font-semibold text-gray-600">
+                        Store Name
+                    </label>
+
+                    <input value="Yogesh Jewellers"
+                           class="w-full mt-2 border border-gray-200 rounded-xl px-4 py-3 text-sm">
+
+                </div>
+
+
+                <div>
+
+                    <label class="text-xs font-semibold text-gray-600">
+                        Store Type
+                    </label>
+
+                    <input value="Premium Jewellery"
+                           class="w-full mt-2 border border-gray-200 rounded-xl px-4 py-3 text-sm">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- FOOTER -->
+
+    <footer class="px-5 md:px-8 py-7 text-xs text-gray-400 flex flex-col md:flex-row justify-between gap-2">
+
+        <span>
+            © 2026 Yogesh Jewellers Admin Panel. All rights reserved.
+        </span>
+
+        <span>
+            Made with ❤️ for Yogesh Jewellers
+        </span>
+
+    </footer>
+
+</main>
+
+
+
+<!-- ========================================================= -->
+<!-- ADD PRODUCT MODAL -->
+<!-- ========================================================= -->
+
+<div id="productModal"
+     class="hidden fixed inset-0 modal-bg z-[100] items-center justify-center p-4">
+
+    <div class="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+
+            <div>
+
+                <h2 class="text-xl font-bold">
+                    Add New Product
+                </h2>
+
+                <p class="text-xs text-gray-500 mt-1">
+                    Add jewellery to your store.
+                </p>
+
+            </div>
+
+
+            <button onclick="closeProductModal()"
+                    class="w-9 h-9 rounded-full bg-gray-100 text-gray-500">
+                ✕
+            </button>
+
+        </div>
+
+
+        <form id="add-product-form"
+              class="p-6 space-y-5">
+
+
+            <div>
+
+                <label class="block text-xs font-bold text-gray-600 mb-2">
+                    Product Name
+                </label>
+
+                <input type="text"
+                       id="productName"
+                       required
+                       placeholder="e.g. Premium Royal Necklace"
+                       class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#f47f70]">
+
+            </div>
+
+
+            <div>
+
+                <label class="block text-xs font-bold text-gray-600 mb-2">
+                    Price ₹
+                </label>
+
+                <input type="number"
+                       id="productPrice"
+                       required
+                       placeholder="1499"
+                       class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-[#f47f70]">
+
+            </div>
+
+
+            <div>
+
+                <label class="block text-xs font-bold text-gray-600 mb-2">
+                    Product Image
+                </label>
+
+                <input type="file"
+                       id="productImage"
+                       accept="image/*"
+                       required
+                       class="w-full border border-dashed border-gray-300 rounded-xl p-4 text-sm">
+
+            </div>
+
+
+            <div id="productMessage"
+                 class="hidden p-3 rounded-xl text-sm text-center font-semibold">
+            </div>
+
+
+            <button type="submit"
+                    id="saveProductBtn"
+                    class="w-full coral text-white py-3.5 rounded-xl font-bold shadow-lg">
+
+                Upload & Save Product
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+/* ============================================================
+   SUPABASE
+============================================================ */
+
+const SUPABASE_URL =
+    'https://fzzwioyhmuanfvpotfit.supabase.co';
+
+const SUPABASE_KEY =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzIiwicmVmIjoiZnp6d2lvemhtdWFuZnZwb3RmaXQiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTc4MzgwMDE4NiwiZXhwIjoyMDk5Mzc2MTg2fQ.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
+
+const db =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ============================================================
+   GLOBAL PRODUCTS
+============================================================ */
+
+let allProducts = [];
+
+
+/* ============================================================
+   SIDEBAR
+============================================================ */
+
+function openSidebar() {
+
+    document.getElementById('sidebar')
+        .classList.add('open');
+
+    document.getElementById('mobileOverlay')
+        .classList.add('show');
+
+}
+
+
+function closeSidebar() {
+
+    document.getElementById('sidebar')
+        .classList.remove('open');
+
+    document.getElementById('mobileOverlay')
+        .classList.remove('show');
+
+}
+
+
+/* ============================================================
+   SECTION NAVIGATION
+============================================================ */
+
+function showSection(section) {
+
+    document.querySelectorAll('.section')
+        .forEach(el => el.classList.add('hidden'));
+
+    document.getElementById(
+        'section-' + section
+    ).classList.remove('hidden');
+
+
+    document.querySelectorAll('.sidebar-item')
+        .forEach(el => el.classList.remove('active'));
+
+
+    const nav =
+        document.getElementById(
+            'nav-' + section
+        );
+
+    if (nav) {
+        nav.classList.add('active');
+    }
+
+
+    const titles = {
+
+        dashboard: 'Admin Dashboard',
+        products: 'Products',
+        orders: 'Orders',
+        categories: 'Categories',
+        banners: 'Banners',
+        customers: 'Customers',
+        reports: 'Reports',
+        settings: 'Settings'
+
+    };
+
+
+    document.getElementById('pageTitle')
+        .textContent =
+        titles[section] || 'Admin Dashboard';
+
+
+    closeSidebar();
+
+
+    if (section === 'products') {
+
+        loadProductsTable();
+
+    }
+
+}
+
+
+/* ============================================================
+   PRODUCT MODAL
+============================================================ */
+
+function openProductModal() {
+
+    const modal =
+        document.getElementById('productModal');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+}
+
+
+function closeProductModal() {
+
+    const modal =
+        document.getElementById('productModal');
+
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+
+    document.getElementById('add-product-form').reset();
+
+    document.getElementById('productMessage')
+        .className = 'hidden p-3 rounded-xl text-sm text-center font-semibold';
+
+}
+
+
+/* ============================================================
+   LOAD PRODUCTS
+============================================================ */
+
+async function loadProducts() {
+
+    const { data, error } =
+
+        await db
+            .from('products')
+            .select('*')
+            .order('created_at', {
+                ascending: false
+            });
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    allProducts = data || [];
+
+
+    document.getElementById('totalProducts')
+        .textContent =
+        allProducts.length;
+
+
+    renderRecentProducts();
+
+}
+
+
+/* ============================================================
+   RECENT PRODUCTS
+============================================================ */
+
+function renderRecentProducts() {
+
+    const container =
+        document.getElementById('recentProducts');
+
+
+    if (!allProducts.length) {
+
+        container.innerHTML = `
+            <div class="p-10 text-center text-gray-400 text-sm">
+                No products found.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    const products =
+        allProducts.slice(0, 5);
+
+
+    let html = `
+
+        <div class="overflow-x-auto">
+
+        <table class="w-full text-left">
+
+            <thead>
+
+                <tr class="text-[10px] uppercase tracking-wider text-gray-400 border-t border-b border-gray-100">
+
+                    <th class="px-5 py-3">
+                        Product
+                    </th>
+
+                    <th class="px-3 py-3">
+                        Price
+                    </th>
+
+                    <th class="px-3 py-3">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    products.forEach(product => {
+
+        html += `
+
+            <tr class="border-b border-gray-50 hover:bg-gray-50">
+
+                <td class="px-5 py-3">
+
+                    <div class="flex items-center gap-3">
+
+                        <img
+                            src="${product.image_url || ''}"
+                            class="w-12 h-12 rounded-xl object-cover bg-gray-100"
+                            onerror="this.style.display='none'"
+                        >
+
+                        <div>
+
+                            <p class="text-xs font-semibold">
+                                ${escapeHtml(product.name || 'Unnamed Product')}
+                            </p>
+
+                            <p class="text-[10px] text-gray-400">
+                                SKU: YJ${product.id || ''}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td class="px-3 py-3 text-xs font-semibold">
+                    ₹${Number(product.price || 0).toLocaleString('en-IN')}
+                </td>
+
+
+                <td class="px-3 py-3">
+
+                    <button
+                        onclick="deleteProduct(${product.id})"
+                        class="w-8 h-8 border border-red-200 text-red-500 rounded-lg">
+
+                        🗑
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+        </div>
+
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* ============================================================
+   PRODUCTS TABLE
+============================================================ */
+
+function loadProductsTable() {
+
+    const container =
+        document.getElementById('productsTable');
+
+
+    if (!allProducts.length) {
+
+        container.innerHTML = `
+            <div class="p-10 text-center text-gray-400">
+                No products found.
+            </div>
+        `;
+
+        return;
+
+    }
+
+
+    let html = `
+
+        <table class="w-full min-w-[650px] text-left">
+
+            <thead>
+
+                <tr class="text-xs text-gray-400 bg-gray-50">
+
+                    <th class="px-5 py-4">
+                        Product
+                    </th>
+
+                    <th class="px-5 py-4">
+                        Price
+                    </th>
+
+                    <th class="px-5 py-4">
+                        Status
+                    </th>
+
+                    <th class="px-5 py-4">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+    `;
+
+
+    allProducts.forEach(product => {
+
+        html += `
+
+            <tr class="border-b border-gray-100">
+
+                <td class="px-5 py-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <img
+                            src="${product.image_url || ''}"
+                            class="w-14 h-14 object-cover rounded-xl bg-gray-100"
+                        >
+
+                        <div>
+
+                            <p class="text-sm font-semibold">
+                                ${escapeHtml(product.name || 'Unnamed')}
+                            </p>
+
+                            <p class="text-[10px] text-gray-400">
+                                SKU: YJ${product.id || ''}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </td>
+
+
+                <td class="px-5 py-4 font-semibold text-sm">
+
+                    ₹${Number(product.price || 0).toLocaleString('en-IN')}
+
+                </td>
+
+
+                <td class="px-5 py-4">
+
+                    <span class="bg-green-100 text-green-700 px-3 py-1.5 rounded-full text-[10px] font-semibold">
+                        Active
+                    </span>
+
+                </td>
+
+
+                <td class="px-5 py-4">
+
+                    <button
+                        onclick="deleteProduct(${product.id})"
+                        class="border border-red-200 text-red-500 px-3 py-2 rounded-lg text-xs">
+
+                        Delete
+
+                    </button>
+
+                </td>
+
+            </tr>
+
+        `;
+
+    });
+
+
+    html += `
+
+            </tbody>
+
+        </table>
+
+    `;
+
+
+    container.innerHTML = html;
+
+}
+
+
+/* ============================================================
+   SEARCH PRODUCTS
+============================================================ */
+
+function filterProducts() {
+
+    const search =
+        document.getElementById('productSearch')
+            .value
+            .toLowerCase();
+
+
+    const filtered =
+        allProducts.filter(product =>
+            String(product.name || '')
+                .toLowerCase()
+                .includes(search)
+        );
+
+
+    const original =
+        allProducts;
+
+    allProducts = filtered;
+
+    loadProductsTable();
+
+    allProducts = original;
+
+}
+
+
+/* ============================================================
+   ADD PRODUCT
+============================================================ */
+
+document.getElementById('add-product-form')
+    .addEventListener(
+        'submit',
+        async function(e) {
+
             e.preventDefault();
 
-            const submitBtn = document.getElementById('submit-btn');
-            const msgDiv = document.getElementById('message');
-            
+
+            const button =
+                document.getElementById(
+                    'saveProductBtn'
+                );
+
+
+            const message =
+                document.getElementById(
+                    'productMessage'
+                );
+
+
             try {
-                submitBtn.disabled = true;
-                submitBtn.innerHTML = 'Uploading... ⏳';
 
-                const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-                // यहाँ मैंने बड़ा 'E' हटाकर छोटा 'e' कर दिया है
-                const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ'; 
-                const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+                button.disabled = true;
 
-                const name = document.getElementById('name').value;
-                const price = document.getElementById('price').value;
-                const fileInput = document.getElementById('image_file');
-                const file = fileInput.files[0];
+                button.textContent =
+                    'Uploading... ⏳';
 
-                if (!file) throw new Error("कृपया पहले कोई फोटो चुनें।");
 
-                const fileExt = file.name.split('.').pop();
-                const fileName = Date.now() + '.' + fileExt;
+                const name =
+                    document.getElementById(
+                        'productName'
+                    ).value.trim();
 
-                const { error: uploadError } = await supabase.storage.from('product-images').upload(fileName, file);
-                if (uploadError) throw uploadError;
 
-                const { data: { publicUrl } } = supabase.storage.from('product-images').getPublicUrl(fileName);
+                const price =
+                    document.getElementById(
+                        'productPrice'
+                    ).value;
 
-                const { error: insertError } = await supabase.from('products').insert([{ name: name, price: price, image_url: publicUrl }]);
-                if (insertError) throw insertError;
 
-                msgDiv.textContent = "Product Live Successfully! 🎉";
-                msgDiv.className = "mb-4 p-3 rounded-lg text-center font-bold bg-green-100 text-green-700 block border border-green-200";
-                document.getElementById('add-product-form').reset();
+                const file =
+                    document.getElementById(
+                        'productImage'
+                    ).files[0];
 
-            } catch (error) {
-                msgDiv.textContent = "Error: " + error.message;
-                msgDiv.className = "mb-4 p-3 rounded-lg text-center font-bold bg-red-100 text-red-700 block border border-red-200";
+
+                if (!file) {
+
+                    throw new Error(
+                        'Please select a product image.'
+                    );
+
+                }
+
+
+                const extension =
+                    file.name
+                        .split('.')
+                        .pop();
+
+
+                const fileName =
+                    Date.now() +
+                    '-' +
+                    Math.random()
+                        .toString(36)
+                        .substring(2,8) +
+                    '.' +
+                    extension;
+
+
+                /* Upload Image */
+
+                const { error: uploadError } =
+
+                    await db
+                        .storage
+                        .from('product-images')
+                        .upload(
+                            fileName,
+                            file
+                        );
+
+
+                if (uploadError)
+                    throw uploadError;
+
+
+                /* Public URL */
+
+                const { data: urlData } =
+
+                    db
+                        .storage
+                        .from('product-images')
+                        .getPublicUrl(
+                            fileName
+                        );
+
+
+                const publicUrl =
+                    urlData.publicUrl;
+
+
+                /* Insert Product */
+
+                const { error: insertError } =
+
+                    await db
+                        .from('products')
+                        .insert([{
+
+                            name: name,
+
+                            price: Number(price),
+
+                            image_url: publicUrl
+
+                        }]);
+
+
+                if (insertError)
+                    throw insertError;
+
+
+                message.textContent =
+                    'Product added successfully! 🎉';
+
+
+                message.className =
+                    'p-3 rounded-xl text-sm text-center font-semibold bg-green-100 text-green-700';
+
+
+                await loadProducts();
+
+
+                setTimeout(() => {
+
+                    closeProductModal();
+
+                }, 900);
+
+
+            } catch(error) {
+
+                console.error(error);
+
+
+                message.textContent =
+                    'Error: ' +
+                    error.message;
+
+
+                message.className =
+                    'p-3 rounded-xl text-sm text-center font-semibold bg-red-100 text-red-700';
+
+
             } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Upload & Save Product';
+
+                button.disabled = false;
+
+                button.textContent =
+                    'Upload & Save Product';
+
             }
-        });
-    </script>
+
+        }
+    );
+
+
+/* ============================================================
+   DELETE PRODUCT
+============================================================ */
+
+async function deleteProduct(id) {
+
+    const confirmDelete =
+        confirm(
+            'Are you sure you want to delete this product?'
+        );
+
+
+    if (!confirmDelete)
+        return;
+
+
+    const { error } =
+
+        await db
+            .from('products')
+            .delete()
+            .eq('id', id);
+
+
+    if (error) {
+
+        alert(
+            'Delete failed: ' +
+            error.message
+        );
+
+        return;
+
+    }
+
+
+    alert('Product deleted successfully.');
+
+
+    await loadProducts();
+
+    loadProductsTable();
+
+}
+
+
+/* ============================================================
+   HTML ESCAPE
+============================================================ */
+
+function escapeHtml(value) {
+
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
+}
+
+
+/* ============================================================
+   INITIAL LOAD
+============================================================ */
+
+async function initializeDashboard() {
+
+    await loadProducts();
+
+}
+
+
+/* START */
+
+initializeDashboard();
+
+</script>
+
 </body>
 </html>
