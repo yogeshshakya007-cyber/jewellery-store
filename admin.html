@@ -22,14 +22,6 @@
         
         /* Custom Checkbox */
         .custom-checkbox:checked { background-color: #059669; border-color: #059669; }
-        
-        /* Image Upload Box Styles */
-        .img-upload-box {
-            border: 2px dashed #e5e7eb;
-            transition: all 0.3s ease;
-        }
-        .img-upload-box:hover { border-color: #e6998c; background-color: #fff9f8; }
-        .img-preview { object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0.375rem; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -202,7 +194,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ADVANCED ADD PRODUCT MODAL (LIKE IMAGE 11) -->
+    <!-- ADVANCED ADD PRODUCT MODAL -->
     <!-- ========================================== -->
     <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-8 border border-gray-200">
@@ -269,55 +261,20 @@
 
                 <hr class="border-gray-100">
 
-                <!-- Image Gallery Section (Direct File Upload) -->
+                <!-- Image Gallery Section (URL Links) -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
-                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES GALLERY <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5 फोटो)</span></label>
+                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES GALLERY <span class="text-gray-500 font-medium text-[10px]">(तस्वीरों के लिंक डालें)</span></label>
                         <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
                     </div>
-                    <p class="text-[10px] text-gray-400 mb-4">पहले बॉक्स पर क्लिक करके मुख्य फोटो अपलोड करें। बाकी तस्वीरें वैकल्पिक हैं। (अधिकतम 2MB प्रति फोटो)</p>
+                    <p class="text-[10px] text-gray-400 mb-4">अपनी फोटो को किसी होस्टिंग साइट पर अपलोड करें और यहाँ उसका लिंक (URL) पेस्ट करें।</p>
                     
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-                        <!-- Image 1 -->
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-1').click()">
-                            <input type="file" id="file-img-1" accept="image/*" class="hidden" onchange="previewImage(this, 'preview-1')">
-                            <img id="preview-1" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">1. मुख्य फोटो *</span>
-                        </div>
-                        <!-- Image 2 -->
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-2').click()">
-                            <input type="file" id="file-img-2" accept="image/*" class="hidden" onchange="previewImage(this, 'preview-2')">
-                            <img id="preview-2" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">2. साइड एंगल</span>
-                        </div>
-                        <!-- Image 3 -->
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-3').click()">
-                            <input type="file" id="file-img-3" accept="image/*" class="hidden" onchange="previewImage(this, 'preview-3')">
-                            <img id="preview-3" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">3. पहनने के बाद का लुक</span>
-                        </div>
-                        <!-- Image 4 -->
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-4').click()">
-                            <input type="file" id="file-img-4" accept="image/*" class="hidden" onchange="previewImage(this, 'preview-4')">
-                            <img id="preview-4" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">4. बैक साइड</span>
-                        </div>
-                        <!-- Image 5 -->
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-5').click()">
-                            <input type="file" id="file-img-5" accept="image/*" class="hidden" onchange="previewImage(this, 'preview-5')">
-                            <img id="preview-5" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">5. बॉक्स/पैकेजिंग फोटो</span>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input type="text" id="add-p-img1" placeholder="1. मुख्य फोटो का लिंक (Main Image URL) *" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-img2" placeholder="2. साइड एंगल फोटो का लिंक" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-img3" placeholder="3. पहनने के बाद का लुक (URL)" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-img4" placeholder="4. बैक साइड (URL)" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-img5" placeholder="5. बॉक्स/पैकेजिंग फोटो (URL)" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                 </div>
 
@@ -438,53 +395,13 @@
             } catch (error) { console.error("Error loading stats", error); }
         }
 
-        // --- PRODUCT MANAGEMENT (ADVANCED) ---
+        // --- PRODUCT MANAGEMENT (ADVANCED URL BASED) ---
         function openProductModal() {
             document.getElementById('product-modal').classList.remove('hidden');
         }
 
         function closeProductModal() {
             document.getElementById('product-modal').classList.add('hidden');
-        }
-
-        // Local Image Preview Feature
-        function previewImage(inputElement, previewImgId) {
-            const previewImg = document.getElementById(previewImgId);
-            if (inputElement.files && inputElement.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImg.src = e.target.result;
-                    previewImg.classList.remove('hidden');
-                }
-                reader.readAsDataURL(inputElement.files[0]);
-            } else {
-                previewImg.src = "";
-                previewImg.classList.add('hidden');
-            }
-        }
-
-        // Upload single file to Supabase Storage
-        async function uploadFileToSupabase(fileInputId) {
-            const fileInput = document.getElementById(fileInputId);
-            if (!fileInput.files || fileInput.files.length === 0) return null; // No file selected
-            
-            const file = fileInput.files[0];
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
-            
-            // Uploading to bucket named 'product-images'
-            const { data, error } = await supabaseClient.storage
-                .from('product-images')
-                .upload(fileName, file, { cacheControl: '3600', upsert: false });
-                
-            if (error) {
-                console.error('Upload Error:', error.message);
-                return null;
-            }
-            
-            // Get public URL
-            const { data: publicUrlData } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
-            return publicUrlData.publicUrl;
         }
 
         async function saveAdvancedProduct() {
@@ -502,32 +419,29 @@
             const isTrending = document.getElementById('add-p-trending').checked;
             const isFlash = document.getElementById('add-p-flash').checked;
 
+            // Gather Image URLs
+            const img1_url = document.getElementById('add-p-img1').value;
+            const img2_url = document.getElementById('add-p-img2').value;
+            const img3_url = document.getElementById('add-p-img3').value;
+            const img4_url = document.getElementById('add-p-img4').value;
+            const img5_url = document.getElementById('add-p-img5').value;
+
             // Basic Validation
             if(!name || !price || !sku || !stock) {
                 alert("Please fill all mandatory (*) fields.");
                 return;
             }
 
-            const mainImageInput = document.getElementById('file-img-1');
-            if(!mainImageInput.files || mainImageInput.files.length === 0) {
-                alert("मुख्य फोटो (Main Photo) अनिवार्य है!");
+            if(!img1_url) {
+                alert("मुख्य फोटो का लिंक (Main Image URL) अनिवार्य है!");
                 return;
             }
 
-            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> UPLOADING...';
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> SAVING...';
             btn.disabled = true;
 
             try {
-                // 1. Upload all selected images to Supabase Storage sequentially
-                const img1_url = await uploadFileToSupabase('file-img-1');
-                const img2_url = await uploadFileToSupabase('file-img-2');
-                const img3_url = await uploadFileToSupabase('file-img-3');
-                const img4_url = await uploadFileToSupabase('file-img-4');
-                const img5_url = await uploadFileToSupabase('file-img-5');
-
-                if(!img1_url) throw new Error("Main image upload failed. Did you create the 'product-images' bucket in Supabase?");
-
-                // 2. Insert record into database
+                // Insert record into database
                 const { data, error } = await supabaseClient.from('products').insert([{
                     name: name,
                     category: category,
@@ -539,7 +453,7 @@
                     description: desc,
                     is_trending: isTrending,
                     is_flash_sale: isFlash,
-                    image_url: img1_url, // Using old column name for main image to avoid breaking your frontend immediately
+                    image_url: img1_url, 
                     image_2: img2_url,
                     image_3: img3_url,
                     image_4: img4_url,
@@ -552,8 +466,6 @@
                 
                 // Clear Form & Close Modal
                 document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
-                document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
-                document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
                 
                 closeProductModal();
                 loadProducts();
@@ -561,7 +473,7 @@
 
             } catch (err) {
                 console.error(err);
-                alert("Error saving product: " + err.message + "\n\n(Have you created the 'product-images' bucket and added the new columns in Supabase?)");
+                alert("Error saving product: " + err.message);
             } finally {
                 btn.innerHTML = 'SAVE PRODUCT';
                 btn.disabled = false;
