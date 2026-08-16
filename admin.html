@@ -4,88 +4,468 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
+    
+    <!-- Tailwind CSS & Phosphor Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
     <style>
-        .menu-active { background: linear-gradient(135deg, #e6998c, #d8897c); color: white; }
+        * { font-family: 'Montserrat', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif !important; }
+        .menu-active { background: linear-gradient(135deg, #e6998c, #d8897c); color: white; box-shadow: 0 4px 15px rgba(230, 153, 140, 0.4); }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50 text-gray-800">
 
-    <!-- LOGIN OVERLAY -->
-    <div id="login-modal" class="fixed inset-0 z-[9999] bg-gray-900 flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl w-full max-w-sm shadow-2xl">
-            <h2 class="text-2xl font-bold mb-6 text-center">Admin Login</h2>
-            <input type="password" id="admin-pass" placeholder="Enter Admin Password" class="w-full p-3 border rounded-lg mb-4 outline-none focus:border-[#e6998c]">
-            <button onclick="checkLogin()" class="w-full bg-black text-white py-3 rounded-lg font-bold">Login</button>
+    <!-- ========================================== -->
+    <!-- SECURE LOGIN MODAL -->
+    <!-- ========================================== -->
+    <div id="login-modal" class="fixed inset-0 z-[9999] bg-[#0f172a] flex items-center justify-center p-4">
+        <div class="bg-white p-8 md:p-10 rounded-2xl w-full max-w-md shadow-2xl text-center">
+            <h1 class="text-3xl font-extrabold text-[#e6998c] tracking-widest uppercase font-serif mb-2">Yogesh</h1>
+            <p class="text-gray-500 text-sm mb-8 tracking-widest uppercase">Admin Secure Portal</p>
+            
+            <div class="text-left mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">Admin Password</label>
+                <div class="relative">
+                    <i class="ph ph-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+                    <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all">
+                </div>
+            </div>
+            
+            <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
         </div>
     </div>
 
-    <!-- MAIN CONTENT (HIDDEN UNTIL LOGIN) -->
-    <div id="admin-panel" class="hidden">
-        <!-- Sidebar and Content Structure -->
-        <div class="flex">
-            <!-- Sidebar (Desktop/Mobile) -->
-            <aside class="w-[280px] h-screen bg-[#0f172a] text-white p-6 fixed lg:relative hidden lg:block">
-                <h1 class="text-2xl font-bold text-[#e6998c] mb-10 font-serif">YOGESH</h1>
-                <nav class="space-y-4">
-                    <button class="menu-active w-full p-4 rounded-xl text-left font-bold flex items-center gap-3">📊 Overview</button>
-                    <button onclick="alert('Products Management coming soon!')" class="w-full p-4 hover:bg-gray-800 rounded-xl text-left font-bold flex items-center gap-3">💍 Products</button>
-                    <button onclick="alert('Orders Management coming soon!')" class="w-full p-4 hover:bg-gray-800 rounded-xl text-left font-bold flex items-center gap-3">📦 Orders</button>
-                </nav>
-            </aside>
+    <!-- ========================================== -->
+    <!-- MAIN ADMIN DASHBOARD -->
+    <!-- ========================================== -->
+    <div id="admin-panel" class="hidden flex h-screen overflow-hidden">
+        
+        <!-- SIDEBAR -->
+        <aside class="w-[280px] bg-[#0f172a] text-gray-300 flex flex-col shrink-0">
+            <div class="p-6 border-b border-gray-800 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold">Y</div>
+                <div>
+                    <h2 class="text-lg font-bold text-white tracking-wider">YOGESH</h2>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
+                </div>
+            </div>
 
-            <!-- Dashboard Content -->
-            <main class="flex-1 p-6 lg:p-10">
-                <h2 class="text-3xl font-bold mb-8">Overview Dashboard</h2>
+            <nav class="p-4 space-y-2 flex-grow overflow-y-auto">
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-2">Main Menu</p>
                 
-                <!-- Stat Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                        <p class="text-gray-500 text-sm">Total Sales</p>
-                        <h3 id="stat-sales" class="text-2xl font-bold mt-1">₹0</h3>
-                    </div>
-                    <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                        <p class="text-gray-500 text-sm">Total Orders</p>
-                        <h3 id="stat-orders" class="text-2xl font-bold mt-1">0</h3>
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all">
+                    <i class="ph ph-squares-four text-xl"></i> Dashboard Overview
+                </button>
+                
+                <button onclick="switchTab('products')" id="tab-products" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all">
+                    <i class="ph ph-sketch-logo text-xl"></i> Product Catalog
+                </button>
+                
+                <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all">
+                    <i class="ph ph-shopping-bag text-xl"></i> Order Management
+                </button>
+
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-8">Settings</p>
+                
+                <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
+                    <i class="ph ph-sign-out text-xl"></i> Secure Logout
+                </button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 bg-[#f8fafc] h-full overflow-y-auto relative">
+            
+            <!-- HEADER -->
+            <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-6 flex justify-between items-center sticky top-0 z-10">
+                <div>
+                    <h1 id="page-title" class="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+                    <p class="text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <button class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-[#e6998c] hover:text-white transition-colors relative">
+                        <i class="ph ph-bell text-xl"></i>
+                        <span class="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+                    </button>
+                </div>
+            </header>
+
+            <div class="p-6 md:p-8 max-w-7xl mx-auto">
+
+                <!-- 1. DASHBOARD TAB -->
+                <div id="section-dashboard" class="block space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-2xl"><i class="ph ph-currency-inr"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-bold">Total Revenue</p>
+                                <h3 id="stat-revenue" class="text-3xl font-extrabold text-gray-900 mt-1">₹0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl"><i class="ph ph-shopping-cart"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-bold">Total Orders</p>
+                                <h3 id="stat-orders-count" class="text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+                            <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl"><i class="ph ph-sketch-logo"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-sm font-bold">Live Products</p>
+                                <h3 id="stat-products-count" class="text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border">
-                    <canvas id="salesChart" height="200"></canvas>
+                <!-- 2. PRODUCTS TAB -->
+                <div id="section-products" class="hidden space-y-6">
+                    <!-- Add Product Form -->
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-gray-900 flex items-center gap-2"><i class="ph ph-plus-circle text-[#e6998c]"></i> Add New Product</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div class="col-span-1 md:col-span-2">
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Product Name</label>
+                                <input type="text" id="add-p-name" placeholder="e.g. Gold Plated Necklace" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c]">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Selling Price (₹)</label>
+                                <input type="number" id="add-p-price" placeholder="e.g. 999" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c]">
+                            </div>
+                            <div class="col-span-1 md:col-span-3">
+                                <label class="block text-xs font-bold text-gray-500 mb-1">Image URL</label>
+                                <input type="text" id="add-p-image" placeholder="Paste image link here" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c]">
+                            </div>
+                            <div class="col-span-1 flex items-end">
+                                <button onclick="addProduct()" id="btn-add-product" class="w-full bg-black hover:bg-gray-800 text-white p-3 rounded-lg font-bold transition-colors">Save Product</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products List Table -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <h3 class="font-bold text-gray-900">Current Catalog</h3>
+                            <button onclick="loadProducts()" class="text-sm text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm whitespace-nowrap">
+                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
+                                    <tr>
+                                        <th class="p-4">Image</th>
+                                        <th class="p-4">Product Name</th>
+                                        <th class="p-4">Price</th>
+                                        <th class="p-4">Status</th>
+                                        <th class="p-4 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-table-body" class="divide-y divide-gray-100">
+                                    <tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </main>
-        </div>
+
+                <!-- 3. ORDERS TAB -->
+                <div id="section-orders" class="hidden space-y-6">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <h3 class="font-bold text-gray-900">Recent Orders</h3>
+                            <button onclick="loadOrders()" class="text-sm text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm whitespace-nowrap">
+                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
+                                    <tr>
+                                        <th class="p-4">Order ID</th>
+                                        <th class="p-4">Customer Details</th>
+                                        <th class="p-4">Total Amount</th>
+                                        <th class="p-4">Payment</th>
+                                        <th class="p-4">Current Status</th>
+                                        <th class="p-4 text-right">Update Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-table-body" class="divide-y divide-gray-100">
+                                    <tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- ========================================== -->
     <script>
-        const ADMIN_PASSWORD = "123"; // अपना सीक्रेट पासवर्ड यहाँ रखें
+        // --- 1. CONFIGURATION & AUTH ---
+        const ADMIN_PASSWORD = "123"; // CHANGE THIS PASSWORD
+        
+        // SUPABASE CREDENTIALS
+        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
-                loadDashboardData();
+                initDashboard();
             } else {
-                alert("गलत पासवर्ड!");
+                alert("Incorrect Password! Access Denied.");
             }
         }
 
-        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        function logout() {
+            if(confirm("Are you sure you want to logout?")) {
+                document.getElementById('admin-pass').value = '';
+                document.getElementById('admin-panel').classList.add('hidden');
+                document.getElementById('login-modal').classList.remove('hidden');
+            }
+        }
 
-        async function loadDashboardData() {
-            // Fetch Orders
-            const { data: orders } = await supabase.from('orders').select('*');
+        // --- 2. TAB SWITCHING LOGIC ---
+        function switchTab(tabName) {
+            // Hide all sections
+            document.getElementById('section-dashboard').classList.add('hidden');
+            document.getElementById('section-products').classList.add('hidden');
+            document.getElementById('section-orders').classList.add('hidden');
             
-            // Calculate Total Sales
-            let total = orders.reduce((sum, o) => sum + parseInt(o.total_amount.replace('₹','').replace(',','')), 0);
+            // Remove active classes from sidebar
+            document.getElementById('tab-dashboard').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
+            document.getElementById('tab-products').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
+            document.getElementById('tab-orders').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
+
+            // Show selected section & activate tab
+            const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
             
-            document.getElementById('stat-sales').innerText = "₹" + total.toLocaleString('en-IN');
-            document.getElementById('stat-orders').innerText = orders.length;
+            if(tabName === 'dashboard') {
+                document.getElementById('section-dashboard').classList.remove('hidden');
+                document.getElementById('tab-dashboard').className = activeClass;
+                document.getElementById('page-title').innerText = "Dashboard Overview";
+                loadDashboardStats();
+            } 
+            else if(tabName === 'products') {
+                document.getElementById('section-products').classList.remove('hidden');
+                document.getElementById('tab-products').className = activeClass;
+                document.getElementById('page-title').innerText = "Product Management";
+                loadProducts();
+            } 
+            else if(tabName === 'orders') {
+                document.getElementById('section-orders').classList.remove('hidden');
+                document.getElementById('tab-orders').className = activeClass;
+                document.getElementById('page-title').innerText = "Order Management";
+                loadOrders();
+            }
+        }
+
+        // Initialize Data on Login
+        function initDashboard() {
+            loadDashboardStats();
+            loadProducts();
+            loadOrders();
+        }
+
+        // --- 3. DATA FETCHING (DASHBOARD) ---
+        async function loadDashboardStats() {
+            try {
+                const { data: orders, error: err1 } = await supabase.from('orders').select('*');
+                const { count: productsCount, error: err2 } = await supabase.from('products').select('*', { count: 'exact', head: true });
+                
+                if(orders) {
+                    document.getElementById('stat-orders-count').innerText = orders.length;
+                    
+                    let totalRev = orders.reduce((sum, o) => {
+                        let amount = 0;
+                        if(o.total_amount) {
+                            // Convert string like "₹1,200" to number 1200
+                            let cleanStr = String(o.total_amount).replace(/[^0-9.-]+/g,"");
+                            amount = parseFloat(cleanStr) || 0;
+                        }
+                        return sum + amount;
+                    }, 0);
+                    
+                    document.getElementById('stat-revenue').innerText = "₹" + totalRev.toLocaleString('en-IN');
+                }
+                
+                if(productsCount !== null) {
+                    document.getElementById('stat-products-count').innerText = productsCount;
+                }
+            } catch (error) { console.error("Error loading stats", error); }
+        }
+
+        // --- 4. PRODUCT MANAGEMENT ---
+        async function loadProducts() {
+            const tbody = document.getElementById('products-table-body');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400"><i class="ph ph-spinner animate-spin text-2xl"></i> Loading...</td></tr>';
+            
+            const { data, error } = await supabase.from('products').select('*').order('id', { ascending: false });
+            
+            if (error) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`;
+                return;
+            }
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            data.forEach(p => {
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors group">
+                        <td class="p-4">
+                            <img src="${p.image_url}" class="w-12 h-12 rounded-lg object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'">
+                        </td>
+                        <td class="p-4 font-bold text-gray-800 w-full max-w-[200px] truncate">${p.name}</td>
+                        <td class="p-4 font-bold text-green-600">₹${p.price}</td>
+                        <td class="p-4"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Active</span></td>
+                        <td class="p-4 text-right">
+                            <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors ml-auto">
+                                <i class="ph ph-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function addProduct() {
+            const btn = document.getElementById('btn-add-product');
+            const nameInput = document.getElementById('add-p-name');
+            const priceInput = document.getElementById('add-p-price');
+            const imgInput = document.getElementById('add-p-image');
+
+            if(!nameInput.value || !priceInput.value || !imgInput.value) {
+                alert("Please fill all fields to add a product.");
+                return;
+            }
+
+            btn.innerText = "Saving..."; btn.disabled = true;
+
+            const { data, error } = await supabase.from('products').insert([
+                { name: nameInput.value, price: priceInput.value, image_url: imgInput.value }
+            ]);
+
+            btn.innerText = "Save Product"; btn.disabled = false;
+
+            if (error) {
+                alert("Failed to add product: " + error.message);
+            } else {
+                nameInput.value = ''; priceInput.value = ''; imgInput.value = '';
+                loadProducts(); // Refresh list
+                loadDashboardStats(); // Update count
+            }
+        }
+
+        async function deleteProduct(id, name) {
+            if(confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+                const { error } = await supabase.from('products').delete().eq('id', id);
+                if(error) alert("Error deleting product.");
+                else {
+                    loadProducts();
+                    loadDashboardStats();
+                }
+            }
+        }
+
+        // --- 5. ORDER MANAGEMENT ---
+        async function loadOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400"><i class="ph ph-spinner animate-spin text-2xl"></i> Loading...</td></tr>';
+            
+            const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+            
+            if (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error loading orders</td></tr>`;
+                return;
+            }
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders received yet.</td></tr>`;
+                return;
+            }
+
+            let html = '';
+            data.forEach(o => {
+                // Formatting Customer Info safely
+                let customerHTML = "N/A";
+                if(o.customer_details) {
+                    try {
+                        let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : o.customer_details;
+                        customerHTML = `
+                            <p class="font-bold text-gray-800">${c.name || 'N/A'}</p>
+                            <p class="text-xs text-gray-500">${c.email_phone || ''}</p>
+                            <p class="text-[10px] text-gray-400 mt-0.5 truncate max-w-[200px]">${c.city || ''}, ${c.state || ''}</p>
+                        `;
+                    } catch(e) {}
+                }
+
+                // Status Badge Color Logic
+                let badgeClass = "bg-gray-100 text-gray-700";
+                let currentStatus = o.status || 'Processing';
+                if(currentStatus === 'Processing') badgeClass = "bg-yellow-100 text-yellow-700";
+                if(currentStatus === 'Shipped') badgeClass = "bg-blue-100 text-blue-700";
+                if(currentStatus === 'Delivered') badgeClass = "bg-green-100 text-green-700";
+                if(currentStatus === 'Cancelled') badgeClass = "bg-red-100 text-red-700";
+
+                let dateStr = new Date(o.created_at).toLocaleDateString('en-IN', {day: 'numeric', month:'short', year:'numeric'});
+
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-50">
+                        <td class="p-4">
+                            <p class="font-bold text-[#e6998c]">${o.order_id}</p>
+                            <p class="text-[11px] text-gray-400 font-medium">${dateStr}</p>
+                        </td>
+                        <td class="p-4">${customerHTML}</td>
+                        <td class="p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
+                        <td class="p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
+                        <td class="p-4">
+                            <span id="status-badge-${o.id}" class="${badgeClass} px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">${currentStatus}</span>
+                        </td>
+                        <td class="p-4 text-right">
+                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="p-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer hover:border-[#e6998c] transition-colors">
+                                <option value="" disabled selected>Change Status...</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function updateOrderStatus(id, newStatus) {
+            if(!newStatus) return;
+            
+            const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', id);
+            
+            if(error) {
+                alert("Failed to update status!");
+            } else {
+                // Just reload the orders list to refresh UI colors
+                loadOrders();
+            }
         }
     </script>
 </body>
