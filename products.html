@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Yogesh Jewellers - Products</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f8fa;
+    color: #172033;
+}
+
+.card {
+    background: white;
+    border: 1px solid #edf0f3;
+    border-radius: 22px;
+    box-shadow: 0 8px 30px rgba(20,30,50,.05);
+}
+
+.peach {
+    color: #ff8178;
+}
+
+.peach-bg {
+    background: #fff0ee;
+}
+
+.sidebar {
+    transition: transform .3s ease;
+}
+
+.overlay {
+    transition: opacity .3s ease;
+}
+
+.menu-active {
+    background: linear-gradient(135deg,#ff8178,#ff6f68);
+    box-shadow: 0 10px 25px rgba(255,117,108,.25);
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 20px;
+}
+
+@media (min-width:1024px) {
+
+    .desktop-sidebar {
+        transform: translateX(0) !important;
+    }
+
+    .main-content {
+        margin-left: 280px;
+    }
+
+    .mobile-menu-btn {
+        display:none;
+    }
+
+    .mobile-overlay {
+        display:none !important;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- OVERLAY -->
+
+<div
+id="overlay"
+class="fixed inset-0 bg-black/50 z-40 hidden opacity-0 overlay"
+onclick="closeSidebar()">
+</div>
+
+
+<!-- SIDEBAR -->
+
+<aside
+id="sidebar"
+class="sidebar desktop-sidebar fixed top-0 left-0 h-full w-[280px] bg-[#111214] text-white z-50 -translate-x-full flex flex-col">
+
+    <!-- LOGO -->
+
+    <div class="px-7 py-7 border-b border-white/10">
+
+        <div class="flex items-center gap-4">
+
+            <div class="text-[#ff8178] text-4xl">
+                ◇
+            </div>
+
+            <div>
+
+                <div class="font-serif text-3xl font-bold">
+                    Yogesh
+                </div>
+
+                <div class="tracking-[6px] text-xs text-gray-400">
+                    JEWELLERS
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- MENU -->
+
+    <div class="sidebar-scroll flex-1 overflow-y-auto px-5 py-7">
+
+        <div class="text-[11px] tracking-[3px] text-gray-500 mb-5">
+            MAIN MENU
+        </div>
+
+
+        <!-- Dashboard -->
+
+        <button
+        onclick="goDashboard()"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5 text-left mb-2">
+
+            <span class="text-xl">⌂</span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </button>
+
+
+        <!-- Products -->
+
+        <button
+        class="menu-active w-full flex items-center justify-between px-5 py-4 rounded-2xl text-left mb-2">
+
+            <div class="flex items-center gap-4">
+
+                <span class="text-xl">▣</span>
+
+                <span class="font-medium">
+                    Products
+                </span>
+
+            </div>
+
+            <span>›</span>
+
+        </button>
+
+
+        <!-- Orders -->
+
+        <button
+        onclick="comingSoon('Orders')"
+        class="w-full flex items-center justify-between px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <div class="flex items-center gap-4">
+
+                <span class="text-xl">♣</span>
+
+                <span>
+                    Orders
+                </span>
+
+            </div>
+
+            <span>›</span>
+
+        </button>
+
+
+        <!-- Categories -->
+
+        <button
+        onclick="comingSoon('Categories')"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <span class="text-xl">▦</span>
+
+            <span>
+                Categories
+            </span>
+
+        </button>
+
+
+        <!-- Banners -->
+
+        <button
+        onclick="comingSoon('Banners')"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <span class="text-xl">▧</span>
+
+            <span>
+                Banners
+            </span>
+
+        </button>
+
+
+        <!-- Customers -->
+
+        <button
+        onclick="comingSoon('Customers')"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <span class="text-xl">♙</span>
+
+            <span>
+                Customers
+            </span>
+
+        </button>
+
+
+        <!-- Reports -->
+
+        <button
+        onclick="comingSoon('Reports')"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <span class="text-xl">▥</span>
+
+            <span>
+                Reports
+            </span>
+
+        </button>
+
+
+        <!-- Settings -->
+
+        <button
+        onclick="comingSoon('Settings')"
+        class="w-full flex items-center gap-4 px-5 py-4 rounded-2xl hover:bg-white/5">
+
+            <span class="text-xl">⚙</span>
+
+            <span>
+                Settings
+            </span>
+
+        </button>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="text-[11px] tracking-[3px] text-gray-500 mt-9 mb-5">
+            QUICK ACTIONS
+        </div>
+
+
+        <button
+        onclick="openAddProduct()"
+        class="w-full flex items-center gap-4 px-3 py-3 hover:bg-white/5 rounded-xl">
+
+            <span class="w-10 h-10 border border-[#ff8178] rounded-full flex items-center justify-center text-[#ff8178]">
+                +
+            </span>
+
+            <span>
+                Add New Product
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <!-- BRAND -->
+
+    <div class="p-5">
+
+        <div class="border border-white/10 rounded-2xl p-4 flex items-center gap-4">
+
+            <div class="w-12 h-12 rounded-full bg-[#2b2020] flex items-center justify-center text-xl">
+                👑
+            </div>
+
+            <div>
+
+                <div class="font-bold">
+                    Yogesh Jewellers
+                </div>
+
+                <div class="text-sm text-gray-500">
+                    Premium Collection ✨
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main-content min-h-screen">
+
+
+    <!-- HEADER -->
+
+    <header
+    class="sticky top-0 z-30 bg-white border-b border-gray-100 h-[76px] flex items-center justify-between px-5 md:px-8">
+
+        <div class="flex items-center gap-5">
+
+            <button
+            onclick="openSidebar()"
+            class="mobile-menu-btn text-3xl">
+                ☰
+            </button>
+
+            <div>
+
+                <h1 class="text-2xl md:text-3xl font-bold">
+                    Products
+                </h1>
+
+                <p class="text-sm text-gray-400 hidden md:block">
+                    Manage your jewellery products
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="flex items-center gap-4">
+
+            <div
+            id="productTotal"
+            class="hidden sm:block bg-[#fff0ee] text-[#ff8178] px-4 py-2 rounded-full text-sm font-semibold">
+                0 Products
+            </div>
+
+            <div
+            class="w-11 h-11 rounded-full bg-[#fff0ee] flex items-center justify-center text-[#ff8178] font-bold text-xl">
+                Y
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- PAGE -->
+
+    <div class="p-5 md:p-8 max-w-[1400px] mx-auto">
+
+
+        <!-- TITLE -->
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5 mb-7">
+
+            <div>
+
+                <h2 class="text-3xl font-bold">
+                    Product Management
+                </h2>
+
+                <p class="text-gray-500 mt-2">
+                    View and manage all your jewellery products.
+                </p>
+
+            </div>
+
+
+            <button
+            onclick="openAddProduct()"
+            class="bg-[#ff8178] hover:bg-[#ff6f68] text-white px-6 py-3.5 rounded-xl font-semibold shadow-lg shadow-[#ff8178]/20 transition">
+
+                + Add New Product
+
+            </button>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <section class="card p-5 mb-7">
+
+            <div class="flex flex-col md:flex-row gap-4">
+
+                <div class="flex-1 relative">
+
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">
+                        🔍
+                    </span>
+
+                    <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search products..."
+                    oninput="filterProducts()"
+                    class="w-full border border-gray-200 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-[#ff8178]">
+
+                </div>
+
+
+                <button
+                onclick="loadProducts()"
+                class="px-6 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 font-semibold">
+
+                    ↻ Refresh
+
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- MESSAGE -->
+
+        <div
+        id="message"
+        class="hidden mb-5 p-4 rounded-xl text-center font-semibold">
+        </div>
+
+
+        <!-- PRODUCTS -->
+
+        <section class="card p-5 md:p-7">
+
+            <div class="flex items-center justify-between mb-6">
+
+                <div>
+
+                    <h2 class="text-xl font-bold">
+                        All Products
+                    </h2>
+
+                    <p
+                    id="resultText"
+                    class="text-sm text-gray-400 mt-1">
+                        Loading...
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DESKTOP TABLE -->
+
+            <div class="hidden md:block overflow-x-auto">
+
+                <table class="w-full">
+
+                    <thead>
+
+                        <tr class="border-b border-gray-100 text-left">
+
+                            <th class="py-4 px-3 text-sm text-gray-400 font-semibold">
+                                Product
+                            </th>
+
+                            <th class="py-4 px-3 text-sm text-gray-400 font-semibold">
+                                Price
+                            </th>
+
+                            <th class="py-4 px-3 text-sm text-gray-400 font-semibold">
+                                Added
+                            </th>
+
+                            <th class="py-4 px-3 text-sm text-gray-400 font-semibold text-right">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="productsTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- MOBILE -->
+
+            <div
+            id="productsMobile"
+            class="md:hidden space-y-4">
+            </div>
+
+
+            <!-- EMPTY -->
+
+            <div
+            id="emptyState"
+            class="hidden text-center py-16">
+
+                <div class="text-5xl mb-4">
+                    💎
+                </div>
+
+                <h3 class="text-xl font-bold">
+                    No Products Found
+                </h3>
+
+                <p class="text-gray-400 mt-2">
+                    Add your first jewellery product.
+                </p>
+
+                <button
+                onclick="openAddProduct()"
+                class="mt-5 bg-[#ff8178] text-white px-5 py-3 rounded-xl font-semibold">
+                    + Add Product
+                </button>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- ========================================================= -->
+<!-- ADD / EDIT MODAL -->
+<!-- ========================================================= -->
+
+<div
+id="productModal"
+class="fixed inset-0 bg-black/50 z-[100] hidden items-center justify-center p-4">
+
+    <div
+    class="bg-white w-full max-w-lg rounded-3xl shadow-2xl max-h-[90vh] overflow-y-auto">
+
+        <!-- MODAL HEADER -->
+
+        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+
+            <div>
+
+                <h2
+                id="modalTitle"
+                class="text-2xl font-bold">
+                    Add New Product
+                </h2>
+
+                <p class="text-sm text-gray-400 mt-1">
+                    Add jewellery product to your store
+                </p>
+
+            </div>
+
+            <button
+            onclick="closeProductModal()"
+            class="w-10 h-10 rounded-full bg-gray-100 hover:bg-gray-200 text-xl">
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+        id="productForm"
+        onsubmit="saveProduct(event)"
+        class="p-6 space-y-5">
+
+            <input
+            type="hidden"
+            id="editProductId">
+
+
+            <!-- NAME -->
+
+            <div>
+
+                <label class="block text-sm font-semibold mb-2">
+                    Product Name
+                </label>
+
+                <input
+                id="productName"
+                required
+                type="text"
+                placeholder="e.g. Premium Royal Necklace"
+                class="w-full border border-gray-200 rounded-xl px-4 py-3.5 outline-none focus:border-[#ff8178]">
+
+            </div>
+
+
+            <!-- PRICE -->
+
+            <div>
+
+                <label class="block text-sm font-semibold mb-2">
+                    Price ₹
+                </label>
+
+                <input
+                id="productPrice"
+                required
+                min="0"
+                type="number"
+                placeholder="1499"
+                class="w-full border border-gray-200 rounded-xl px-4 py-3.5 outline-none focus:border-[#ff8178]">
+
+            </div>
+
+
+            <!-- IMAGE -->
+
+            <div>
+
+                <label class="block text-sm font-semibold mb-2">
+                    Product Image
+                </label>
+
+                <input
+                id="productImage"
+                type="file"
+                accept="image/*"
+                class="w-full border border-gray-200 rounded-xl p-3">
+
+                <p
+                id="imageHelp"
+                class="text-xs text-gray-400 mt-2">
+                    Select JPG, PNG or WEBP image.
+                </p>
+
+            </div>
+
+
+            <!-- PREVIEW -->
+
+            <div
+            id="imagePreviewBox"
+            class="hidden">
+
+                <img
+                id="imagePreview"
+                class="w-32 h-32 rounded-2xl object-cover border border-gray-200">
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="flex gap-3 pt-3">
+
+                <button
+                type="button"
+                onclick="closeProductModal()"
+                class="flex-1 py-3.5 rounded-xl bg-gray-100 hover:bg-gray-200 font-semibold">
+
+                    Cancel
+
+                </button>
+
+
+                <button
+                id="saveBtn"
+                type="submit"
+                class="flex-1 py-3.5 rounded-xl bg-[#ff8178] hover:bg-[#ff6f68] text-white font-semibold">
+
+                    Save Product
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const supabaseUrl =
+'https://fzzwioyhmuanfvpotfit.supabase.co';
+
+const supabaseKey =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RV48256QUHfYn4BOZi2DdSQ';
+
+const supabaseClient =
+window.supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+);
+
+
+/* =========================================================
+   DATA
+========================================================= */
+
+let allProducts = [];
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function openSidebar() {
+
+    const sidebar =
+    document.getElementById('sidebar');
+
+    const overlay =
+    document.getElementById('overlay');
+
+    sidebar.classList.remove('-translate-x-full');
+
+    overlay.classList.remove('hidden');
+
+    setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+    },10);
+}
+
+
+function closeSidebar() {
+
+    const sidebar =
+    document.getElementById('sidebar');
+
+    const overlay =
+    document.getElementById('overlay');
+
+    sidebar.classList.add('-translate-x-full');
+
+    overlay.classList.add('opacity-0');
+
+    setTimeout(() => {
+        overlay.classList.add('hidden');
+    },300);
+}
+
+
+function goDashboard() {
+
+    window.location.href = 'index.html';
+
+}
+
+
+function comingSoon(name) {
+
+    closeSidebar();
+
+    alert(
+        name + ' page next step me connect ki jayegi.'
+    );
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showMessage(text,type='success') {
+
+    const box =
+    document.getElementById('message');
+
+    box.textContent = text;
+
+    box.className =
+    'mb-5 p-4 rounded-xl text-center font-semibold block ' +
+    (
+        type === 'success'
+        ? 'bg-green-100 text-green-700'
+        : 'bg-red-100 text-red-700'
+    );
+
+    setTimeout(() => {
+
+        box.classList.add('hidden');
+
+    },4000);
+
+}
+
+
+/* =========================================================
+   LOAD PRODUCTS
+========================================================= */
+
+async function loadProducts() {
+
+    const table =
+    document.getElementById('productsTable');
+
+    const mobile =
+    document.getElementById('productsMobile');
+
+    table.innerHTML = `
+        <tr>
+            <td colspan="4"
+            class="text-center py-12 text-gray-400">
+                Loading products...
+            </td>
+        </tr>
+    `;
+
+    mobile.innerHTML = `
+        <div class="text-center py-12 text-gray-400">
+            Loading products...
+        </div>
+    `;
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+    .from('products')
+    .select('id,name,price,image_url,created_at')
+    .order('created_at',{
+        ascending:false
+    });
+
+
+    if(error) {
+
+        console.error(error);
+
+        table.innerHTML = '';
+
+        mobile.innerHTML = '';
+
+        document.getElementById('emptyState')
+        .classList.remove('hidden');
+
+        showMessage(
+            'Products load nahi ho pa rahe: ' + error.message,
+            'error'
+        );
+
+        return;
+    }
+
+
+    allProducts =
+    data || [];
+
+
+    renderProducts(allProducts);
+
+}
+
+
+/* =========================================================
+   RENDER
+========================================================= */
+
+function renderProducts(products) {
+
+    const table =
+    document.getElementById('productsTable');
+
+    const mobile =
+    document.getElementById('productsMobile');
+
+    const empty =
+    document.getElementById('emptyState');
+
+    const resultText =
+    document.getElementById('resultText');
+
+    const total =
+    document.getElementById('productTotal');
+
+
+    total.textContent =
+    allProducts.length + ' Products';
+
+
+    resultText.textContent =
+    products.length +
+    ' product' +
+    (products.length === 1 ? '' : 's') +
+    ' found';
+
+
+    if(products.length === 0) {
+
+        table.innerHTML = '';
+
+        mobile.innerHTML = '';
+
+        empty.classList.remove('hidden');
+
+        return;
+
+    }
+
+
+    empty.classList.add('hidden');
+
+
+    /* DESKTOP */
+
+    table.innerHTML =
+    products.map(product => `
+
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+
+            <td class="py-4 px-3">
+
+                <div class="flex items-center gap-4">
+
+                    <img
+                    src="${safeImage(product.image_url)}"
+                    class="w-16 h-16 rounded-xl object-cover bg-gray-100"
+                    onerror="this.src='https://placehold.co/100x100/f7f8fa/999?text=No+Image'">
+
+                    <div class="min-w-0">
+
+                        <p class="font-semibold truncate max-w-[300px]">
+                            ${escapeHtml(product.name)}
+                        </p>
+
+                        <p class="text-xs text-gray-400 mt-1">
+                            ID: ${escapeHtml(product.id)}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <td class="py-4 px-3">
+
+                <span class="font-bold text-gray-800">
+                    ₹${formatPrice(product.price)}
+                </span>
+
+            </td>
+
+
+            <td class="py-4 px-3 text-gray-500 text-sm">
+
+                ${formatDate(product.created_at)}
+
+            </td>
+
+
+            <td class="py-4 px-3">
+
+                <div class="flex justify-end gap-2">
+
+                    <button
+                    onclick="editProduct('${product.id}')"
+                    class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100">
+
+                        ✏️
+
+                    </button>
+
+
+                    <button
+                    onclick="deleteProduct('${product.id}')"
+                    class="w-10 h-10 rounded-xl bg-red-50 text-red-600 hover:bg-red-100">
+
+                        🗑️
+
+                    </button>
+
+                </div>
+
+            </td>
+
+        </tr>
+
+    `).join('');
+
+
+    /* MOBILE */
+
+    mobile.innerHTML =
+    products.map(product => `
+
+        <div class="border border-gray-100 rounded-2xl p-4">
+
+            <div class="flex gap-4">
+
+                <img
+                src="${safeImage(product.image_url)}"
+                class="w-20 h-20 rounded-xl object-cover bg-gray-100"
+                onerror="this.src='https://placehold.co/100x100/f7f8fa/999?text=No+Image'">
+
+
+                <div class="flex-1 min-w-0">
+
+                    <h3 class="font-bold truncate">
+                        ${escapeHtml(product.name)}
+                    </h3>
+
+                    <p class="text-lg font-bold text-[#ff8178] mt-2">
+                        ₹${formatPrice(product.price)}
+                    </p>
+
+                    <p class="text-xs text-gray-400 mt-1">
+                        ${formatDate(product.created_at)}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="flex gap-2 mt-4">
+
+                <button
+                onclick="editProduct('${product.id}')"
+                class="flex-1 py-2.5 rounded-xl bg-blue-50 text-blue-600 font-semibold">
+
+                    ✏️ Edit
+
+                </button>
+
+
+                <button
+                onclick="deleteProduct('${product.id}')"
+                class="flex-1 py-2.5 rounded-xl bg-red-50 text-red-600 font-semibold">
+
+                    🗑️ Delete
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `).join('');
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function filterProducts() {
+
+    const search =
+    document.getElementById('searchInput')
+    .value
+    .toLowerCase()
+    .trim();
+
+
+    if(!search) {
+
+        renderProducts(allProducts);
+
+        return;
+
+    }
+
+
+    const filtered =
+    allProducts.filter(product =>
+        String(product.name || '')
+        .toLowerCase()
+        .includes(search)
+    );
+
+
+    renderProducts(filtered);
+
+}
+
+
+/* =========================================================
+   ADD PRODUCT MODAL
+========================================================= */
+
+function openAddProduct() {
+
+    document.getElementById('productModal')
+    .classList.remove('hidden');
+
+    document.getElementById('productModal')
+    .classList.add('flex');
+
+
+    document.getElementById('modalTitle')
+    .textContent =
+    'Add New Product';
+
+
+    document.getElementById('productForm')
+    .reset();
+
+
+    document.getElementById('editProductId')
+    .value = '';
+
+
+    document.getElementById('imagePreviewBox')
+    .classList.add('hidden');
+
+
+    document.getElementById('imageHelp')
+    .textContent =
+    'Select JPG, PNG or WEBP image.';
+
+}
+
+
+function closeProductModal() {
+
+    document.getElementById('productModal')
+    .classList.add('hidden');
+
+    document.getElementById('productModal')
+    .classList.remove('flex');
+
+}
+
+
+/* =========================================================
+   IMAGE PREVIEW
+========================================================= */
+
+document
+.getElementById('productImage')
+.addEventListener('change',function() {
+
+    const file =
+    this.files[0];
+
+    if(!file) return;
+
+
+    const reader =
+    new FileReader();
+
+
+    reader.onload =
+    function(e) {
+
+        document.getElementById('imagePreview')
+        .src = e.target.result;
+
+        document.getElementById('imagePreviewBox')
+        .classList.remove('hidden');
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+});
+
+
+/* =========================================================
+   SAVE PRODUCT
+========================================================= */
+
+async function saveProduct(event) {
+
+    event.preventDefault();
+
+
+    const button =
+    document.getElementById('saveBtn');
+
+
+    const id =
+    document.getElementById('editProductId')
+    .value;
+
+
+    const name =
+    document.getElementById('productName')
+    .value
+    .trim();
+
+
+    const price =
+    document.getElementById('productPrice')
+    .value;
+
+
+    const file =
+    document.getElementById('productImage')
+    .files[0];
+
+
+    if(!name || !price) {
+
+        showMessage(
+            'Product name aur price fill karein.',
+            'error'
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        button.disabled = true;
+
+        button.textContent =
+        'Saving... ⏳';
+
+
+        let imageUrl = null;
+
+
+        /* IMAGE UPLOAD */
+
+        if(file) {
+
+            const extension =
+            file.name
+            .split('.')
+            .pop()
+            .toLowerCase();
+
+
+            const fileName =
+            'product-' +
+            Date.now() +
+            '-' +
+            Math.random()
+            .toString(36)
+            .substring(2,8) +
+            '.' +
+            extension;
+
+
+            const {
+                error: uploadError
+            } =
+            await supabaseClient
+            .storage
+            .from('product-images')
+            .upload(
+                fileName,
+                file,
+                {
+                    upsert:false
+                }
+            );
+
+
+            if(uploadError) {
+
+                throw uploadError;
+
+            }
+
+
+            const {
+                data: publicData
+            } =
+            supabaseClient
+            .storage
+            .from('product-images')
+            .getPublicUrl(fileName);
+
+
+            imageUrl =
+            publicData.publicUrl;
+
+        }
+
+
+        /* EDIT */
+
+        if(id) {
+
+            const updateData = {
+
+                name:name,
+
+                price:Number(price)
+
+            };
+
+
+            if(imageUrl) {
+
+                updateData.image_url =
+                imageUrl;
+
+            }
+
+
+            const {
+                error
+            } =
+            await supabaseClient
+            .from('products')
+            .update(updateData)
+            .eq('id',id);
+
+
+            if(error) {
+
+                throw error;
+
+            }
+
+
+            showMessage(
+                'Product successfully updated! 🎉'
+            );
+
+        }
+
+
+        /* ADD */
+
+        else {
+
+            if(!imageUrl) {
+
+                throw new Error(
+                    'New product ke liye image select karein.'
+                );
+
+            }
+
+
+            const {
+                error
+            } =
+            await supabaseClient
+            .from('products')
+            .insert([{
+
+                name:name,
+
+                price:Number(price),
+
+                image_url:imageUrl
+
+            }]);
+
+
+            if(error) {
+
+                throw error;
+
+            }
+
+
+            showMessage(
+                'Product successfully added! 🎉'
+            );
+
+        }
+
+
+        closeProductModal();
+
+        await loadProducts();
+
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        showMessage(
+            'Error: ' + error.message,
+            'error'
+        );
+
+    }
+    finally {
+
+        button.disabled = false;
+
+        button.textContent =
+        'Save Product';
+
+    }
+
+}
+
+
+/* =========================================================
+   EDIT PRODUCT
+========================================================= */
+
+function editProduct(id) {
+
+    const product =
+    allProducts.find(
+        item => String(item.id) === String(id)
+    );
+
+
+    if(!product) {
+
+        showMessage(
+            'Product nahi mila.',
+            'error'
+        );
+
+        return;
+
+    }
+
+
+    document.getElementById('productModal')
+    .classList.remove('hidden');
+
+    document.getElementById('productModal')
+    .classList.add('flex');
+
+
+    document.getElementById('modalTitle')
+    .textContent =
+    'Edit Product';
+
+
+    document.getElementById('editProductId')
+    .value =
+    product.id;
+
+
+    document.getElementById('productName')
+    .value =
+    product.name || '';
+
+
+    document.getElementById('productPrice')
+    .value =
+    product.price || '';
+
+
+    document.getElementById('imageHelp')
+    .textContent =
+    'New image select karna optional hai.';
+
+
+    if(product.image_url) {
+
+        document.getElementById('imagePreview')
+        .src =
+        product.image_url;
+
+        document.getElementById('imagePreviewBox')
+        .classList.remove('hidden');
+
+    }
+
+}
+
+
+/* =========================================================
+   DELETE PRODUCT
+========================================================= */
+
+async function deleteProduct(id) {
+
+    const product =
+    allProducts.find(
+        item => String(item.id) === String(id)
+    );
+
+
+    if(!product) return;
+
+
+    const confirmed =
+    confirm(
+        'Kya aap "' +
+        product.name +
+        '" ko delete karna chahte hain?'
+    );
+
+
+    if(!confirmed) return;
+
+
+    try {
+
+        const {
+            error
+        } =
+        await supabaseClient
+        .from('products')
+        .delete()
+        .eq('id',id);
+
+
+        if(error) {
+
+            throw error;
+
+        }
+
+
+        showMessage(
+            'Product successfully deleted.'
+        );
+
+
+        await loadProducts();
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+        showMessage(
+            'Delete error: ' + error.message,
+            'error'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function formatPrice(price) {
+
+    return Number(price || 0)
+    .toLocaleString('en-IN');
+
+}
+
+
+function formatDate(date) {
+
+    if(!date) return '-';
+
+
+    return new Date(date)
+    .toLocaleDateString(
+        'en-IN',
+        {
+            day:'numeric',
+            month:'short',
+            year:'numeric'
+        }
+    );
+
+}
+
+
+function escapeHtml(value) {
+
+    if(value === null ||
+       value === undefined) {
+
+        return '';
+
+    }
+
+
+    return String(value)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+
+}
+
+
+function safeImage(url) {
+
+    if(!url) {
+
+        return 'https://placehold.co/100x100/f7f8fa/999?text=No+Image';
+
+    }
+
+    return escapeHtml(url);
+
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+loadProducts();
+
+</script>
+
+</body>
+</html>
