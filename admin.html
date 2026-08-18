@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- ZOOM FIX: Added maximum-scale and user-scalable=no to prevent auto-zooming -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- ZOOM FIX & RESPONSIVE META TAG -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
     
     <!-- Tailwind CSS & Phosphor Icons -->
@@ -33,7 +33,7 @@
         .img-preview { object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0.375rem; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 overflow-hidden">
 
     <!-- ========================================== -->
     <!-- SECURE LOGIN MODAL -->
@@ -47,7 +47,7 @@
                 <label class="block text-sm font-bold text-gray-700 mb-2">Admin Password</label>
                 <div class="relative">
                     <i class="ph ph-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
-                    <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all">
+                    <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all text-base md:text-sm">
                 </div>
             </div>
             
@@ -56,116 +56,128 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MAIN ADMIN DASHBOARD (MOBILE RESPONSIVE FIX) -->
+    <!-- MAIN ADMIN DASHBOARD (100% RESPONSIVE) -->
     <!-- ========================================== -->
-    <!-- Changed to flex-col on mobile, flex-row on desktop -->
-    <div id="admin-panel" class="hidden flex-col md:flex-row h-screen overflow-hidden">
+    <div id="admin-panel" class="hidden h-screen w-full relative flex-row overflow-hidden bg-gray-50">
         
-        <!-- SIDEBAR -->
-        <!-- Adjusted width for mobile to 100%, and horizontal scroll for navigation -->
-        <aside class="w-full md:w-[280px] bg-[#0f172a] text-gray-300 flex flex-col shrink-0 z-20 shadow-md md:shadow-none">
-            <div class="p-4 md:p-6 border-b border-gray-800 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold shrink-0">Y</div>
-                <div>
-                    <h2 class="text-lg font-bold text-white tracking-wider leading-tight">YOGESH</h2>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
+        <!-- MOBILE OVERLAY (Dark background when menu is open) -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
+
+        <!-- APP SIDEBAR -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[260px] md:w-[280px] bg-[#0f172a] text-gray-300 flex flex-col transform -translate-x-full md:translate-x-0 md:static transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none h-full">
+            <div class="p-5 border-b border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold shrink-0">Y</div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white tracking-wider leading-tight">YOGESH</h2>
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
+                    </div>
                 </div>
+                <!-- Close Button (Mobile Only) -->
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-1">
+                    <i class="ph ph-x text-2xl font-bold"></i>
+                </button>
             </div>
 
-            <!-- Navigation: Horizontal on Mobile, Vertical on Desktop -->
-            <nav class="p-3 md:p-4 flex flex-row md:flex-col gap-2 md:space-y-2 overflow-x-auto hide-scrollbar bg-[#0f172a]">
-                <p class="hidden md:block text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2">Main Menu</p>
+            <nav class="p-4 space-y-2 flex-grow overflow-y-auto hide-scrollbar">
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-2">Main Menu</p>
                 
-                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active whitespace-nowrap px-4 py-2.5 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-white">
-                    <i class="ph ph-squares-four text-lg md:text-xl"></i> Dashboard
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white">
+                    <i class="ph ph-squares-four text-xl"></i> Dashboard
                 </button>
                 
-                <button onclick="switchTab('products')" id="tab-products" class="whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300">
-                    <i class="ph ph-sketch-logo text-lg md:text-xl"></i> Products
+                <button onclick="switchTab('products')" id="tab-products" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-sketch-logo text-xl"></i> Product Catalog
                 </button>
                 
-                <button onclick="switchTab('orders')" id="tab-orders" class="whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300">
-                    <i class="ph ph-shopping-bag text-lg md:text-xl"></i> Orders
+                <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-shopping-bag text-xl"></i> Order Management
                 </button>
 
-                <div class="hidden md:block w-full h-px bg-gray-800 my-4"></div>
+                <div class="w-full h-px bg-gray-800 my-6"></div>
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4">Settings</p>
                 
-                <button onclick="logout()" class="whitespace-nowrap px-4 py-2.5 hover:bg-red-500/10 hover:text-red-500 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-400">
-                    <i class="ph ph-sign-out text-lg md:text-xl"></i> Logout
+                <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
+                    <i class="ph ph-sign-out text-xl"></i> Secure Logout
                 </button>
             </nav>
         </aside>
 
         <!-- MAIN CONTENT AREA -->
-        <main class="flex-1 bg-[#f8fafc] h-full overflow-y-auto relative">
+        <main class="flex-1 flex flex-col h-full w-full overflow-hidden relative min-w-0">
             
             <!-- HEADER -->
-            <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex justify-between items-center sticky top-0 z-10">
+            <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex items-center sticky top-0 z-10 shrink-0 shadow-sm">
+                <!-- Hamburger Menu (Mobile Only) -->
+                <button onclick="toggleSidebar()" class="md:hidden mr-4 text-gray-800 p-1 hover:text-[#e6998c] transition-colors">
+                    <i class="ph ph-list text-3xl font-bold"></i>
+                </button>
                 <div>
                     <h1 id="page-title" class="text-xl md:text-2xl font-bold text-gray-900">Dashboard Overview</h1>
                     <p class="text-xs md:text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
                 </div>
             </header>
 
-            <div class="p-4 md:p-8 max-w-7xl mx-auto">
+            <!-- SCROLLABLE CONTENT -->
+            <div class="flex-1 overflow-y-auto w-full p-4 md:p-8">
 
                 <!-- 1. DASHBOARD TAB -->
-                <div id="section-dashboard" class="block space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-                            <div class="w-14 h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-2xl"><i class="ph ph-currency-inr"></i></div>
+                <div id="section-dashboard" class="block space-y-6 max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-bold">Total Revenue</p>
-                                <h3 id="stat-revenue" class="text-3xl font-extrabold text-gray-900 mt-1">₹0</h3>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Revenue</p>
+                                <h3 id="stat-revenue" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">₹0</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-                            <div class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl"><i class="ph ph-shopping-cart"></i></div>
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-shopping-cart"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-bold">Total Orders</p>
-                                <h3 id="stat-orders-count" class="text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Orders</p>
+                                <h3 id="stat-orders-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
                             </div>
                         </div>
-                        <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-                            <div class="w-14 h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-2xl"><i class="ph ph-sketch-logo"></i></div>
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-sketch-logo"></i></div>
                             <div>
-                                <p class="text-gray-500 text-sm font-bold">Live Products</p>
-                                <h3 id="stat-products-count" class="text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Live Products</p>
+                                <h3 id="stat-products-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- 2. PRODUCTS TAB -->
-                <div id="section-products" class="hidden space-y-6">
+                <div id="section-products" class="hidden space-y-6 max-w-7xl mx-auto">
                     <!-- Advanced Add Product Section -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
                                 <h2 class="text-lg md:text-xl font-bold text-gray-900">Product Management</h2>
-                                <p class="text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p>
+                                <p class="text-[11px] md:text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p>
                             </div>
-                            <button onclick="openProductModal()" class="menu-active px-6 py-2.5 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all">
+                            <button onclick="openProductModal()" class="menu-active px-6 py-3 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all shadow-md">
                                 <i class="ph ph-plus-circle text-xl"></i> Add New Product
                             </button>
                         </div>
 
                         <!-- Products List Table -->
-                        <div class="border border-gray-100 rounded-xl overflow-hidden mt-4">
+                        <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
                             <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                                 <h3 class="font-bold text-gray-900 text-sm">Current Catalog</h3>
                                 <button onclick="loadProducts()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
                             </div>
-                            <div class="overflow-x-auto">
+                            <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm whitespace-nowrap">
-                                    <thead class="bg-white text-gray-500 font-bold border-b border-gray-100 text-xs uppercase tracking-wider">
+                                    <thead class="bg-white text-gray-500 font-bold border-b border-gray-100 text-[10px] md:text-xs uppercase tracking-wider">
                                         <tr>
-                                            <th class="p-4 font-semibold">Image</th>
-                                            <th class="p-4 font-semibold">Product Name</th>
-                                            <th class="p-4 font-semibold">Price</th>
-                                            <th class="p-4 font-semibold">Stock</th>
-                                            <th class="p-4 font-semibold">Status</th>
-                                            <th class="p-4 text-right font-semibold">Action</th>
+                                            <th class="p-3 md:p-4 font-semibold">Image</th>
+                                            <th class="p-3 md:p-4 font-semibold">Product Name</th>
+                                            <th class="p-3 md:p-4 font-semibold">Price</th>
+                                            <th class="p-3 md:p-4 font-semibold">Stock</th>
+                                            <th class="p-3 md:p-4 font-semibold">Status</th>
+                                            <th class="p-3 md:p-4 text-right font-semibold">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="products-table-body" class="divide-y divide-gray-100 bg-white">
@@ -178,19 +190,19 @@
                 </div>
 
                 <!-- 3. ORDERS TAB -->
-                <div id="section-orders" class="hidden space-y-6">
+                <div id="section-orders" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
                         <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-6">Recent Orders</h2>
-                        <div class="overflow-x-auto border border-gray-100 rounded-xl">
+                        <div class="overflow-x-auto border border-gray-100 rounded-xl w-full">
                             <table class="w-full text-left text-sm whitespace-nowrap">
-                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
+                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 text-[10px] md:text-xs uppercase tracking-wider">
                                     <tr>
-                                        <th class="p-4">Order ID</th>
-                                        <th class="p-4">Customer Details</th>
-                                        <th class="p-4">Total Amount</th>
-                                        <th class="p-4">Payment</th>
-                                        <th class="p-4">Current Status</th>
-                                        <th class="p-4 text-right">Update Status</th>
+                                        <th class="p-3 md:p-4 font-semibold">Order ID</th>
+                                        <th class="p-3 md:p-4 font-semibold">Customer Details</th>
+                                        <th class="p-3 md:p-4 font-semibold">Total Amount</th>
+                                        <th class="p-3 md:p-4 font-semibold">Payment</th>
+                                        <th class="p-3 md:p-4 font-semibold">Current Status</th>
+                                        <th class="p-3 md:p-4 text-right font-semibold">Update Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="orders-table-body" class="divide-y divide-gray-100 bg-white">
@@ -209,12 +221,12 @@
     <!-- ADVANCED ADD PRODUCT MODAL (PREMIUM DESIGN + DIRECT UPLOAD) -->
     <!-- ========================================== -->
     <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-4 border border-gray-200">
+        <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-auto border border-gray-200">
             
             <!-- Modal Header -->
-            <div class="p-5 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
+            <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
                 <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="hidden md:inline text-gray-400 font-medium text-lg">(+ Add New Product)</span>
+                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="hidden sm:inline text-gray-400 font-medium text-lg">(+ Add New Product)</span>
                 </h2>
                 <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
                     <i class="ph ph-x text-2xl font-bold"></i>
@@ -222,17 +234,17 @@
             </div>
 
             <!-- Modal Body (Form) -->
-            <div class="p-5 md:p-6 space-y-6">
+            <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
                 
                 <!-- Row 1 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Diamond Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
+                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category <span class="text-red-500">*</span></label>
-                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Necklace">Necklace (गले का हार)</option>
                             <option value="Earrings">Earrings (झुमके)</option>
                             <option value="Rings" selected>Rings (अंगूठियां)</option>
@@ -240,29 +252,29 @@
                             <option value="Pendants">Pendants (पेंडेंट)</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="sm:col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">SKU ID <span class="text-gray-400 font-medium text-[10px]">(स्टॉक कीपिंग यूनिट)</span> <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
+                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
                     </div>
                 </div>
 
                 <!-- Row 2 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-5">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
                     <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Standard Price (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-price" placeholder="जैसे: 45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹) <span class="text-red-500">*</span></label>
+                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Initial Stock Level <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock <span class="text-red-500">*</span></label>
+                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
-                    <div>
+                    <div class="col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Material <span class="text-gray-400 font-medium text-[10px]">(सामग्री)</span></label>
-                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-gray-400 font-medium text-[10px]">(थीम)</span> <span class="text-red-500">*</span></label>
-                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-red-500">*</span></label>
+                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Traditional">Traditional (पारंपरिक)</option>
                             <option value="Modern">Modern (आधुनिक)</option>
                             <option value="Bridal">Bridal (ब्राइडल)</option>
@@ -273,18 +285,17 @@
 
                 <hr class="border-gray-100">
 
-                <!-- Image Gallery Section (NO accept="image/*" - Forces File Manager) -->
+                <!-- Image Gallery Section (File Manager Upload) -->
                 <div>
-                    <div class="flex justify-between items-end mb-3">
-                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES GALLERY <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें)</span></label>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
+                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5)</span></label>
                         <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
                     </div>
-                    <p class="text-[10px] text-gray-400 mb-4">पहले बॉक्स पर क्लिक करके मुख्य फोटो अपलोड करें। (अधिकतम 2MB प्रति फोटो)</p>
+                    <p class="text-[10px] text-gray-400 mb-4">बॉक्स पर क्लिक करके गैलरी/फाइल मैनेजर से फोटो चुनें।</p>
                     
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
                         <!-- Image 1 -->
                         <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group border-[#059669]" onclick="document.getElementById('file-img-1').click()">
-                            <!-- YAHAN SE accept="image/*" HATA DIYA HAI TAKI FILE MANAGER KHULE -->
                             <input type="file" id="file-img-1" class="hidden" onchange="previewImage(this, 'preview-1')">
                             <img id="preview-1" src="" class="hidden img-preview">
                             <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
@@ -321,7 +332,7 @@
                             <img id="preview-5" src="" class="hidden img-preview">
                             <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
                             <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
-                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">5. बॉक्स/पैकेजिंग फोटो</span>
+                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">5. बॉक्स/पैकेजिंग</span>
                         </div>
                     </div>
                 </div>
@@ -329,26 +340,26 @@
                 <!-- Description -->
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">DESCRIPTION <span class="text-gray-400 font-medium text-[10px]">(विवरण)</span></label>
-                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
+                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
                 </div>
 
                 <!-- Checkboxes -->
-                <div class="flex items-center gap-6 pt-2 pb-4">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2 pb-2">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Mark as Trending <span class="hidden sm:inline text-gray-400 font-medium text-[10px]">(ट्रेंडिंग आइटम)</span></span>
+                        <span class="text-xs font-bold text-gray-700">Mark as Trending</span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale <span class="hidden sm:inline text-gray-400 font-medium text-[10px]">(फ्लैश सेल ऑफर)</span></span>
+                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale</span>
                     </label>
                 </div>
 
             </div>
 
             <!-- Modal Footer -->
-            <div class="p-5 md:p-6 border-t border-gray-100 flex justify-end items-center gap-4 bg-gray-50 rounded-b-2xl">
-                <button onclick="closeProductModal()" class="px-5 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
+            <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
+                <button onclick="closeProductModal()" class="px-4 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
                 <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">
                     SAVE PRODUCT
                 </button>
@@ -371,8 +382,9 @@
             const pass = document.getElementById('admin-pass').value;
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-modal').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                document.getElementById('admin-panel').classList.add('flex'); // Add flex for layout
+                const panel = document.getElementById('admin-panel');
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
                 initDashboard();
             } else {
                 alert("Incorrect Password! Access Denied.");
@@ -382,9 +394,24 @@
         function logout() {
             if(confirm("Are you sure you want to logout?")) {
                 document.getElementById('admin-pass').value = '';
-                document.getElementById('admin-panel').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('flex');
+                const panel = document.getElementById('admin-panel');
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
                 document.getElementById('login-modal').classList.remove('hidden');
+            }
+        }
+
+        // --- RESPONSIVE SIDEBAR TOGGLE ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
             }
         }
 
@@ -394,15 +421,12 @@
             document.getElementById('section-products').classList.add('hidden');
             document.getElementById('section-orders').classList.add('hidden');
             
-            // Inactive styles
-            const inactiveClass = "whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300";
-            
+            const inactiveClass = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
             document.getElementById('tab-dashboard').className = inactiveClass;
             document.getElementById('tab-products').className = inactiveClass;
             document.getElementById('tab-orders').className = inactiveClass;
 
-            // Active styles
-            const activeClass = "menu-active whitespace-nowrap px-4 py-2.5 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-white";
+            const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
             
             if(tabName === 'dashboard') {
                 document.getElementById('section-dashboard').classList.remove('hidden');
@@ -421,6 +445,14 @@
                 document.getElementById('tab-orders').className = activeClass;
                 document.getElementById('page-title').innerText = "Order Management";
                 loadOrders();
+            }
+
+            // Close sidebar on mobile after clicking a tab
+            if(window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    toggleSidebar();
+                }
             }
         }
 
@@ -453,10 +485,12 @@
         // --- PRODUCT MANAGEMENT (DIRECT UPLOAD LOGIC) ---
         function openProductModal() {
             document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('product-modal').classList.add('flex');
         }
 
         function closeProductModal() {
             document.getElementById('product-modal').classList.add('hidden');
+            document.getElementById('product-modal').classList.remove('flex');
         }
 
         // 1. Image Preview Logic
@@ -498,7 +532,6 @@
         async function saveAdvancedProduct() {
             const btn = document.getElementById('btn-save-adv');
             
-            // Gather text values
             const name = document.getElementById('add-p-name').value;
             const category = document.getElementById('add-p-category').value;
             const sku = document.getElementById('add-p-sku').value;
@@ -510,7 +543,6 @@
             const isTrending = document.getElementById('add-p-trending').checked;
             const isFlash = document.getElementById('add-p-flash').checked;
 
-            // Validation
             if(!name || !price || !sku || !stock) {
                 alert("Please fill all mandatory (*) fields.");
                 return;
@@ -522,11 +554,10 @@
                 return;
             }
 
-            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> UPLOADING... ⏳';
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> UPLOADING...';
             btn.disabled = true;
 
             try {
-                // Upload all selected files directly to Supabase Storage
                 const img1_url = await uploadFileToSupabase('file-img-1');
                 const img2_url = await uploadFileToSupabase('file-img-2');
                 const img3_url = await uploadFileToSupabase('file-img-3');
@@ -535,30 +566,17 @@
 
                 if(!img1_url) throw new Error("Main image upload failed.");
 
-                // Insert into products table
                 const { error: insertError } = await supabaseClient.from('products').insert([{
-                    name: name,
-                    category: category,
-                    sku: sku,
-                    price: price,
-                    stock: stock,
-                    material: material,
-                    theme: theme,
-                    description: desc,
-                    is_trending: isTrending,
-                    is_flash_sale: isFlash,
-                    image_url: img1_url, 
-                    image_2: img2_url,
-                    image_3: img3_url,
-                    image_4: img4_url,
-                    image_5: img5_url
+                    name: name, category: category, sku: sku, price: price, stock: stock,
+                    material: material, theme: theme, description: desc,
+                    is_trending: isTrending, is_flash_sale: isFlash,
+                    image_url: img1_url, image_2: img2_url, image_3: img3_url, image_4: img4_url, image_5: img5_url
                 }]);
 
                 if (insertError) throw insertError;
 
                 alert("Product Live Successfully! 🎉");
                 
-                // Clear Form & Close Modal
                 document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
                 document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
                 document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
@@ -599,17 +617,17 @@
                 
                 html += `
                     <tr class="hover:bg-gray-50 transition-colors group">
-                        <td class="p-4">
+                        <td class="p-3 md:p-4">
                             <img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'">
                         </td>
-                        <td class="p-4">
-                            <p class="font-bold text-gray-800 text-sm max-w-[200px] truncate">${p.name}</p>
+                        <td class="p-3 md:p-4">
+                            <p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p>
                             <p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'} | ${p.category || 'N/A'}</p>
                         </td>
-                        <td class="p-4 font-bold text-gray-900">₹${p.price}</td>
-                        <td class="p-4">${stockStatus}</td>
-                        <td class="p-4"><span class="text-green-500 text-xs font-bold flex items-center gap-1"><i class="ph ph-check-circle"></i> Active</span></td>
-                        <td class="p-4 text-right">
+                        <td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td>
+                        <td class="p-3 md:p-4">${stockStatus}</td>
+                        <td class="p-3 md:p-4"><span class="text-green-500 text-xs font-bold flex items-center gap-1"><i class="ph ph-check-circle"></i> Active</span></td>
+                        <td class="p-3 md:p-4 text-right">
                             <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors ml-auto">
                                 <i class="ph ph-trash"></i>
                             </button>
@@ -653,14 +671,14 @@
 
                 html += `
                     <tr class="hover:bg-gray-50 border-b border-gray-100">
-                        <td class="p-4"><p class="font-bold text-[#e6998c]">${o.order_id}</p></td>
-                        <td class="p-4">${customerHTML}</td>
-                        <td class="p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
-                        <td class="p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
-                        <td class="p-4"><span class="${badgeClass} px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td>
-                        <td class="p-4 text-right">
-                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="p-2 border border-gray-200 rounded-lg text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
-                                <option value="" disabled selected>Change Status</option>
+                        <td class="p-3 md:p-4"><p class="font-bold text-[#e6998c]">${o.order_id}</p></td>
+                        <td class="p-3 md:p-4">${customerHTML}</td>
+                        <td class="p-3 md:p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
+                        <td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
+                        <td class="p-3 md:p-4"><span class="${badgeClass} px-2 md:px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td>
+                        <td class="p-3 md:p-4 text-right">
+                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
+                                <option value="" disabled selected>Status</option>
                                 <option value="Processing">Processing</option>
                                 <option value="Shipped">Shipped</option>
                                 <option value="Delivered">Delivered</option>
