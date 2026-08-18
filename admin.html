@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ZOOM FIX: Added maximum-scale and user-scalable=no to prevent auto-zooming -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Yogesh Jewellers | Admin Dashboard</title>
     
     <!-- Tailwind CSS & Phosphor Icons -->
@@ -55,39 +56,42 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- MAIN ADMIN DASHBOARD -->
+    <!-- MAIN ADMIN DASHBOARD (MOBILE RESPONSIVE FIX) -->
     <!-- ========================================== -->
-    <div id="admin-panel" class="hidden flex h-screen overflow-hidden">
+    <!-- Changed to flex-col on mobile, flex-row on desktop -->
+    <div id="admin-panel" class="hidden flex-col md:flex-row h-screen overflow-hidden">
         
         <!-- SIDEBAR -->
-        <aside class="w-[280px] bg-[#0f172a] text-gray-300 flex flex-col shrink-0">
-            <div class="p-6 border-b border-gray-800 flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold">Y</div>
+        <!-- Adjusted width for mobile to 100%, and horizontal scroll for navigation -->
+        <aside class="w-full md:w-[280px] bg-[#0f172a] text-gray-300 flex flex-col shrink-0 z-20 shadow-md md:shadow-none">
+            <div class="p-4 md:p-6 border-b border-gray-800 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold shrink-0">Y</div>
                 <div>
-                    <h2 class="text-lg font-bold text-white tracking-wider">YOGESH</h2>
+                    <h2 class="text-lg font-bold text-white tracking-wider leading-tight">YOGESH</h2>
                     <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
                 </div>
             </div>
 
-            <nav class="p-4 space-y-2 flex-grow overflow-y-auto">
-                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-2">Main Menu</p>
+            <!-- Navigation: Horizontal on Mobile, Vertical on Desktop -->
+            <nav class="p-3 md:p-4 flex flex-row md:flex-col gap-2 md:space-y-2 overflow-x-auto hide-scrollbar bg-[#0f172a]">
+                <p class="hidden md:block text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-2 mt-2">Main Menu</p>
                 
-                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all">
-                    <i class="ph ph-squares-four text-xl"></i> Dashboard Overview
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active whitespace-nowrap px-4 py-2.5 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-white">
+                    <i class="ph ph-squares-four text-lg md:text-xl"></i> Dashboard
                 </button>
                 
-                <button onclick="switchTab('products')" id="tab-products" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all">
-                    <i class="ph ph-sketch-logo text-xl"></i> Product Catalog
+                <button onclick="switchTab('products')" id="tab-products" class="whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300">
+                    <i class="ph ph-sketch-logo text-lg md:text-xl"></i> Products
                 </button>
                 
-                <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all">
-                    <i class="ph ph-shopping-bag text-xl"></i> Order Management
+                <button onclick="switchTab('orders')" id="tab-orders" class="whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300">
+                    <i class="ph ph-shopping-bag text-lg md:text-xl"></i> Orders
                 </button>
 
-                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-8">Settings</p>
+                <div class="hidden md:block w-full h-px bg-gray-800 my-4"></div>
                 
-                <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
-                    <i class="ph ph-sign-out text-xl"></i> Secure Logout
+                <button onclick="logout()" class="whitespace-nowrap px-4 py-2.5 hover:bg-red-500/10 hover:text-red-500 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-400">
+                    <i class="ph ph-sign-out text-lg md:text-xl"></i> Logout
                 </button>
             </nav>
         </aside>
@@ -96,18 +100,18 @@
         <main class="flex-1 bg-[#f8fafc] h-full overflow-y-auto relative">
             
             <!-- HEADER -->
-            <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-6 flex justify-between items-center sticky top-0 z-10">
+            <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex justify-between items-center sticky top-0 z-10">
                 <div>
-                    <h1 id="page-title" class="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-                    <p class="text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
+                    <h1 id="page-title" class="text-xl md:text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
                 </div>
             </header>
 
-            <div class="p-6 md:p-8 max-w-7xl mx-auto">
+            <div class="p-4 md:p-8 max-w-7xl mx-auto">
 
                 <!-- 1. DASHBOARD TAB -->
                 <div id="section-dashboard" class="block space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
                             <div class="w-14 h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-2xl"><i class="ph ph-currency-inr"></i></div>
                             <div>
@@ -135,13 +139,13 @@
                 <!-- 2. PRODUCTS TAB -->
                 <div id="section-products" class="hidden space-y-6">
                     <!-- Advanced Add Product Section -->
-                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
-                                <h2 class="text-xl font-bold text-gray-900">Product Management</h2>
+                                <h2 class="text-lg md:text-xl font-bold text-gray-900">Product Management</h2>
                                 <p class="text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p>
                             </div>
-                            <button onclick="openProductModal()" class="menu-active px-6 py-2.5 rounded-lg font-bold flex items-center gap-2 transition-all">
+                            <button onclick="openProductModal()" class="menu-active px-6 py-2.5 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all">
                                 <i class="ph ph-plus-circle text-xl"></i> Add New Product
                             </button>
                         </div>
@@ -175,8 +179,8 @@
 
                 <!-- 3. ORDERS TAB -->
                 <div id="section-orders" class="hidden space-y-6">
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-6">
-                        <h2 class="text-xl font-bold text-gray-900 mb-6">Recent Orders</h2>
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-6">Recent Orders</h2>
                         <div class="overflow-x-auto border border-gray-100 rounded-xl">
                             <table class="w-full text-left text-sm whitespace-nowrap">
                                 <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100">
@@ -204,13 +208,13 @@
     <!-- ========================================== -->
     <!-- ADVANCED ADD PRODUCT MODAL (PREMIUM DESIGN + DIRECT UPLOAD) -->
     <!-- ========================================== -->
-    <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-8 border border-gray-200">
+    <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-4 border border-gray-200">
             
             <!-- Modal Header -->
-            <div class="p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
-                <h2 class="text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="text-gray-400 font-medium text-lg">(+ Add New Product)</span>
+            <div class="p-5 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
+                <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="hidden md:inline text-gray-400 font-medium text-lg">(+ Add New Product)</span>
                 </h2>
                 <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
                     <i class="ph ph-x text-2xl font-bold"></i>
@@ -218,10 +222,10 @@
             </div>
 
             <!-- Modal Body (Form) -->
-            <div class="p-6 space-y-6">
+            <div class="p-5 md:p-6 space-y-6">
                 
                 <!-- Row 1 -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
                         <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Diamond Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
@@ -243,7 +247,7 @@
                 </div>
 
                 <!-- Row 2 -->
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Standard Price (₹) <span class="text-red-500">*</span></label>
                         <input type="number" id="add-p-price" placeholder="जैसे: 45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
@@ -272,12 +276,12 @@
                 <!-- Image Gallery Section (NO accept="image/*" - Forces File Manager) -->
                 <div>
                     <div class="flex justify-between items-end mb-3">
-                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES GALLERY <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5 फोटो)</span></label>
+                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES GALLERY <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें)</span></label>
                         <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
                     </div>
-                    <p class="text-[10px] text-gray-400 mb-4">पहले बॉक्स पर क्लिक करके मुख्य फोटो अपलोड करें। बाकी तस्वीरें वैकल्पिक हैं। (अधिकतम 2MB प्रति फोटो)</p>
+                    <p class="text-[10px] text-gray-400 mb-4">पहले बॉक्स पर क्लिक करके मुख्य फोटो अपलोड करें। (अधिकतम 2MB प्रति फोटो)</p>
                     
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
                         <!-- Image 1 -->
                         <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group border-[#059669]" onclick="document.getElementById('file-img-1').click()">
                             <!-- YAHAN SE accept="image/*" HATA DIYA HAI TAKI FILE MANAGER KHULE -->
@@ -332,20 +336,20 @@
                 <div class="flex items-center gap-6 pt-2 pb-4">
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Mark as Trending <span class="text-gray-400 font-medium text-[10px]">(ट्रेंडिंग आइटम)</span></span>
+                        <span class="text-xs font-bold text-gray-700">Mark as Trending <span class="hidden sm:inline text-gray-400 font-medium text-[10px]">(ट्रेंडिंग आइटम)</span></span>
                     </label>
                     <label class="flex items-center gap-2 cursor-pointer">
                         <input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale <span class="text-gray-400 font-medium text-[10px]">(फ्लैश सेल ऑफर)</span></span>
+                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale <span class="hidden sm:inline text-gray-400 font-medium text-[10px]">(फ्लैश सेल ऑफर)</span></span>
                     </label>
                 </div>
 
             </div>
 
             <!-- Modal Footer -->
-            <div class="p-6 border-t border-gray-100 flex justify-end items-center gap-4 bg-gray-50 rounded-b-2xl">
-                <button onclick="closeProductModal()" class="px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
-                <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">
+            <div class="p-5 md:p-6 border-t border-gray-100 flex justify-end items-center gap-4 bg-gray-50 rounded-b-2xl">
+                <button onclick="closeProductModal()" class="px-5 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
+                <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">
                     SAVE PRODUCT
                 </button>
             </div>
@@ -368,6 +372,7 @@
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-modal').classList.add('hidden');
                 document.getElementById('admin-panel').classList.remove('hidden');
+                document.getElementById('admin-panel').classList.add('flex'); // Add flex for layout
                 initDashboard();
             } else {
                 alert("Incorrect Password! Access Denied.");
@@ -378,20 +383,26 @@
             if(confirm("Are you sure you want to logout?")) {
                 document.getElementById('admin-pass').value = '';
                 document.getElementById('admin-panel').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('flex');
                 document.getElementById('login-modal').classList.remove('hidden');
             }
         }
 
+        // --- RESPONSIVE TAB SWITCHING ---
         function switchTab(tabName) {
             document.getElementById('section-dashboard').classList.add('hidden');
             document.getElementById('section-products').classList.add('hidden');
             document.getElementById('section-orders').classList.add('hidden');
             
-            document.getElementById('tab-dashboard').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
-            document.getElementById('tab-products').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
-            document.getElementById('tab-orders').className = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
+            // Inactive styles
+            const inactiveClass = "whitespace-nowrap px-4 py-2.5 hover:bg-gray-800 hover:text-white md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-gray-300";
+            
+            document.getElementById('tab-dashboard').className = inactiveClass;
+            document.getElementById('tab-products').className = inactiveClass;
+            document.getElementById('tab-orders').className = inactiveClass;
 
-            const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
+            // Active styles
+            const activeClass = "menu-active whitespace-nowrap px-4 py-2.5 md:w-full md:p-3.5 rounded-xl text-left font-bold flex items-center gap-2 transition-all text-white";
             
             if(tabName === 'dashboard') {
                 document.getElementById('section-dashboard').classList.remove('hidden');
@@ -439,7 +450,7 @@
             } catch (error) { console.error("Error loading stats", error); }
         }
 
-        // --- PRODUCT MANAGEMENT (ADVANCED) ---
+        // --- PRODUCT MANAGEMENT (DIRECT UPLOAD LOGIC) ---
         function openProductModal() {
             document.getElementById('product-modal').classList.remove('hidden');
         }
@@ -448,7 +459,7 @@
             document.getElementById('product-modal').classList.add('hidden');
         }
 
-        // Local Image Preview Feature
+        // 1. Image Preview Logic
         function previewImage(inputElement, previewImgId) {
             const previewImg = document.getElementById(previewImgId);
             if (inputElement.files && inputElement.files[0]) {
@@ -464,35 +475,30 @@
             }
         }
 
-        // Upload single file to Supabase Storage
+        // 2. Upload Helper Function
         async function uploadFileToSupabase(fileInputId) {
             const fileInput = document.getElementById(fileInputId);
-            if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null; // No file selected
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
             
             const file = fileInput.files[0];
             const fileExt = file.name.split('.').pop();
-            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+            const fileName = Date.now() + '_' + Math.random().toString(36).substring(7) + '.' + fileExt;
             
-            // Uploading to bucket named 'product-images'
-            const { data, error } = await supabaseClient.storage
+            const { error: uploadError } = await supabaseClient.storage
                 .from('product-images')
-                .upload(fileName, file, { cacheControl: '3600', upsert: false });
+                .upload(fileName, file);
                 
-            if (error) {
-                console.error('Upload Error:', error);
-                alert("Upload Error: " + error.message);
-                throw error;
-            }
+            if (uploadError) throw uploadError;
             
-            // Get public URL
-            const { data: publicUrlData } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
-            return publicUrlData.publicUrl;
+            const { data: { publicUrl } } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
+            return publicUrl;
         }
 
+        // 3. Save Product
         async function saveAdvancedProduct() {
             const btn = document.getElementById('btn-save-adv');
             
-            // Gather all text values
+            // Gather text values
             const name = document.getElementById('add-p-name').value;
             const category = document.getElementById('add-p-category').value;
             const sku = document.getElementById('add-p-sku').value;
@@ -504,7 +510,7 @@
             const isTrending = document.getElementById('add-p-trending').checked;
             const isFlash = document.getElementById('add-p-flash').checked;
 
-            // Basic Validation
+            // Validation
             if(!name || !price || !sku || !stock) {
                 alert("Please fill all mandatory (*) fields.");
                 return;
@@ -512,7 +518,7 @@
 
             const mainImageInput = document.getElementById('file-img-1');
             if(!mainImageInput.files || mainImageInput.files.length === 0) {
-                alert("मुख्य फोटो (Main Photo) अनिवार्य है!");
+                alert("कृपया पहले मुख्य फोटो (Photo 1) चुनें।");
                 return;
             }
 
@@ -520,7 +526,7 @@
             btn.disabled = true;
 
             try {
-                // 1. Upload all selected images to Supabase Storage sequentially
+                // Upload all selected files directly to Supabase Storage
                 const img1_url = await uploadFileToSupabase('file-img-1');
                 const img2_url = await uploadFileToSupabase('file-img-2');
                 const img3_url = await uploadFileToSupabase('file-img-3');
@@ -529,8 +535,8 @@
 
                 if(!img1_url) throw new Error("Main image upload failed.");
 
-                // 2. Insert record into database
-                const { data, error } = await supabaseClient.from('products').insert([{
+                // Insert into products table
+                const { error: insertError } = await supabaseClient.from('products').insert([{
                     name: name,
                     category: category,
                     sku: sku,
@@ -548,14 +554,14 @@
                     image_5: img5_url
                 }]);
 
-                if (error) throw error;
+                if (insertError) throw insertError;
 
-                alert("Product saved successfully! 🎉");
+                alert("Product Live Successfully! 🎉");
                 
                 // Clear Form & Close Modal
                 document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
-                document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
                 document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
+                document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
                 document.getElementById('add-p-trending').checked = false;
                 document.getElementById('add-p-flash').checked = false;
                 
@@ -565,7 +571,7 @@
 
             } catch (err) {
                 console.error(err);
-                // Alert will show specific Supabase error if it fails
+                alert("Error: " + err.message);
             } finally {
                 btn.innerHTML = 'SAVE PRODUCT';
                 btn.disabled = false;
