@@ -4,28 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
+    
+    <!-- Tailwind CSS & Phosphor Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
+    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
     <style>
         * { font-family: 'Montserrat', sans-serif; }
-        /* Keyboard Fix: Login container uses flex with min-height to stay centered */
-        #login-modal { display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-        .menu-active { background: linear-gradient(135deg, #e6998c, #d8897c); color: white; }
+        .font-serif { font-family: 'Playfair Display', serif !important; }
+        .menu-active { background: linear-gradient(135deg, #e6998c, #d8897c); color: white; box-shadow: 0 4px 15px rgba(230, 153, 140, 0.4); }
         .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .img-upload-box { border: 2px dashed #e5e7eb; transition: all 0.3s ease; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Custom Checkbox */
+        .custom-checkbox:checked { background-color: #059669; border-color: #059669; }
+
+        /* Image Upload Box Styles */
+        .img-upload-box {
+            border: 2px dashed #e5e7eb;
+            transition: all 0.3s ease;
+        }
+        .img-upload-box:hover { border-color: #e6998c; background-color: #fff9f8; }
         .img-preview { object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0.375rem; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 m-0 p-0">
+<body class="bg-gray-50 text-gray-800">
 
     <!-- ========================================== -->
-    <!-- KEYBOARD-FRIENDLY LOGIN MODAL -->
+    <!-- SECURE LOGIN MODAL (KEYBOARD CENTERING FIX) -->
     <!-- ========================================== -->
     <div id="login-modal" class="fixed inset-0 z-[9999] bg-[#0f172a] overflow-y-auto">
-        <div class="w-full max-w-md mx-auto p-4 my-auto">
-            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-2xl text-center">
+        <div class="flex items-center justify-center min-h-screen w-full p-4">
+            <div class="bg-white p-8 md:p-10 rounded-2xl w-full max-w-md shadow-2xl text-center mx-auto">
                 <h1 class="text-3xl font-extrabold text-[#e6998c] tracking-widest uppercase font-serif mb-2">Yogesh</h1>
                 <p class="text-gray-500 text-sm mb-8 tracking-widest uppercase">Admin Secure Portal</p>
                 
@@ -33,27 +47,603 @@
                     <label class="block text-sm font-bold text-gray-700 mb-2">Admin Password</label>
                     <div class="relative">
                         <i class="ph ph-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
-                        <input type="password" id="admin-pass" placeholder="Enter password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] text-[16px]">
+                        <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all text-[16px]">
                     </div>
                 </div>
-                <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors">Secure Login</button>
+                
+                <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
             </div>
         </div>
     </div>
 
-    <!-- MAIN PANEL AND OTHER CODE REMAINS THE SAME AS BEFORE -->
-    <div id="admin-panel" class="hidden h-full w-full bg-gray-50">
-        <!-- (आपका बाकी डैशबोर्ड कोड यहाँ रखें) -->
+    <!-- ========================================== -->
+    <!-- MAIN ADMIN DASHBOARD (PULL-TO-REFRESH FIXED) -->
+    <!-- ========================================== -->
+    <div id="admin-panel" class="hidden min-h-screen w-full bg-gray-50 relative">
+        
+        <!-- MOBILE OVERLAY -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
+
+        <!-- APP SIDEBAR -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[260px] md:w-[280px] bg-[#0f172a] text-gray-300 flex flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out shadow-2xl md:shadow-none h-full">
+            <div class="p-5 border-b border-gray-800 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-[#e6998c] text-white flex items-center justify-center text-xl font-serif font-bold shrink-0">Y</div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white tracking-wider leading-tight">YOGESH</h2>
+                        <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
+                    </div>
+                </div>
+                <!-- Close Button (Mobile Only) -->
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-1">
+                    <i class="ph ph-x text-2xl font-bold"></i>
+                </button>
+            </div>
+
+            <nav class="p-4 space-y-2 flex-grow overflow-y-auto hide-scrollbar">
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-2">Main Menu</p>
+                
+                <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white">
+                    <i class="ph ph-squares-four text-xl"></i> Dashboard
+                </button>
+                
+                <button onclick="switchTab('products')" id="tab-products" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-sketch-logo text-xl"></i> Product Catalog
+                </button>
+                
+                <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-shopping-bag text-xl"></i> Order Management
+                </button>
+
+                <div class="w-full h-px bg-gray-800 my-6"></div>
+                <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4">Settings</p>
+                
+                <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
+                    <i class="ph ph-sign-out text-xl"></i> Secure Logout
+                </button>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="w-full md:pl-[280px] min-h-screen flex flex-col">
+            
+            <!-- HEADER -->
+            <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex items-center sticky top-0 z-30 shadow-sm">
+                <!-- Hamburger Menu -->
+                <button onclick="toggleSidebar()" class="md:hidden mr-4 text-gray-800 p-1 hover:text-[#e6998c] transition-colors">
+                    <i class="ph ph-list text-3xl font-bold"></i>
+                </button>
+                <div>
+                    <h1 id="page-title" class="text-xl md:text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+                    <p class="text-xs md:text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
+                </div>
+            </header>
+
+            <!-- SCROLLABLE CONTENT AREA -->
+            <div class="w-full p-4 md:p-8">
+
+                <!-- 1. DASHBOARD TAB -->
+                <div id="section-dashboard" class="block space-y-6 max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Revenue</p>
+                                <h3 id="stat-revenue" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">₹0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-shopping-cart"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Orders</p>
+                                <h3 id="stat-orders-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
+                            <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-sketch-logo"></i></div>
+                            <div>
+                                <p class="text-gray-500 text-xs md:text-sm font-bold">Live Products</p>
+                                <h3 id="stat-products-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. PRODUCTS TAB -->
+                <div id="section-products" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <!-- Advanced Add Product Section -->
+                    <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <div>
+                                <h2 class="text-lg md:text-xl font-bold text-gray-900">Product Management</h2>
+                                <p class="text-[11px] md:text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p>
+                            </div>
+                            <button onclick="openProductModal()" class="menu-active px-6 py-3 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all shadow-md">
+                                <i class="ph ph-plus-circle text-xl"></i> Add New Product
+                            </button>
+                        </div>
+
+                        <!-- Products List Table -->
+                        <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
+                            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                                <h3 class="font-bold text-gray-900 text-sm">Current Catalog</h3>
+                                <button onclick="loadProducts()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                            </div>
+                            <div class="overflow-x-auto w-full">
+                                <table class="w-full text-left text-sm whitespace-nowrap">
+                                    <thead class="bg-white text-gray-500 font-bold border-b border-gray-100 text-[10px] md:text-xs uppercase tracking-wider">
+                                        <tr>
+                                            <th class="p-3 md:p-4 font-semibold">Image</th>
+                                            <th class="p-3 md:p-4 font-semibold">Product Name</th>
+                                            <th class="p-3 md:p-4 font-semibold">Price</th>
+                                            <th class="p-3 md:p-4 font-semibold">Stock</th>
+                                            <th class="p-3 md:p-4 font-semibold">Status</th>
+                                            <th class="p-3 md:p-4 text-right font-semibold">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="products-table-body" class="divide-y divide-gray-100 bg-white">
+                                        <tr><td colspan="6" class="p-8 text-center text-gray-400">Loading products...</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ORDERS TAB -->
+                <div id="section-orders" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-6">Recent Orders</h2>
+                        <div class="overflow-x-auto border border-gray-100 rounded-xl w-full">
+                            <table class="w-full text-left text-sm whitespace-nowrap">
+                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 text-[10px] md:text-xs uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-3 md:p-4 font-semibold">Order ID</th>
+                                        <th class="p-3 md:p-4 font-semibold">Customer Details</th>
+                                        <th class="p-3 md:p-4 font-semibold">Total Amount</th>
+                                        <th class="p-3 md:p-4 font-semibold">Payment</th>
+                                        <th class="p-3 md:p-4 font-semibold">Current Status</th>
+                                        <th class="p-3 md:p-4 text-right font-semibold">Update Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orders-table-body" class="divide-y divide-gray-100 bg-white">
+                                    <tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
+    <!-- ========================================== -->
+    <!-- ADVANCED ADD PRODUCT MODAL -->
+    <!-- ========================================== -->
+    <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-auto border border-gray-200">
+            
+            <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
+                <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="hidden sm:inline text-gray-400 font-medium text-lg">(+ Add New Product)</span>
+                </h2>
+                <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
+                    <i class="ph ph-x text-2xl font-bold"></i>
+                </button>
+            </div>
+
+            <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
+                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category <span class="text-red-500">*</span></label>
+                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                            <option value="Necklace">Necklace (गले का हार)</option>
+                            <option value="Earrings">Earrings (झुमके)</option>
+                            <option value="Rings" selected>Rings (अंगूठियां)</option>
+                            <option value="Bangles">Bangles (चूड़ियां)</option>
+                            <option value="Pendants">Pendants (पेंडेंट)</option>
+                        </select>
+                    </div>
+                    <div class="sm:col-span-2 md:col-span-1">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">SKU ID <span class="text-gray-400 font-medium text-[10px]">(स्टॉक कीपिंग यूनिट)</span> <span class="text-red-500">*</span></label>
+                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹) <span class="text-red-500">*</span></label>
+                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock <span class="text-red-500">*</span></label>
+                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Material <span class="text-gray-400 font-medium text-[10px]">(सामग्री)</span></label>
+                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-red-500">*</span></label>
+                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                            <option value="Traditional">Traditional (पारंपरिक)</option>
+                            <option value="Modern">Modern (आधुनिक)</option>
+                            <option value="Bridal">Bridal (ब्राइडल)</option>
+                            <option value="Casual">Casual (कैज़ुअल)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <hr class="border-gray-100">
+
+                <!-- Image Gallery Section -->
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
+                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5)</span></label>
+                        <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group border-[#059669]" onclick="document.getElementById('file-img-1').click()">
+                            <input type="file" id="file-img-1" class="hidden" onchange="previewImage(this, 'preview-1')">
+                            <img id="preview-1" src="" class="hidden img-preview">
+                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
+                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
+                            <span class="text-[9px] text-[#059669] mt-1 relative z-10">1. मुख्य फोटो *</span>
+                        </div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-2').click()">
+                            <input type="file" id="file-img-2" class="hidden" onchange="previewImage(this, 'preview-2')">
+                            <img id="preview-2" src="" class="hidden img-preview">
+                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
+                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
+                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">2. साइड एंगल</span>
+                        </div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-3').click()">
+                            <input type="file" id="file-img-3" class="hidden" onchange="previewImage(this, 'preview-3')">
+                            <img id="preview-3" src="" class="hidden img-preview">
+                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
+                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
+                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">3. पहनने के बाद का लुक</span>
+                        </div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-4').click()">
+                            <input type="file" id="file-img-4" class="hidden" onchange="previewImage(this, 'preview-4')">
+                            <img id="preview-4" src="" class="hidden img-preview">
+                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
+                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
+                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">4. बैक साइड</span>
+                        </div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-5').click()">
+                            <input type="file" id="file-img-5" class="hidden" onchange="previewImage(this, 'preview-5')">
+                            <img id="preview-5" src="" class="hidden img-preview">
+                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
+                            <span class="text-[9px] font-bold text-gray-500 relative z-10">अपलोड करें</span>
+                            <span class="text-[9px] text-gray-400 mt-1 relative z-10">5. बॉक्स/पैकेजिंग</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">DESCRIPTION <span class="text-gray-400 font-medium text-[10px]">(विवरण)</span></label>
+                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2 pb-2">
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
+                        <span class="text-xs font-bold text-gray-700">Mark as Trending</span>
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer">
+                        <input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
+                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale</span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
+                <button onclick="closeProductModal()" class="px-4 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
+                <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">
+                    SAVE PRODUCT
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT LOGIC -->
+    <!-- ========================================== -->
     <script>
-        // (आपका पिछला JS लॉजिक यहाँ रखें)
+        const ADMIN_PASSWORD = "123"; 
+        const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
-            if (pass === "123") {
+            if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-modal').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-            } else { alert("Incorrect Password!"); }
+                const panel = document.getElementById('admin-panel');
+                panel.classList.remove('hidden');
+                panel.classList.add('block'); 
+                initDashboard();
+            } else {
+                alert("Incorrect Password! Access Denied.");
+            }
+        }
+
+        function logout() {
+            if(confirm("Are you sure you want to logout?")) {
+                document.getElementById('admin-pass').value = '';
+                const panel = document.getElementById('admin-panel');
+                panel.classList.add('hidden');
+                panel.classList.remove('block');
+                document.getElementById('login-modal').classList.remove('hidden');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.add('hidden');
+            }
+        }
+
+        function switchTab(tabName) {
+            document.getElementById('section-dashboard').classList.add('hidden');
+            document.getElementById('section-products').classList.add('hidden');
+            document.getElementById('section-orders').classList.add('hidden');
+            
+            const inactiveClass = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
+            document.getElementById('tab-dashboard').className = inactiveClass;
+            document.getElementById('tab-products').className = inactiveClass;
+            document.getElementById('tab-orders').className = inactiveClass;
+
+            const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
+            
+            if(tabName === 'dashboard') {
+                document.getElementById('section-dashboard').classList.remove('hidden');
+                document.getElementById('tab-dashboard').className = activeClass;
+                document.getElementById('page-title').innerText = "Dashboard Overview";
+                loadDashboardStats();
+            } 
+            else if(tabName === 'products') {
+                document.getElementById('section-products').classList.remove('hidden');
+                document.getElementById('tab-products').className = activeClass;
+                document.getElementById('page-title').innerText = "Product Management";
+                loadProducts();
+            } 
+            else if(tabName === 'orders') {
+                document.getElementById('section-orders').classList.remove('hidden');
+                document.getElementById('tab-orders').className = activeClass;
+                document.getElementById('page-title').innerText = "Order Management";
+                loadOrders();
+            }
+
+            if(window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (!sidebar.classList.contains('-translate-x-full')) toggleSidebar();
+            }
+        }
+
+        function initDashboard() {
+            loadDashboardStats();
+            loadProducts();
+            loadOrders();
+        }
+
+        async function loadDashboardStats() {
+            try {
+                const { data: orders } = await supabaseClient.from('orders').select('*');
+                const { count: productsCount } = await supabaseClient.from('products').select('*', { count: 'exact', head: true });
+                if(orders) {
+                    document.getElementById('stat-orders-count').innerText = orders.length;
+                    let totalRev = orders.reduce((sum, o) => {
+                        let amount = o.total_amount ? parseFloat(String(o.total_amount).replace(/[^0-9.-]+/g,"")) : 0;
+                        return sum + (amount || 0);
+                    }, 0);
+                    document.getElementById('stat-revenue').innerText = "₹" + totalRev.toLocaleString('en-IN');
+                }
+                if(productsCount !== null) document.getElementById('stat-products-count').innerText = productsCount;
+            } catch (error) { console.error(error); }
+        }
+
+        function openProductModal() {
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('product-modal').classList.add('flex');
+        }
+
+        function closeProductModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+            document.getElementById('product-modal').classList.remove('flex');
+        }
+
+        function previewImage(inputElement, previewImgId) {
+            const previewImg = document.getElementById(previewImgId);
+            if (inputElement.files && inputElement.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                }
+                reader.readAsDataURL(inputElement.files[0]);
+            } else {
+                previewImg.src = "";
+                previewImg.classList.add('hidden');
+            }
+        }
+
+        async function uploadFileToSupabase(fileInputId) {
+            const fileInput = document.getElementById(fileInputId);
+            if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
+            
+            const file = fileInput.files[0];
+            const fileExt = file.name.split('.').pop();
+            const fileName = Date.now() + '_' + Math.random().toString(36).substring(7) + '.' + fileExt;
+            
+            const { error: uploadError } = await supabaseClient.storage.from('product-images').upload(fileName, file);
+            if (uploadError) throw uploadError;
+            
+            const { data: { publicUrl } } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
+            return publicUrl;
+        }
+
+        async function saveAdvancedProduct() {
+            const btn = document.getElementById('btn-save-adv');
+            
+            const name = document.getElementById('add-p-name').value;
+            const category = document.getElementById('add-p-category').value;
+            const sku = document.getElementById('add-p-sku').value;
+            const price = document.getElementById('add-p-price').value;
+            const stock = document.getElementById('add-p-stock').value;
+            const material = document.getElementById('add-p-material').value;
+            const theme = document.getElementById('add-p-theme').value;
+            const desc = document.getElementById('add-p-desc').value;
+            const isTrending = document.getElementById('add-p-trending').checked;
+            const isFlash = document.getElementById('add-p-flash').checked;
+
+            if(!name || !price || !sku || !stock) { alert("Please fill all mandatory (*) fields."); return; }
+
+            const mainImageInput = document.getElementById('file-img-1');
+            if(!mainImageInput.files || mainImageInput.files.length === 0) {
+                alert("कृपया पहले मुख्य फोटो (Photo 1) चुनें।"); return;
+            }
+
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> UPLOADING...';
+            btn.disabled = true;
+
+            try {
+                const img1_url = await uploadFileToSupabase('file-img-1');
+                const img2_url = await uploadFileToSupabase('file-img-2');
+                const img3_url = await uploadFileToSupabase('file-img-3');
+                const img4_url = await uploadFileToSupabase('file-img-4');
+                const img5_url = await uploadFileToSupabase('file-img-5');
+
+                if(!img1_url) throw new Error("Main image upload failed.");
+
+                const { error: insertError } = await supabaseClient.from('products').insert([{
+                    name: name, category: category, sku: sku, price: price, stock: stock,
+                    material: material, theme: theme, description: desc,
+                    is_trending: isTrending, is_flash_sale: isFlash,
+                    image_url: img1_url, image_2: img2_url, image_3: img3_url, image_4: img4_url, image_5: img5_url
+                }]);
+
+                if (insertError) throw insertError;
+
+                alert("Product Live Successfully! 🎉");
+                
+                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+                document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
+                document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
+                document.getElementById('add-p-trending').checked = false;
+                document.getElementById('add-p-flash').checked = false;
+                
+                closeProductModal();
+                loadProducts();
+                loadDashboardStats();
+            } catch (err) {
+                console.error(err);
+                alert("Error: " + err.message);
+            } finally {
+                btn.innerHTML = 'SAVE PRODUCT';
+                btn.disabled = false;
+            }
+        }
+
+        async function loadProducts() {
+            const tbody = document.getElementById('products-table-body');
+            tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
+            
+            const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
+            
+            if (error) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`; return; }
+
+            let html = '';
+            data.forEach(p => {
+                let stockStatus = p.stock > 0 ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">In Stock (${p.stock})</span>` : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Out of Stock</span>`;
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors group">
+                        <td class="p-3 md:p-4"><img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'"></td>
+                        <td class="p-3 md:p-4">
+                            <p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p>
+                            <p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'} | ${p.category || 'N/A'}</p>
+                        </td>
+                        <td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td>
+                        <td class="p-3 md:p-4">${stockStatus}</td>
+                        <td class="p-3 md:p-4"><span class="text-green-500 text-xs font-bold flex items-center gap-1"><i class="ph ph-check-circle"></i> Active</span></td>
+                        <td class="p-3 md:p-4 text-right">
+                            <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors ml-auto"><i class="ph ph-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function deleteProduct(id, name) {
+            if(confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+                const { error } = await supabaseClient.from('products').delete().eq('id', id);
+                if(error) alert("Error deleting product.");
+                else { loadProducts(); loadDashboardStats(); }
+            }
+        }
+
+        async function loadOrders() {
+            const tbody = document.getElementById('orders-table-body');
+            tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>';
+            
+            const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
+            if (error || !data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders received yet.</td></tr>`; return; }
+
+            let html = '';
+            data.forEach(o => {
+                let customerHTML = "N/A";
+                if(o.customer_details) {
+                    try {
+                        let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : o.customer_details;
+                        customerHTML = `<p class="font-bold text-gray-800">${c.name || 'N/A'}</p><p class="text-xs text-gray-500">${c.email_phone || ''}</p>`;
+                    } catch(e) {}
+                }
+                let badgeClass = o.status === 'Shipped' ? 'bg-blue-100 text-blue-700' : o.status === 'Delivered' ? 'bg-green-100 text-green-700' : o.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700';
+
+                html += `
+                    <tr class="hover:bg-gray-50 border-b border-gray-100">
+                        <td class="p-3 md:p-4"><p class="font-bold text-[#e6998c]">${o.order_id}</p></td>
+                        <td class="p-3 md:p-4">${customerHTML}</td>
+                        <td class="p-3 md:p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
+                        <td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
+                        <td class="p-3 md:p-4"><span class="${badgeClass} px-2 md:px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td>
+                        <td class="p-3 md:p-4 text-right">
+                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
+                                <option value="" disabled selected>Status</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        async function updateOrderStatus(id, newStatus) {
+            if(!newStatus) return;
+            const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
+            if(!error) loadOrders();
         }
     </script>
 </body>
