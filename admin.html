@@ -24,10 +24,7 @@
         .custom-checkbox:checked { background-color: #059669; border-color: #059669; }
 
         /* Image Upload Box Styles */
-        .img-upload-box {
-            border: 2px dashed #e5e7eb;
-            transition: all 0.3s ease;
-        }
+        .img-upload-box { border: 2px dashed #e5e7eb; transition: all 0.3s ease; }
         .img-upload-box:hover { border-color: #e6998c; background-color: #fff9f8; }
         .img-preview { object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0.375rem; }
     </style>
@@ -35,7 +32,7 @@
 <body class="bg-gray-50 text-gray-800">
 
     <!-- ========================================== -->
-    <!-- SECURE LOGIN MODAL (KEYBOARD CENTERING FIX) -->
+    <!-- SECURE LOGIN MODAL -->
     <!-- ========================================== -->
     <div id="login-modal" class="fixed inset-0 z-[9999] bg-[#0f172a] overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen w-full p-4">
@@ -50,14 +47,13 @@
                         <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all text-[16px]">
                     </div>
                 </div>
-                
                 <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
             </div>
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- MAIN ADMIN DASHBOARD (PULL-TO-REFRESH FIXED) -->
+    <!-- MAIN ADMIN DASHBOARD -->
     <!-- ========================================== -->
     <div id="admin-panel" class="hidden min-h-screen w-full bg-gray-50 relative">
         
@@ -74,7 +70,6 @@
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
                     </div>
                 </div>
-                <!-- Close Button (Mobile Only) -->
                 <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-1">
                     <i class="ph ph-x text-2xl font-bold"></i>
                 </button>
@@ -82,22 +77,18 @@
 
             <nav class="p-4 space-y-2 flex-grow overflow-y-auto hide-scrollbar">
                 <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4 mt-2">Main Menu</p>
-                
                 <button onclick="switchTab('dashboard')" id="tab-dashboard" class="menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white">
                     <i class="ph ph-squares-four text-xl"></i> Dashboard
                 </button>
-                
                 <button onclick="switchTab('products')" id="tab-products" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
                     <i class="ph ph-sketch-logo text-xl"></i> Product Catalog
                 </button>
-                
                 <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
                     <i class="ph ph-shopping-bag text-xl"></i> Order Management
                 </button>
 
                 <div class="w-full h-px bg-gray-800 my-6"></div>
                 <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4">Settings</p>
-                
                 <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
                     <i class="ph ph-sign-out text-xl"></i> Secure Logout
                 </button>
@@ -107,9 +98,7 @@
         <!-- MAIN CONTENT AREA -->
         <main class="w-full md:pl-[280px] min-h-screen flex flex-col">
             
-            <!-- HEADER -->
             <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex items-center sticky top-0 z-30 shadow-sm">
-                <!-- Hamburger Menu -->
                 <button onclick="toggleSidebar()" class="md:hidden mr-4 text-gray-800 p-1 hover:text-[#e6998c] transition-colors">
                     <i class="ph ph-list text-3xl font-bold"></i>
                 </button>
@@ -119,7 +108,6 @@
                 </div>
             </header>
 
-            <!-- SCROLLABLE CONTENT AREA -->
             <div class="w-full p-4 md:p-8">
 
                 <!-- 1. DASHBOARD TAB -->
@@ -151,7 +139,6 @@
 
                 <!-- 2. PRODUCTS TAB -->
                 <div id="section-products" class="hidden space-y-6 max-w-7xl mx-auto">
-                    <!-- Advanced Add Product Section -->
                     <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <div>
@@ -163,7 +150,6 @@
                             </button>
                         </div>
 
-                        <!-- Products List Table -->
                         <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
                             <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                                 <h3 class="font-bold text-gray-900 text-sm">Current Catalog</h3>
@@ -177,12 +163,11 @@
                                             <th class="p-3 md:p-4 font-semibold">Product Name</th>
                                             <th class="p-3 md:p-4 font-semibold">Price</th>
                                             <th class="p-3 md:p-4 font-semibold">Stock</th>
-                                            <th class="p-3 md:p-4 font-semibold">Status</th>
-                                            <th class="p-3 md:p-4 text-right font-semibold">Action</th>
+                                            <th class="p-3 md:p-4 font-semibold text-center">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="products-table-body" class="divide-y divide-gray-100 bg-white">
-                                        <tr><td colspan="6" class="p-8 text-center text-gray-400">Loading products...</td></tr>
+                                        <tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -219,14 +204,14 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ADVANCED ADD PRODUCT MODAL -->
+    <!-- ADD / EDIT PRODUCT MODAL -->
     <!-- ========================================== -->
     <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-auto border border-gray-200">
             
             <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
-                <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें <span class="hidden sm:inline text-gray-400 font-medium text-lg">(+ Add New Product)</span>
+                <h2 id="modal-title" class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
+                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें
                 </h2>
                 <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
                     <i class="ph ph-x text-2xl font-bold"></i>
@@ -238,11 +223,11 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
+                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category <span class="text-red-500">*</span></label>
-                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Necklace">Necklace (गले का हार)</option>
                             <option value="Earrings">Earrings (झुमके)</option>
                             <option value="Rings" selected>Rings (अंगूठियां)</option>
@@ -252,26 +237,26 @@
                     </div>
                     <div class="sm:col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">SKU ID <span class="text-gray-400 font-medium text-[10px]">(स्टॉक कीपिंग यूनिट)</span> <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
+                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Material <span class="text-gray-400 font-medium text-[10px]">(सामग्री)</span></label>
-                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-red-500">*</span></label>
-                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Traditional">Traditional (पारंपरिक)</option>
                             <option value="Modern">Modern (आधुनिक)</option>
                             <option value="Bridal">Bridal (ब्राइडल)</option>
@@ -282,7 +267,6 @@
 
                 <hr class="border-gray-100">
 
-                <!-- Image Gallery Section -->
                 <div>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
                         <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5)</span></label>
@@ -330,7 +314,7 @@
 
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">DESCRIPTION <span class="text-gray-400 font-medium text-[10px]">(विवरण)</span></label>
-                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
+                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2 pb-2">
@@ -364,6 +348,10 @@
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        let allProducts = [];
+        let currentEditId = null;
+        let existingImageUrls = {};
 
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
@@ -460,6 +448,54 @@
         }
 
         function openProductModal() {
+            currentEditId = null;
+            existingImageUrls = {};
+            document.getElementById('modal-title').innerHTML = '<span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें';
+            document.getElementById('btn-save-adv').innerText = 'SAVE PRODUCT';
+            
+            document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+            document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
+            document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
+            document.getElementById('add-p-trending').checked = false;
+            document.getElementById('add-p-flash').checked = false;
+
+            document.getElementById('product-modal').classList.remove('hidden');
+            document.getElementById('product-modal').classList.add('flex');
+        }
+
+        function editProduct(id) {
+            const p = allProducts.find(x => x.id === id);
+            if(!p) return;
+            currentEditId = id;
+            
+            document.getElementById('modal-title').innerHTML = '<span class="text-blue-500">✏️</span> प्रॉडक्ट एडिट करें';
+            document.getElementById('btn-save-adv').innerText = 'UPDATE PRODUCT';
+            
+            document.getElementById('add-p-name').value = p.name || '';
+            document.getElementById('add-p-category').value = p.category || 'Rings';
+            document.getElementById('add-p-sku').value = p.sku || '';
+            document.getElementById('add-p-price').value = p.price || '';
+            document.getElementById('add-p-stock').value = p.stock || '';
+            document.getElementById('add-p-material').value = p.material || '';
+            document.getElementById('add-p-theme').value = p.theme || 'Traditional';
+            document.getElementById('add-p-desc').value = p.description || '';
+            document.getElementById('add-p-trending').checked = p.is_trending || false;
+            document.getElementById('add-p-flash').checked = p.is_flash_sale || false;
+
+            existingImageUrls = { 1: p.image_url, 2: p.image_2, 3: p.image_3, 4: p.image_4, 5: p.image_5 };
+
+            [1,2,3,4,5].forEach(num => {
+                const url = existingImageUrls[num];
+                const imgEl = document.getElementById(`preview-${num}`);
+                if(url) {
+                    imgEl.src = url;
+                    imgEl.classList.remove('hidden');
+                } else {
+                    imgEl.src = '';
+                    imgEl.classList.add('hidden');
+                }
+            });
+
             document.getElementById('product-modal').classList.remove('hidden');
             document.getElementById('product-modal').classList.add('flex');
         }
@@ -479,8 +515,15 @@
                 }
                 reader.readAsDataURL(inputElement.files[0]);
             } else {
-                previewImg.src = "";
-                previewImg.classList.add('hidden');
+                // If it's edit mode and we cancel file selection, fallback to existing URL
+                const imgNum = previewImgId.split('-')[1];
+                if(currentEditId && existingImageUrls[imgNum]) {
+                    previewImg.src = existingImageUrls[imgNum];
+                    previewImg.classList.remove('hidden');
+                } else {
+                    previewImg.src = "";
+                    previewImg.classList.add('hidden');
+                }
             }
         }
 
@@ -516,38 +559,39 @@
             if(!name || !price || !sku || !stock) { alert("Please fill all mandatory (*) fields."); return; }
 
             const mainImageInput = document.getElementById('file-img-1');
-            if(!mainImageInput.files || mainImageInput.files.length === 0) {
+            if(!currentEditId && (!mainImageInput.files || mainImageInput.files.length === 0)) {
                 alert("कृपया पहले मुख्य फोटो (Photo 1) चुनें।"); return;
             }
 
-            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> UPLOADING...';
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> SAVING...';
             btn.disabled = true;
 
             try {
-                const img1_url = await uploadFileToSupabase('file-img-1');
-                const img2_url = await uploadFileToSupabase('file-img-2');
-                const img3_url = await uploadFileToSupabase('file-img-3');
-                const img4_url = await uploadFileToSupabase('file-img-4');
-                const img5_url = await uploadFileToSupabase('file-img-5');
+                // If a new file is selected, upload it. Otherwise, keep the existing URL (if editing).
+                const img1_url = (mainImageInput.files && mainImageInput.files.length > 0) ? await uploadFileToSupabase('file-img-1') : existingImageUrls[1];
+                const img2_url = (document.getElementById('file-img-2').files.length > 0) ? await uploadFileToSupabase('file-img-2') : existingImageUrls[2];
+                const img3_url = (document.getElementById('file-img-3').files.length > 0) ? await uploadFileToSupabase('file-img-3') : existingImageUrls[3];
+                const img4_url = (document.getElementById('file-img-4').files.length > 0) ? await uploadFileToSupabase('file-img-4') : existingImageUrls[4];
+                const img5_url = (document.getElementById('file-img-5').files.length > 0) ? await uploadFileToSupabase('file-img-5') : existingImageUrls[5];
 
                 if(!img1_url) throw new Error("Main image upload failed.");
 
-                const { error: insertError } = await supabaseClient.from('products').insert([{
+                const productData = {
                     name: name, category: category, sku: sku, price: price, stock: stock,
                     material: material, theme: theme, description: desc,
                     is_trending: isTrending, is_flash_sale: isFlash,
                     image_url: img1_url, image_2: img2_url, image_3: img3_url, image_4: img4_url, image_5: img5_url
-                }]);
+                };
 
-                if (insertError) throw insertError;
-
-                alert("Product Live Successfully! 🎉");
-                
-                document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
-                document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
-                document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
-                document.getElementById('add-p-trending').checked = false;
-                document.getElementById('add-p-flash').checked = false;
+                if(currentEditId) {
+                    const { error: updateError } = await supabaseClient.from('products').update(productData).eq('id', currentEditId);
+                    if (updateError) throw updateError;
+                    alert("Product Updated Successfully! 🎉");
+                } else {
+                    const { error: insertError } = await supabaseClient.from('products').insert([productData]);
+                    if (insertError) throw insertError;
+                    alert("Product Added Successfully! 🎉");
+                }
                 
                 closeProductModal();
                 loadProducts();
@@ -556,25 +600,27 @@
                 console.error(err);
                 alert("Error: " + err.message);
             } finally {
-                btn.innerHTML = 'SAVE PRODUCT';
+                btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT';
                 btn.disabled = false;
             }
         }
 
         async function loadProducts() {
             const tbody = document.getElementById('products-table-body');
-            tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
             
             const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
             
-            if (error) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`; return; }
+            if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`; return; }
+
+            allProducts = data; // Save to global array for editing
 
             let html = '';
             data.forEach(p => {
                 let stockStatus = p.stock > 0 ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">In Stock (${p.stock})</span>` : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Out of Stock</span>`;
                 html += `
-                    <tr class="hover:bg-gray-50 transition-colors group">
+                    <tr class="hover:bg-gray-50 transition-colors group border-b border-gray-50">
                         <td class="p-3 md:p-4"><img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'"></td>
                         <td class="p-3 md:p-4">
                             <p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p>
@@ -582,9 +628,15 @@
                         </td>
                         <td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td>
                         <td class="p-3 md:p-4">${stockStatus}</td>
-                        <td class="p-3 md:p-4"><span class="text-green-500 text-xs font-bold flex items-center gap-1"><i class="ph ph-check-circle"></i> Active</span></td>
-                        <td class="p-3 md:p-4 text-right">
-                            <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors ml-auto"><i class="ph ph-trash"></i></button>
+                        <td class="p-3 md:p-4 text-center">
+                            <div class="flex justify-center items-center gap-2">
+                                <button onclick="editProduct(${p.id})" class="w-8 h-8 rounded bg-blue-50 text-blue-500 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
+                                    <i class="ph ph-pencil-simple text-lg"></i>
+                                </button>
+                                <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
+                                    <i class="ph ph-trash text-lg"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `;
