@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- ZOOM FIX & RESPONSIVE META TAG -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!-- ZOOM FIX: Removed the zoom-lock so Desktop Site mode automatically fits the screen -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
     
     <!-- Tailwind CSS & Phosphor Icons -->
@@ -31,6 +31,8 @@
         }
         .img-upload-box:hover { border-color: #e6998c; background-color: #fff9f8; }
         .img-preview { object-fit: cover; width: 100%; height: 100%; position: absolute; top: 0; left: 0; border-radius: 0.375rem; }
+        
+        html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 overflow-hidden">
@@ -58,7 +60,7 @@
     <!-- ========================================== -->
     <!-- MAIN ADMIN DASHBOARD (100% RESPONSIVE) -->
     <!-- ========================================== -->
-    <div id="admin-panel" class="hidden h-screen w-full relative flex-row overflow-hidden bg-gray-50">
+    <div id="admin-panel" class="hidden h-full w-full relative flex-row overflow-hidden bg-gray-50">
         
         <!-- MOBILE OVERLAY (Dark background when menu is open) -->
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
@@ -240,11 +242,12 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
+                        <!-- Added text-base for mobile to prevent auto-zoom on focus -->
+                        <input type="text" id="add-p-name" placeholder="जैसे: Classic Solitaire Ring" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category <span class="text-red-500">*</span></label>
-                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Necklace">Necklace (गले का हार)</option>
                             <option value="Earrings">Earrings (झुमके)</option>
                             <option value="Rings" selected>Rings (अंगूठियां)</option>
@@ -254,7 +257,7 @@
                     </div>
                     <div class="sm:col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">SKU ID <span class="text-gray-400 font-medium text-[10px]">(स्टॉक कीपिंग यूनिट)</span> <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
+                        <input type="text" id="add-p-sku" placeholder="AU-RNG-123" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
                     </div>
                 </div>
 
@@ -262,19 +265,19 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="number" id="add-p-price" placeholder="45000" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div>
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="number" id="add-p-stock" value="10" placeholder="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Material <span class="text-gray-400 font-medium text-[10px]">(सामग्री)</span></label>
-                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <input type="text" id="add-p-material" placeholder="Gold" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                     </div>
                     <div class="col-span-2 md:col-span-1">
                         <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-red-500">*</span></label>
-                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
+                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
                             <option value="Traditional">Traditional (पारंपरिक)</option>
                             <option value="Modern">Modern (आधुनिक)</option>
                             <option value="Bridal">Bridal (ब्राइडल)</option>
@@ -285,7 +288,7 @@
 
                 <hr class="border-gray-100">
 
-                <!-- Image Gallery Section (File Manager Upload) -->
+                <!-- Image Gallery Section (NO accept="image/*" - Forces File Manager) -->
                 <div>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
                         <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(तस्वीरें - अधिकतम 5)</span></label>
@@ -340,7 +343,7 @@
                 <!-- Description -->
                 <div>
                     <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">DESCRIPTION <span class="text-gray-400 font-medium text-[10px]">(विवरण)</span></label>
-                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-sm md:text-sm text-base outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
+                    <textarea id="add-p-desc" rows="3" placeholder="प्रॉडक्ट के बारे में जानकारी लिखें..." class="w-full p-3 bg-white border border-gray-300 rounded text-base md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
                 </div>
 
                 <!-- Checkboxes -->
@@ -384,7 +387,7 @@
                 document.getElementById('login-modal').classList.add('hidden');
                 const panel = document.getElementById('admin-panel');
                 panel.classList.remove('hidden');
-                panel.classList.add('flex');
+                panel.classList.add('flex'); // Add flex for layout
                 initDashboard();
             } else {
                 alert("Incorrect Password! Access Denied.");
