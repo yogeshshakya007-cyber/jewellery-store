@@ -193,7 +193,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ORDER DETAILS MODAL -->
+    <!-- ORDER DETAILS MODAL (WITH WHATSAPP BUTTON) -->
     <!-- ========================================== -->
     <div id="order-details-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative my-auto border border-gray-200">
@@ -240,9 +240,14 @@
 
             </div>
 
-            <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center bg-gray-50 rounded-b-2xl">
-                <button onclick="generateInvoice()" class="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
-                    <i class="ph ph-printer text-lg"></i> Print Invoice
+            <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
+                <!-- WHATSAPP BUTTON -->
+                <button onclick="sendWhatsAppMessage()" class="px-4 md:px-6 py-2.5 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
+                    <i class="ph ph-whatsapp-logo text-lg"></i> WhatsApp
+                </button>
+                <!-- PRINT INVOICE BUTTON -->
+                <button onclick="generateInvoice()" class="px-4 md:px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
+                    <i class="ph ph-printer text-lg"></i> Print
                 </button>
             </div>
         </div>
@@ -709,6 +714,37 @@
         function closeOrderModal() {
             document.getElementById('order-details-modal').classList.add('hidden');
             document.getElementById('order-details-modal').classList.remove('flex');
+        }
+
+        // --- NEW WHATSAPP AUTOMATION LOGIC ---
+        function sendWhatsAppMessage() {
+            if(!currentViewedOrder) return;
+            const order = currentViewedOrder;
+            
+            let cust = {};
+            try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
+            
+            let phone = cust.phone || cust.email_phone || '';
+            if(!phone) {
+                alert("Customer phone number not found.");
+                return;
+            }
+            
+            // Clean number and add country code
+            phone = phone.replace(/\D/g,'');
+            if(phone.length === 10) { phone = '91' + phone; }
+
+            const customerName = cust.name || 'Customer';
+            const orderId = order.order_id || '';
+            const total = order.total_amount || 0;
+            
+            // Professional Message Format
+            let text = `Hello ${customerName}, \n\nThank you for your order *${orderId}* at *Yogesh Jewellers*! ✨\n\nYour order total is *₹${total}*.\nWe are processing your order and will update you regarding the shipping soon.\n\nThank you for shopping with us! 💍`;
+            
+            const encodedText = encodeURIComponent(text);
+            const waUrl = `https://wa.me/${phone}?text=${encodedText}`;
+            
+            window.open(waUrl, '_blank');
         }
 
         function generateInvoice() {
