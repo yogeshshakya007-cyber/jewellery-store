@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
     
+    <!-- Tailwind CSS, Phosphor Icons, Supabase, Chart.js -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
 
@@ -99,9 +101,10 @@
                 <!-- 1. DASHBOARD TAB -->
                 <div id="section-dashboard" class="block space-y-6 max-w-7xl mx-auto">
                     
-                    <!-- NEW: LOW STOCK ALERT CONTAINER -->
+                    <!-- LOW STOCK ALERT CONTAINER -->
                     <div id="low-stock-alert-container" class="hidden"></div>
 
+                    <!-- STATS CARDS -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
@@ -116,6 +119,29 @@
                             <div><p class="text-gray-500 text-xs md:text-sm font-bold">Live Products</p><h3 id="stat-products-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3></div>
                         </div>
                     </div>
+
+                    <!-- NEW: ANALYTICS CHARTS -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
+                        <!-- Line Chart: 7 Days Revenue -->
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2">
+                            <h3 class="text-xs font-extrabold text-gray-500 mb-4 uppercase tracking-wider flex items-center gap-2">
+                                <i class="ph ph-trend-up text-lg text-blue-500"></i> Last 7 Days Revenue
+                            </h3>
+                            <div class="relative h-64 w-full">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                        <!-- Doughnut Chart: Products by Category -->
+                        <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
+                            <h3 class="text-xs font-extrabold text-gray-500 mb-4 uppercase tracking-wider flex items-center gap-2">
+                                <i class="ph ph-chart-pie-slice text-lg text-[#e6998c]"></i> Catalog Categories
+                            </h3>
+                            <div class="relative h-64 w-full flex justify-center">
+                                <canvas id="categoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- 2. PRODUCTS TAB -->
@@ -127,7 +153,6 @@
                         </div>
 
                         <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
-                            <!-- SEARCH BAR FOR PRODUCTS -->
                             <div class="p-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">
                                 <h3 class="font-bold text-gray-900 text-sm">Current Catalog</h3>
                                 <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -161,7 +186,6 @@
                 <!-- 3. ORDERS TAB -->
                 <div id="section-orders" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
-                        <!-- SEARCH BAR FOR ORDERS -->
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <h2 class="text-lg md:text-xl font-bold text-gray-900">Recent Orders</h2>
                             <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -201,18 +225,11 @@
     <!-- ========================================== -->
     <div id="order-details-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative my-auto border border-gray-200">
-            
             <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
-                <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                    <i class="ph ph-receipt text-[#e6998c] text-2xl"></i> Order: <span id="modal-order-id" class="text-[#e6998c]"></span>
-                </h2>
-                <button onclick="closeOrderModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
-                    <i class="ph ph-x text-2xl font-bold"></i>
-                </button>
+                <h2 class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2"><i class="ph ph-receipt text-[#e6998c] text-2xl"></i> Order: <span id="modal-order-id" class="text-[#e6998c]"></span></h2>
+                <button onclick="closeOrderModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1"><i class="ph ph-x text-2xl font-bold"></i></button>
             </div>
-
             <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
                     <div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Customer Info</p>
@@ -225,12 +242,10 @@
                         <p id="modal-cust-address" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
                     </div>
                 </div>
-
                 <div>
                     <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 border-b pb-2">Purchased Items</p>
                     <div id="modal-order-items" class="space-y-3"></div>
                 </div>
-
                 <div class="border-t pt-4 flex justify-between items-center">
                     <div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Order Date</p>
@@ -241,18 +256,10 @@
                         <p id="modal-order-total" class="text-xl font-extrabold text-[#059669]"></p>
                     </div>
                 </div>
-
             </div>
-
             <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
-                <!-- WHATSAPP BUTTON -->
-                <button onclick="sendWhatsAppMessage()" class="px-4 md:px-6 py-2.5 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
-                    <i class="ph ph-whatsapp-logo text-lg"></i> WhatsApp
-                </button>
-                <!-- PRINT INVOICE BUTTON -->
-                <button onclick="generateInvoice()" class="px-4 md:px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
-                    <i class="ph ph-printer text-lg"></i> Print
-                </button>
+                <button onclick="sendWhatsAppMessage()" class="px-4 md:px-6 py-2.5 bg-[#25D366] hover:bg-[#128C7E] text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg"><i class="ph ph-whatsapp-logo text-lg"></i> WhatsApp</button>
+                <button onclick="generateInvoice()" class="px-4 md:px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg"><i class="ph ph-printer text-lg"></i> Print</button>
             </div>
         </div>
     </div>
@@ -263,28 +270,21 @@
     <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-auto border border-gray-200">
             <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center sticky top-0 bg-white/95 backdrop-blur-sm rounded-t-2xl z-10">
-                <h2 id="modal-title" class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2">
-                    <span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें
-                </h2>
-                <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1">
-                    <i class="ph ph-x text-2xl font-bold"></i>
-                </button>
+                <h2 id="modal-title" class="text-lg md:text-xl font-extrabold text-gray-900 flex items-center gap-2"><span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें</h2>
+                <button onclick="closeProductModal()" class="text-gray-400 hover:text-red-500 transition-colors p-1"><i class="ph ph-x text-2xl font-bold"></i></button>
             </div>
             <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
-                
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Product Name *</label><input type="text" id="add-p-name" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Category *</label><select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"><option value="Necklace">Necklace</option><option value="Earrings">Earrings</option><option value="Rings" selected>Rings</option><option value="Bangles">Bangles</option><option value="Pendants">Pendants</option></select></div>
                     <div class="sm:col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">SKU ID *</label><input type="text" id="add-p-sku" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] font-bold"></div>
                 </div>
-
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Price (₹) *</label><input type="number" id="add-p-price" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Stock *</label><input type="number" id="add-p-stock" value="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
                     <div class="col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Material</label><input type="text" id="add-p-material" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
                     <div class="col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Theme *</label><select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"><option value="Traditional">Traditional</option><option value="Modern">Modern</option><option value="Bridal">Bridal</option><option value="Casual">Casual</option></select></div>
                 </div>
-
                 <hr class="border-gray-100">
                 <div>
                     <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
@@ -299,16 +299,12 @@
                         <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-5').click()"><input type="file" id="file-img-5" class="hidden" onchange="previewImage(this, 'preview-5')"><img id="preview-5" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">5. Box</span></div>
                     </div>
                 </div>
-
                 <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">DESCRIPTION</label><textarea id="add-p-desc" rows="3" class="w-full p-3 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] resize-none"></textarea></div>
-
                 <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2 pb-2">
                     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] custom-checkbox"><span class="text-xs font-bold text-gray-700">Mark as Trending</span></label>
                     <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] custom-checkbox"><span class="text-xs font-bold text-gray-700">Enable Flash Sale</span></label>
                 </div>
-
             </div>
-
             <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
                 <button onclick="closeProductModal()" class="px-4 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
                 <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">SAVE PRODUCT</button>
@@ -330,6 +326,9 @@
         let currentEditId = null;
         let existingImageUrls = {};
         let currentViewedOrder = null; 
+        
+        let revenueChartInstance = null;
+        let categoryChartInstance = null;
 
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
@@ -402,10 +401,12 @@
             loadOrders();
         }
 
+        // --- DASHBOARD AND CHARTS LOGIC ---
         async function loadDashboardStats() {
             try {
                 const { data: orders } = await supabaseClient.from('orders').select('*');
-                const { count: productsCount } = await supabaseClient.from('products').select('*', { count: 'exact', head: true });
+                const { data: products } = await supabaseClient.from('products').select('*');
+                
                 if(orders) {
                     document.getElementById('stat-orders-count').innerText = orders.length;
                     let totalRev = orders.reduce((sum, o) => {
@@ -414,8 +415,127 @@
                     }, 0);
                     document.getElementById('stat-revenue').innerText = "₹" + totalRev.toLocaleString('en-IN');
                 }
-                if(productsCount !== null) document.getElementById('stat-products-count').innerText = productsCount;
+                
+                if(products) {
+                    document.getElementById('stat-products-count').innerText = products.length;
+                    allProducts = products; 
+                    updateLowStockAlert();  
+                }
+
+                // Render Analytics Charts
+                renderCharts(orders, products);
+                
             } catch (error) { console.error(error); }
+        }
+
+        function renderCharts(orders, products) {
+            // 1. Line Chart Data (Last 7 Days Revenue)
+            const last7Days = [];
+            const revenueData = [];
+            for(let i=6; i>=0; i--) {
+                let d = new Date();
+                d.setDate(d.getDate() - i);
+                last7Days.push(d.toLocaleDateString('en-IN', {day:'2-digit', month:'short'}));
+                revenueData.push(0); 
+            }
+
+            if(orders) {
+                orders.forEach(o => {
+                    let oDate = new Date(o.created_at);
+                    let dateStr = oDate.toLocaleDateString('en-IN', {day:'2-digit', month:'short'});
+                    let index = last7Days.indexOf(dateStr);
+                    if(index !== -1) {
+                        let amount = o.total_amount ? parseFloat(String(o.total_amount).replace(/[^0-9.-]+/g,"")) : 0;
+                        revenueData[index] += amount;
+                    }
+                });
+            }
+
+            const ctxLine = document.getElementById('revenueChart').getContext('2d');
+            if(revenueChartInstance) revenueChartInstance.destroy();
+            revenueChartInstance = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: last7Days,
+                    datasets: [{
+                        label: 'Daily Revenue (₹)',
+                        data: revenueData,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#3b82f6',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { 
+                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // 2. Doughnut Chart Data (Products by Category)
+            const categories = {};
+            if(products) {
+                products.forEach(p => {
+                    let cat = p.category || 'Other';
+                    categories[cat] = (categories[cat] || 0) + 1;
+                });
+            }
+            
+            const ctxPie = document.getElementById('categoryChart').getContext('2d');
+            if(categoryChartInstance) categoryChartInstance.destroy();
+            categoryChartInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(categories),
+                    datasets: [{
+                        data: Object.values(categories),
+                        backgroundColor: ['#e6998c', '#0f172a', '#059669', '#f59e0b', '#3b82f6', '#8b5cf6'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    cutout: '75%',
+                    plugins: {
+                        legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } }
+                    }
+                }
+            });
+        }
+
+        function updateLowStockAlert() {
+            const lowStockProducts = allProducts.filter(p => parseInt(p.stock) <= 3);
+            const alertContainer = document.getElementById('low-stock-alert-container');
+            
+            if (lowStockProducts.length > 0) {
+                let itemsHtml = lowStockProducts.map(p => `<li class="text-sm">⚠️ <b>${p.name}</b> (SKU: ${p.sku || 'N/A'}) - Only <b class="text-red-900">${p.stock}</b> left!</li>`).join('');
+                
+                alertContainer.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm mb-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph ph-warning-circle text-red-500 text-2xl"></i>
+                            <h3 class="text-red-800 font-bold text-lg">Low Stock Alert!</h3>
+                        </div>
+                        <ul class="list-disc list-inside text-red-700 ml-9 space-y-1">${itemsHtml}</ul>
+                    </div>
+                `;
+                alertContainer.classList.remove('hidden');
+            } else {
+                alertContainer.classList.add('hidden');
+                alertContainer.innerHTML = '';
+            }
         }
 
         // --- PRODUCT MANAGEMENT ---
@@ -533,37 +653,11 @@
                     if (insertError) throw insertError;
                     alert("Product Added Successfully! 🎉");
                 }
-                closeProductModal(); loadProducts(); loadDashboardStats();
+                closeProductModal(); loadDashboardStats(); // Refresh everything
             } catch (err) {
                 console.error(err); alert("Error: " + err.message);
             } finally {
                 btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT'; btn.disabled = false;
-            }
-        }
-
-        // --- NEW LOW STOCK ALERT LOGIC ADDED HERE ---
-        function updateLowStockAlert() {
-            const lowStockProducts = allProducts.filter(p => parseInt(p.stock) <= 3);
-            const alertContainer = document.getElementById('low-stock-alert-container');
-            
-            if (lowStockProducts.length > 0) {
-                let itemsHtml = lowStockProducts.map(p => `<li class="text-sm">⚠️ <b>${p.name}</b> (SKU: ${p.sku || 'N/A'}) - Only <b class="text-red-900">${p.stock}</b> left!</li>`).join('');
-                
-                alertContainer.innerHTML = `
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm mb-6">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i class="ph ph-warning-circle text-red-500 text-2xl"></i>
-                            <h3 class="text-red-800 font-bold text-lg">Low Stock Alert!</h3>
-                        </div>
-                        <ul class="list-disc list-inside text-red-700 ml-9 space-y-1">
-                            ${itemsHtml}
-                        </ul>
-                    </div>
-                `;
-                alertContainer.classList.remove('hidden');
-            } else {
-                alertContainer.classList.add('hidden');
-                alertContainer.innerHTML = '';
             }
         }
 
@@ -574,8 +668,6 @@
             if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
             allProducts = data || []; 
             renderProducts(allProducts);
-            
-            // Check for low stock whenever products are loaded
             updateLowStockAlert();
         }
 
@@ -620,7 +712,7 @@
         async function deleteProduct(id, name) {
             if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                if(error) alert("Error deleting product."); else { loadProducts(); loadDashboardStats(); }
+                if(error) alert("Error deleting product."); else { loadDashboardStats(); }
             }
         }
 
