@@ -98,6 +98,10 @@
 
                 <!-- 1. DASHBOARD TAB -->
                 <div id="section-dashboard" class="block space-y-6 max-w-7xl mx-auto">
+                    
+                    <!-- NEW: LOW STOCK ALERT CONTAINER -->
+                    <div id="low-stock-alert-container" class="hidden"></div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
@@ -537,6 +541,32 @@
             }
         }
 
+        // --- NEW LOW STOCK ALERT LOGIC ADDED HERE ---
+        function updateLowStockAlert() {
+            const lowStockProducts = allProducts.filter(p => parseInt(p.stock) <= 3);
+            const alertContainer = document.getElementById('low-stock-alert-container');
+            
+            if (lowStockProducts.length > 0) {
+                let itemsHtml = lowStockProducts.map(p => `<li class="text-sm">⚠️ <b>${p.name}</b> (SKU: ${p.sku || 'N/A'}) - Only <b class="text-red-900">${p.stock}</b> left!</li>`).join('');
+                
+                alertContainer.innerHTML = `
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm mb-6">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="ph ph-warning-circle text-red-500 text-2xl"></i>
+                            <h3 class="text-red-800 font-bold text-lg">Low Stock Alert!</h3>
+                        </div>
+                        <ul class="list-disc list-inside text-red-700 ml-9 space-y-1">
+                            ${itemsHtml}
+                        </ul>
+                    </div>
+                `;
+                alertContainer.classList.remove('hidden');
+            } else {
+                alertContainer.classList.add('hidden');
+                alertContainer.innerHTML = '';
+            }
+        }
+
         async function loadProducts() {
             const tbody = document.getElementById('products-table-body');
             tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
@@ -544,6 +574,9 @@
             if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
             allProducts = data || []; 
             renderProducts(allProducts);
+            
+            // Check for low stock whenever products are loaded
+            updateLowStockAlert();
         }
 
         function renderProducts(dataArray) {
@@ -716,34 +749,21 @@
             document.getElementById('order-details-modal').classList.remove('flex');
         }
 
-        // --- NEW WHATSAPP AUTOMATION LOGIC ---
         function sendWhatsAppMessage() {
             if(!currentViewedOrder) return;
             const order = currentViewedOrder;
-            
             let cust = {};
             try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
-            
             let phone = cust.phone || cust.email_phone || '';
-            if(!phone) {
-                alert("Customer phone number not found.");
-                return;
-            }
-            
-            // Clean number and add country code
+            if(!phone) { alert("Customer phone number not found."); return; }
             phone = phone.replace(/\D/g,'');
             if(phone.length === 10) { phone = '91' + phone; }
-
             const customerName = cust.name || 'Customer';
             const orderId = order.order_id || '';
             const total = order.total_amount || 0;
-            
-            // Professional Message Format
             let text = `Hello ${customerName}, \n\nThank you for your order *${orderId}* at *Yogesh Jewellers*! ✨\n\nYour order total is *₹${total}*.\nWe are processing your order and will update you regarding the shipping soon.\n\nThank you for shopping with us! 💍`;
-            
             const encodedText = encodeURIComponent(text);
             const waUrl = `https://wa.me/${phone}?text=${encodedText}`;
-            
             window.open(waUrl, '_blank');
         }
 
