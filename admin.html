@@ -123,9 +123,16 @@
                         </div>
 
                         <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
-                            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                            <!-- SEARCH BAR FOR PRODUCTS -->
+                            <div class="p-4 border-b border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50/50">
                                 <h3 class="font-bold text-gray-900 text-sm">Current Catalog</h3>
-                                <button onclick="loadProducts()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                                <div class="flex items-center gap-3 w-full sm:w-auto">
+                                    <div class="relative w-full sm:w-64">
+                                        <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                        <input type="text" id="search-product" onkeyup="searchProducts()" placeholder="Search Name, SKU..." class="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-xs outline-none focus:border-[#059669] transition-all">
+                                    </div>
+                                    <button onclick="loadProducts()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 shrink-0"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                                </div>
                             </div>
                             <div class="overflow-x-auto w-full">
                                 <table class="w-full text-left text-sm whitespace-nowrap">
@@ -150,9 +157,16 @@
                 <!-- 3. ORDERS TAB -->
                 <div id="section-orders" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
-                        <div class="flex justify-between items-center mb-6">
+                        <!-- SEARCH BAR FOR ORDERS -->
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                             <h2 class="text-lg md:text-xl font-bold text-gray-900">Recent Orders</h2>
-                            <button onclick="loadOrders()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                            <div class="flex items-center gap-3 w-full sm:w-auto">
+                                <div class="relative w-full sm:w-72">
+                                    <i class="ph ph-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                                    <input type="text" id="search-order" onkeyup="searchOrders()" placeholder="Search Order ID, Name, Phone..." class="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-lg text-xs outline-none focus:border-[#059669] transition-all">
+                                </div>
+                                <button onclick="loadOrders()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 shrink-0"><i class="ph ph-arrows-clockwise"></i> Refresh</button>
+                            </div>
                         </div>
                         <div class="overflow-x-auto border border-gray-100 rounded-xl w-full">
                             <table class="w-full text-left text-sm whitespace-nowrap">
@@ -227,7 +241,6 @@
             </div>
 
             <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center bg-gray-50 rounded-b-2xl">
-                <!-- PRINT INVOICE BUTTON ADDED HERE -->
                 <button onclick="generateInvoice()" class="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
                     <i class="ph ph-printer text-lg"></i> Print Invoice
                 </button>
@@ -249,7 +262,7 @@
                 </button>
             </div>
             <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
-                <!-- ... Product form inputs ... -->
+                
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Product Name *</label><input type="text" id="add-p-name" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
                     <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Category *</label><select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"><option value="Necklace">Necklace</option><option value="Earrings">Earrings</option><option value="Rings" selected>Rings</option><option value="Bangles">Bangles</option><option value="Pendants">Pendants</option></select></div>
@@ -265,7 +278,10 @@
 
                 <hr class="border-gray-100">
                 <div>
-                    <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider mb-3">PRODUCT IMAGES</label>
+                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
+                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(अधिकतम 5)</span></label>
+                        <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
+                    </div>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
                         <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box border-[#059669]" onclick="document.getElementById('file-img-1').click()"><input type="file" id="file-img-1" class="hidden" onchange="previewImage(this, 'preview-1')"><img id="preview-1" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] text-[#059669] font-bold mt-1 relative z-10">1. Main *</span></div>
                         <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-2').click()"><input type="file" id="file-img-2" class="hidden" onchange="previewImage(this, 'preview-2')"><img id="preview-2" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">2. Side</span></div>
@@ -304,7 +320,7 @@
         let allOrders = []; 
         let currentEditId = null;
         let existingImageUrls = {};
-        let currentViewedOrder = null; // New variable to store active order for PDF
+        let currentViewedOrder = null; 
 
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
@@ -521,10 +537,18 @@
             tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
             const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
             if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
-            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`; return; }
-            allProducts = data; 
+            allProducts = data || []; 
+            renderProducts(allProducts);
+        }
+
+        function renderProducts(dataArray) {
+            const tbody = document.getElementById('products-table-body');
+            if (!dataArray || dataArray.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found.</td></tr>`; 
+                return; 
+            }
             let html = '';
-            data.forEach(p => {
+            dataArray.forEach(p => {
                 let stockStatus = p.stock > 0 ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">In Stock (${p.stock})</span>` : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Out of Stock</span>`;
                 html += `
                     <tr class="hover:bg-gray-50 border-b border-gray-50">
@@ -546,6 +570,15 @@
             tbody.innerHTML = html;
         }
 
+        function searchProducts() {
+            const query = document.getElementById('search-product').value.toLowerCase();
+            const filtered = allProducts.filter(p => 
+                (p.name && p.name.toLowerCase().includes(query)) || 
+                (p.sku && p.sku.toLowerCase().includes(query))
+            );
+            renderProducts(filtered);
+        }
+
         async function deleteProduct(id, name) {
             if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
@@ -558,10 +591,19 @@
             const tbody = document.getElementById('orders-table-body');
             tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>';
             const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
-            if (error || !data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders received yet.</td></tr>`; return; }
-            allOrders = data; 
+            if (error) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error loading orders</td></tr>`; return; }
+            allOrders = data || []; 
+            renderOrders(allOrders);
+        }
+
+        function renderOrders(dataArray) {
+            const tbody = document.getElementById('orders-table-body');
+            if (!dataArray || dataArray.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders found.</td></tr>`; 
+                return; 
+            }
             let html = '';
-            data.forEach(o => {
+            dataArray.forEach(o => {
                 let customerHTML = "N/A";
                 if(o.customer_details) {
                     try {
@@ -591,6 +633,21 @@
             tbody.innerHTML = html;
         }
 
+        function searchOrders() {
+            const query = document.getElementById('search-order').value.toLowerCase();
+            const filtered = allOrders.filter(o => {
+                let cName = '', cPhone = '';
+                try {
+                    let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : (o.customer_details || {});
+                    cName = (c.name || '').toLowerCase();
+                    cPhone = (c.phone || c.email_phone || '').toLowerCase();
+                } catch(e){}
+                const oId = (o.order_id || '').toLowerCase();
+                return oId.includes(query) || cName.includes(query) || cPhone.includes(query);
+            });
+            renderOrders(filtered);
+        }
+
         async function updateOrderStatus(id, newStatus) {
             if(!newStatus) return;
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
@@ -600,7 +657,7 @@
         function viewOrderDetails(id) {
             const order = allOrders.find(o => o.id === id);
             if(!order) return;
-            currentViewedOrder = order; // Save for PDF
+            currentViewedOrder = order;
 
             let cust = {};
             try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
@@ -654,7 +711,6 @@
             document.getElementById('order-details-modal').classList.remove('flex');
         }
 
-        // --- NEW PDF INVOICE GENERATOR LOGIC ---
         function generateInvoice() {
             if(!currentViewedOrder) return;
             const order = currentViewedOrder;
@@ -686,7 +742,6 @@
 
             let addressStr = cust.address ? `${cust.address}, <br>${cust.city || ''}, ${cust.state || ''} <br><strong>PIN: ${cust.pincode || ''}</strong>` : 'N/A';
 
-            // Beautiful HTML Template for Invoice
             const invoiceHTML = `
             <html>
             <head>
@@ -762,13 +817,11 @@
             </html>
             `;
 
-            // Open window and print
             const printWindow = window.open('', '_blank');
             printWindow.document.write(invoiceHTML);
             printWindow.document.close();
             printWindow.focus();
             
-            // Wait slightly for browser to render styles before calling print dialog
             setTimeout(() => {
                 printWindow.print();
                 printWindow.close();
