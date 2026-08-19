@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yogesh Jewellers | Admin Dashboard</title>
     
-    <!-- Tailwind CSS & Phosphor Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
@@ -43,7 +41,6 @@
                         <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all text-[16px]">
                     </div>
                 </div>
-                
                 <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
             </div>
         </div>
@@ -53,7 +50,6 @@
     <!-- MAIN ADMIN DASHBOARD -->
     <!-- ========================================== -->
     <div id="admin-panel" class="hidden min-h-screen w-full bg-gray-50 relative">
-        
         <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 z-40 hidden transition-opacity"></div>
 
         <!-- APP SIDEBAR -->
@@ -66,9 +62,7 @@
                         <p class="text-[10px] text-gray-500 uppercase tracking-widest">Admin Panel</p>
                     </div>
                 </div>
-                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-1">
-                    <i class="ph ph-x text-2xl font-bold"></i>
-                </button>
+                <button onclick="toggleSidebar()" class="md:hidden text-gray-400 hover:text-white p-1"><i class="ph ph-x text-2xl font-bold"></i></button>
             </div>
 
             <nav class="p-4 space-y-2 flex-grow overflow-y-auto hide-scrollbar">
@@ -93,9 +87,7 @@
         <!-- MAIN CONTENT AREA -->
         <main class="w-full md:pl-[280px] min-h-screen flex flex-col">
             <header class="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-6 flex items-center sticky top-0 z-30 shadow-sm">
-                <button onclick="toggleSidebar()" class="md:hidden mr-4 text-gray-800 p-1 hover:text-[#e6998c] transition-colors">
-                    <i class="ph ph-list text-3xl font-bold"></i>
-                </button>
+                <button onclick="toggleSidebar()" class="md:hidden mr-4 text-gray-800 p-1 hover:text-[#e6998c] transition-colors"><i class="ph ph-list text-3xl font-bold"></i></button>
                 <div>
                     <h1 id="page-title" class="text-xl md:text-2xl font-bold text-gray-900">Dashboard Overview</h1>
                     <p class="text-xs md:text-sm text-gray-500 mt-1">Manage your jewellery empire.</p>
@@ -109,24 +101,15 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
-                            <div>
-                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Revenue</p>
-                                <h3 id="stat-revenue" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">₹0</h3>
-                            </div>
+                            <div><p class="text-gray-500 text-xs md:text-sm font-bold">Total Revenue</p><h3 id="stat-revenue" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">₹0</h3></div>
                         </div>
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-shopping-cart"></i></div>
-                            <div>
-                                <p class="text-gray-500 text-xs md:text-sm font-bold">Total Orders</p>
-                                <h3 id="stat-orders-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
-                            </div>
+                            <div><p class="text-gray-500 text-xs md:text-sm font-bold">Total Orders</p><h3 id="stat-orders-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3></div>
                         </div>
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-sketch-logo"></i></div>
-                            <div>
-                                <p class="text-gray-500 text-xs md:text-sm font-bold">Live Products</p>
-                                <h3 id="stat-products-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3>
-                            </div>
+                            <div><p class="text-gray-500 text-xs md:text-sm font-bold">Live Products</p><h3 id="stat-products-count" class="text-2xl md:text-3xl font-extrabold text-gray-900 mt-1">0</h3></div>
                         </div>
                     </div>
                 </div>
@@ -135,13 +118,8 @@
                 <div id="section-products" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                            <div>
-                                <h2 class="text-lg md:text-xl font-bold text-gray-900">Product Management</h2>
-                                <p class="text-[11px] md:text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p>
-                            </div>
-                            <button onclick="openProductModal()" class="menu-active px-6 py-3 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all shadow-md">
-                                <i class="ph ph-plus-circle text-xl"></i> Add New Product
-                            </button>
+                            <div><h2 class="text-lg md:text-xl font-bold text-gray-900">Product Management</h2><p class="text-[11px] md:text-xs text-gray-500 mt-1">Manage your inventory and catalog.</p></div>
+                            <button onclick="openProductModal()" class="menu-active px-6 py-3 rounded-lg font-bold flex items-center justify-center w-full sm:w-auto gap-2 transition-all shadow-md"><i class="ph ph-plus-circle text-xl"></i> Add New Product</button>
                         </div>
 
                         <div class="border border-gray-100 rounded-xl overflow-hidden mt-4 bg-white">
@@ -201,7 +179,7 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- ORDER DETAILS MODAL (NEW FEATURE) -->
+    <!-- ORDER DETAILS MODAL -->
     <!-- ========================================== -->
     <div id="order-details-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-2xl shadow-2xl relative my-auto border border-gray-200">
@@ -217,31 +195,24 @@
 
             <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
                 
-                <!-- Customer Info & Shipping Address -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
                     <div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Customer Info</p>
-                        <p id="modal-cust-name" class="font-extrabold text-gray-900 text-sm md:text-base">Name</p>
-                        <p id="modal-cust-phone" class="text-sm text-gray-600 font-medium flex items-center gap-1 mt-1"><i class="ph ph-phone"></i> Phone</p>
-                        <p id="modal-cust-email" class="text-sm text-gray-600 font-medium flex items-center gap-1"><i class="ph ph-envelope"></i> Email</p>
+                        <p id="modal-cust-name" class="font-extrabold text-gray-900 text-sm md:text-base"></p>
+                        <p id="modal-cust-phone" class="text-sm text-gray-600 font-medium flex items-center gap-1 mt-1"></p>
+                        <p id="modal-cust-email" class="text-sm text-gray-600 font-medium flex items-center gap-1"></p>
                     </div>
                     <div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Shipping Address</p>
-                        <p id="modal-cust-address" class="text-sm text-gray-800 font-medium leading-relaxed">
-                            Full Address will appear here...
-                        </p>
+                        <p id="modal-cust-address" class="text-sm text-gray-800 font-medium leading-relaxed"></p>
                     </div>
                 </div>
 
-                <!-- Order Items Summary -->
                 <div>
                     <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest mb-3 border-b pb-2">Purchased Items</p>
-                    <div id="modal-order-items" class="space-y-3">
-                        <!-- Items will be injected here via JS -->
-                    </div>
+                    <div id="modal-order-items" class="space-y-3"></div>
                 </div>
 
-                <!-- Payment & Date Summary -->
                 <div class="border-t pt-4 flex justify-between items-center">
                     <div>
                         <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Order Date</p>
@@ -256,16 +227,16 @@
             </div>
 
             <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center bg-gray-50 rounded-b-2xl">
-                <button onclick="window.print()" class="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2">
-                    <i class="ph ph-printer"></i> Print Details
+                <!-- PRINT INVOICE BUTTON ADDED HERE -->
+                <button onclick="generateInvoice()" class="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded-lg text-xs font-bold uppercase tracking-widest transition-colors flex items-center gap-2 shadow-lg">
+                    <i class="ph ph-printer text-lg"></i> Print Invoice
                 </button>
             </div>
-
         </div>
     </div>
 
     <!-- ========================================== -->
-    <!-- ADD / EDIT PRODUCT MODAL (UNCHANGED) -->
+    <!-- ADD / EDIT PRODUCT MODAL -->
     <!-- ========================================== -->
     <div id="product-modal" class="fixed inset-0 z-[9999] bg-black/60 hidden flex items-center justify-center p-3 md:p-4 overflow-y-auto">
         <div class="bg-white rounded-2xl w-full max-w-4xl shadow-2xl relative my-auto border border-gray-200">
@@ -278,116 +249,44 @@
                 </button>
             </div>
             <div class="p-4 md:p-6 space-y-6 max-h-[70vh] overflow-y-auto hide-scrollbar">
-                
+                <!-- ... Product form inputs ... -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-5">
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Product Name <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-name" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] transition-all">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Category <span class="text-red-500">*</span></label>
-                        <select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
-                            <option value="Necklace">Necklace</option>
-                            <option value="Earrings">Earrings</option>
-                            <option value="Rings" selected>Rings</option>
-                            <option value="Bangles">Bangles</option>
-                            <option value="Pendants">Pendants</option>
-                        </select>
-                    </div>
-                    <div class="sm:col-span-2 md:col-span-1">
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">SKU ID <span class="text-red-500">*</span></label>
-                        <input type="text" id="add-p-sku" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] font-bold text-gray-800">
-                    </div>
+                    <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Product Name *</label><input type="text" id="add-p-name" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
+                    <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Category *</label><select id="add-p-category" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"><option value="Necklace">Necklace</option><option value="Earrings">Earrings</option><option value="Rings" selected>Rings</option><option value="Bangles">Bangles</option><option value="Pendants">Pendants</option></select></div>
+                    <div class="sm:col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">SKU ID *</label><input type="text" id="add-p-sku" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] font-bold"></div>
                 </div>
 
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Price (₹) <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-price" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Stock <span class="text-red-500">*</span></label>
-                        <input type="number" id="add-p-stock" value="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Material</label>
-                        <input type="text" id="add-p-material" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
-                    </div>
-                    <div class="col-span-2 md:col-span-1">
-                        <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">Theme <span class="text-red-500">*</span></label>
-                        <select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669]">
-                            <option value="Traditional">Traditional</option>
-                            <option value="Modern">Modern</option>
-                            <option value="Bridal">Bridal</option>
-                            <option value="Casual">Casual</option>
-                        </select>
-                    </div>
+                    <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Price (₹) *</label><input type="number" id="add-p-price" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
+                    <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Stock *</label><input type="number" id="add-p-stock" value="10" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
+                    <div class="col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Material</label><input type="text" id="add-p-material" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"></div>
+                    <div class="col-span-2 md:col-span-1"><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">Theme *</label><select id="add-p-theme" class="w-full p-2.5 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669]"><option value="Traditional">Traditional</option><option value="Modern">Modern</option><option value="Bridal">Bridal</option><option value="Casual">Casual</option></select></div>
                 </div>
 
                 <hr class="border-gray-100">
-
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-3 gap-1">
-                        <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider">PRODUCT IMAGES <span class="text-gray-500 font-medium text-[10px]">(अधिकतम 5)</span></label>
-                        <span class="text-[10px] text-gray-500 font-medium">मुख्य फोटो अनिवार्य है <span class="text-red-500">*</span></span>
-                    </div>
+                    <label class="block text-[11px] font-extrabold text-gray-800 uppercase tracking-wider mb-3">PRODUCT IMAGES</label>
                     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group border-[#059669]" onclick="document.getElementById('file-img-1').click()">
-                            <input type="file" id="file-img-1" class="hidden" onchange="previewImage(this, 'preview-1')">
-                            <img id="preview-1" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] text-[#059669] font-bold mt-1 relative z-10">1. Main *</span>
-                        </div>
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-2').click()">
-                            <input type="file" id="file-img-2" class="hidden" onchange="previewImage(this, 'preview-2')">
-                            <img id="preview-2" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">2. Side</span>
-                        </div>
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-3').click()">
-                            <input type="file" id="file-img-3" class="hidden" onchange="previewImage(this, 'preview-3')">
-                            <img id="preview-3" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">3. Worn</span>
-                        </div>
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-4').click()">
-                            <input type="file" id="file-img-4" class="hidden" onchange="previewImage(this, 'preview-4')">
-                            <img id="preview-4" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">4. Back</span>
-                        </div>
-                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box group" onclick="document.getElementById('file-img-5').click()">
-                            <input type="file" id="file-img-5" class="hidden" onchange="previewImage(this, 'preview-5')">
-                            <img id="preview-5" src="" class="hidden img-preview">
-                            <i class="ph ph-plus text-gray-400 text-xl group-hover:text-[#e6998c] mb-1 relative z-10"></i>
-                            <span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">5. Box</span>
-                        </div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box border-[#059669]" onclick="document.getElementById('file-img-1').click()"><input type="file" id="file-img-1" class="hidden" onchange="previewImage(this, 'preview-1')"><img id="preview-1" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] text-[#059669] font-bold mt-1 relative z-10">1. Main *</span></div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-2').click()"><input type="file" id="file-img-2" class="hidden" onchange="previewImage(this, 'preview-2')"><img id="preview-2" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">2. Side</span></div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-3').click()"><input type="file" id="file-img-3" class="hidden" onchange="previewImage(this, 'preview-3')"><img id="preview-3" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">3. Worn</span></div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-4').click()"><input type="file" id="file-img-4" class="hidden" onchange="previewImage(this, 'preview-4')"><img id="preview-4" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">4. Back</span></div>
+                        <div class="relative w-full aspect-square rounded-lg bg-gray-50 flex flex-col items-center justify-center text-center p-2 cursor-pointer img-upload-box" onclick="document.getElementById('file-img-5').click()"><input type="file" id="file-img-5" class="hidden" onchange="previewImage(this, 'preview-5')"><img id="preview-5" src="" class="hidden img-preview"><i class="ph ph-plus text-gray-400 text-xl mb-1 relative z-10"></i><span class="text-[9px] font-bold text-gray-500 mt-1 relative z-10">5. Box</span></div>
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase tracking-wider">DESCRIPTION</label>
-                    <textarea id="add-p-desc" rows="3" class="w-full p-3 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] focus:ring-1 focus:ring-[#059669] resize-none"></textarea>
-                </div>
+                <div><label class="block text-[11px] font-bold text-gray-600 mb-1.5 uppercase">DESCRIPTION</label><textarea id="add-p-desc" rows="3" class="w-full p-3 bg-white border border-gray-300 rounded text-[16px] md:text-sm outline-none focus:border-[#059669] resize-none"></textarea></div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-2 pb-2">
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Mark as Trending</span>
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer">
-                        <input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] focus:ring-[#059669] custom-checkbox">
-                        <span class="text-xs font-bold text-gray-700">Enable Flash Sale</span>
-                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="add-p-trending" class="w-4 h-4 rounded border-gray-300 text-[#059669] custom-checkbox"><span class="text-xs font-bold text-gray-700">Mark as Trending</span></label>
+                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" id="add-p-flash" class="w-4 h-4 rounded border-gray-300 text-[#059669] custom-checkbox"><span class="text-xs font-bold text-gray-700">Enable Flash Sale</span></label>
                 </div>
 
             </div>
 
             <div class="p-4 md:p-6 border-t border-gray-100 flex justify-end items-center gap-3 bg-gray-50 rounded-b-2xl">
                 <button onclick="closeProductModal()" class="px-4 md:px-6 py-2.5 text-xs font-bold text-gray-600 hover:text-gray-900 uppercase tracking-widest transition-colors">CANCEL</button>
-                <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">
-                    SAVE PRODUCT
-                </button>
+                <button onclick="saveAdvancedProduct()" id="btn-save-adv" class="px-6 md:px-8 py-2.5 bg-[#059669] hover:bg-[#047857] text-white rounded text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2">SAVE PRODUCT</button>
             </div>
         </div>
     </div>
@@ -402,9 +301,10 @@
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
         let allProducts = [];
-        let allOrders = []; // New array to store orders globally for modal
+        let allOrders = []; 
         let currentEditId = null;
         let existingImageUrls = {};
+        let currentViewedOrder = null; // New variable to store active order for PDF
 
         function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
@@ -414,9 +314,7 @@
                 panel.classList.remove('hidden');
                 panel.classList.add('block'); 
                 initDashboard();
-            } else {
-                alert("Incorrect Password! Access Denied.");
-            }
+            } else { alert("Incorrect Password! Access Denied."); }
         }
 
         function logout() {
@@ -457,13 +355,11 @@
                 document.getElementById('section-dashboard').classList.remove('hidden');
                 document.getElementById('tab-dashboard').className = activeClass;
                 loadDashboardStats();
-            } 
-            else if(tabName === 'products') {
+            } else if(tabName === 'products') {
                 document.getElementById('section-products').classList.remove('hidden');
                 document.getElementById('tab-products').className = activeClass;
                 loadProducts();
-            } 
-            else if(tabName === 'orders') {
+            } else if(tabName === 'orders') {
                 document.getElementById('section-orders').classList.remove('hidden');
                 document.getElementById('tab-orders').className = activeClass;
                 loadOrders();
@@ -481,7 +377,6 @@
             loadOrders();
         }
 
-        // --- DASHBOARD ---
         async function loadDashboardStats() {
             try {
                 const { data: orders } = await supabaseClient.from('orders').select('*');
@@ -498,19 +393,15 @@
             } catch (error) { console.error(error); }
         }
 
-        // --- PRODUCTS ---
+        // --- PRODUCT MANAGEMENT ---
         function openProductModal() {
-            currentEditId = null;
-            existingImageUrls = {};
+            currentEditId = null; existingImageUrls = {};
             document.getElementById('modal-title').innerHTML = '<span class="text-yellow-500">✨</span> नया प्रॉडक्ट जोड़ें';
             document.getElementById('btn-save-adv').innerText = 'SAVE PRODUCT';
-            
             document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
             document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
             document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
-            document.getElementById('add-p-trending').checked = false;
-            document.getElementById('add-p-flash').checked = false;
-
+            document.getElementById('add-p-trending').checked = false; document.getElementById('add-p-flash').checked = false;
             document.getElementById('product-modal').classList.remove('hidden');
             document.getElementById('product-modal').classList.add('flex');
         }
@@ -519,10 +410,8 @@
             const p = allProducts.find(x => x.id === id);
             if(!p) return;
             currentEditId = id;
-            
             document.getElementById('modal-title').innerHTML = '<span class="text-blue-500">✏️</span> प्रॉडक्ट एडिट करें';
             document.getElementById('btn-save-adv').innerText = 'UPDATE PRODUCT';
-            
             document.getElementById('add-p-name').value = p.name || '';
             document.getElementById('add-p-category').value = p.category || 'Rings';
             document.getElementById('add-p-sku').value = p.sku || '';
@@ -535,17 +424,11 @@
             document.getElementById('add-p-flash').checked = p.is_flash_sale || false;
 
             existingImageUrls = { 1: p.image_url, 2: p.image_2, 3: p.image_3, 4: p.image_4, 5: p.image_5 };
-
             [1,2,3,4,5].forEach(num => {
                 const url = existingImageUrls[num];
                 const imgEl = document.getElementById(`preview-${num}`);
-                if(url) {
-                    imgEl.src = url;
-                    imgEl.classList.remove('hidden');
-                } else {
-                    imgEl.src = '';
-                    imgEl.classList.add('hidden');
-                }
+                if(url) { imgEl.src = url; imgEl.classList.remove('hidden'); } 
+                else { imgEl.src = ''; imgEl.classList.add('hidden'); }
             });
 
             document.getElementById('product-modal').classList.remove('hidden');
@@ -561,41 +444,29 @@
             const previewImg = document.getElementById(previewImgId);
             if (inputElement.files && inputElement.files[0]) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    previewImg.src = e.target.result;
-                    previewImg.classList.remove('hidden');
-                }
+                reader.onload = function(e) { previewImg.src = e.target.result; previewImg.classList.remove('hidden'); }
                 reader.readAsDataURL(inputElement.files[0]);
             } else {
                 const imgNum = previewImgId.split('-')[1];
-                if(currentEditId && existingImageUrls[imgNum]) {
-                    previewImg.src = existingImageUrls[imgNum];
-                    previewImg.classList.remove('hidden');
-                } else {
-                    previewImg.src = "";
-                    previewImg.classList.add('hidden');
-                }
+                if(currentEditId && existingImageUrls[imgNum]) { previewImg.src = existingImageUrls[imgNum]; previewImg.classList.remove('hidden'); } 
+                else { previewImg.src = ""; previewImg.classList.add('hidden'); }
             }
         }
 
         async function uploadFileToSupabase(fileInputId) {
             const fileInput = document.getElementById(fileInputId);
             if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
-            
             const file = fileInput.files[0];
             const fileExt = file.name.split('.').pop();
             const fileName = Date.now() + '_' + Math.random().toString(36).substring(7) + '.' + fileExt;
-            
             const { error: uploadError } = await supabaseClient.storage.from('product-images').upload(fileName, file);
             if (uploadError) throw uploadError;
-            
             const { data: { publicUrl } } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
             return publicUrl;
         }
 
         async function saveAdvancedProduct() {
             const btn = document.getElementById('btn-save-adv');
-            
             const name = document.getElementById('add-p-name').value;
             const category = document.getElementById('add-p-category').value;
             const sku = document.getElementById('add-p-sku').value;
@@ -608,15 +479,10 @@
             const isFlash = document.getElementById('add-p-flash').checked;
 
             if(!name || !price || !sku || !stock) { alert("Please fill all mandatory (*) fields."); return; }
-
             const mainImageInput = document.getElementById('file-img-1');
-            if(!currentEditId && (!mainImageInput.files || mainImageInput.files.length === 0)) {
-                alert("कृपया पहले मुख्य फोटो (Photo 1) चुनें।"); return;
-            }
+            if(!currentEditId && (!mainImageInput.files || mainImageInput.files.length === 0)) { alert("कृपया पहले मुख्य फोटो (Photo 1) चुनें।"); return; }
 
-            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> SAVING...';
-            btn.disabled = true;
-
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> SAVING...'; btn.disabled = true;
             try {
                 const img1_url = (mainImageInput.files && mainImageInput.files.length > 0) ? await uploadFileToSupabase('file-img-1') : existingImageUrls[1];
                 const img2_url = (document.getElementById('file-img-2').files.length > 0) ? await uploadFileToSupabase('file-img-2') : existingImageUrls[2];
@@ -642,76 +508,58 @@
                     if (insertError) throw insertError;
                     alert("Product Added Successfully! 🎉");
                 }
-                
-                closeProductModal();
-                loadProducts();
-                loadDashboardStats();
+                closeProductModal(); loadProducts(); loadDashboardStats();
             } catch (err) {
-                console.error(err);
-                alert("Error: " + err.message);
+                console.error(err); alert("Error: " + err.message);
             } finally {
-                btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT';
-                btn.disabled = false;
+                btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT'; btn.disabled = false;
             }
         }
 
         async function loadProducts() {
             const tbody = document.getElementById('products-table-body');
             tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
-            
             const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
-            
             if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
             if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found. Add your first product above.</td></tr>`; return; }
-
             allProducts = data; 
-
             let html = '';
             data.forEach(p => {
                 let stockStatus = p.stock > 0 ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">In Stock (${p.stock})</span>` : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Out of Stock</span>`;
                 html += `
-                    <tr class="hover:bg-gray-50 transition-colors group border-b border-gray-50">
+                    <tr class="hover:bg-gray-50 border-b border-gray-50">
                         <td class="p-3 md:p-4"><img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'"></td>
                         <td class="p-3 md:p-4">
                             <p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p>
-                            <p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'} | ${p.category || 'N/A'}</p>
+                            <p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'}</p>
                         </td>
                         <td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td>
                         <td class="p-3 md:p-4">${stockStatus}</td>
                         <td class="p-3 md:p-4 text-center">
                             <div class="flex justify-center items-center gap-2">
-                                <button onclick="editProduct(${p.id})" class="w-8 h-8 rounded bg-blue-50 text-blue-500 flex items-center justify-center hover:bg-blue-500 hover:text-white transition-colors">
-                                    <i class="ph ph-pencil-simple text-lg"></i>
-                                </button>
-                                <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 flex items-center justify-center hover:bg-red-500 hover:text-white transition-colors">
-                                    <i class="ph ph-trash text-lg"></i>
-                                </button>
+                                <button onclick="editProduct(${p.id})" class="w-8 h-8 rounded bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-pencil-simple text-lg"></i></button>
+                                <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-trash text-lg"></i></button>
                             </div>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             });
             tbody.innerHTML = html;
         }
 
         async function deleteProduct(id, name) {
-            if(confirm(`Are you sure you want to delete "${name}"? This action cannot be undone.`)) {
+            if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                if(error) alert("Error deleting product.");
-                else { loadProducts(); loadDashboardStats(); }
+                if(error) alert("Error deleting product."); else { loadProducts(); loadDashboardStats(); }
             }
         }
 
-        // --- ORDERS ---
+        // --- ORDER MANAGEMENT ---
         async function loadOrders() {
             const tbody = document.getElementById('orders-table-body');
             tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>';
-            
             const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
             if (error || !data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders received yet.</td></tr>`; return; }
-
-            allOrders = data; // Save orders for modal viewing
-
+            allOrders = data; 
             let html = '';
             data.forEach(o => {
                 let customerHTML = "N/A";
@@ -722,15 +570,9 @@
                     } catch(e) {}
                 }
                 let badgeClass = o.status === 'Shipped' ? 'bg-blue-100 text-blue-700' : o.status === 'Delivered' ? 'bg-green-100 text-green-700' : o.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700';
-
                 html += `
                     <tr class="hover:bg-gray-50 border-b border-gray-100">
-                        <td class="p-3 md:p-4">
-                            <!-- New Clickable Order ID -->
-                            <button onclick="viewOrderDetails(${o.id})" class="font-bold text-[#e6998c] hover:underline flex items-center gap-1">
-                                ${o.order_id} <i class="ph ph-arrow-square-out text-xs"></i>
-                            </button>
-                        </td>
+                        <td class="p-3 md:p-4"><button onclick="viewOrderDetails(${o.id})" class="font-bold text-[#e6998c] hover:underline flex items-center gap-1">${o.order_id} <i class="ph ph-arrow-square-out text-xs"></i></button></td>
                         <td class="p-3 md:p-4">${customerHTML}</td>
                         <td class="p-3 md:p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
                         <td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
@@ -744,8 +586,7 @@
                                 <option value="Cancelled">Cancelled</option>
                             </select>
                         </td>
-                    </tr>
-                `;
+                    </tr>`;
             });
             tbody.innerHTML = html;
         }
@@ -756,23 +597,19 @@
             if(!error) loadOrders();
         }
 
-        // --- ORDER DETAILS MODAL (NEW LOGIC) ---
         function viewOrderDetails(id) {
             const order = allOrders.find(o => o.id === id);
             if(!order) return;
+            currentViewedOrder = order; // Save for PDF
 
             let cust = {};
             try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
 
-            // Set Header
             document.getElementById('modal-order-id').innerText = order.order_id || 'N/A';
-            
-            // Set Customer Data
             document.getElementById('modal-cust-name').innerText = cust.name || 'N/A';
             document.getElementById('modal-cust-phone').innerHTML = `<i class="ph ph-phone"></i> ${cust.phone || cust.email_phone || 'N/A'}`;
             document.getElementById('modal-cust-email').innerHTML = `<i class="ph ph-envelope"></i> ${cust.email || 'N/A'}`;
             
-            // Format Address
             let addressHtml = 'पता उपलब्ध नहीं है';
             if(cust.address) {
                 addressHtml = `${cust.address}<br>`;
@@ -782,17 +619,14 @@
             }
             document.getElementById('modal-cust-address').innerHTML = addressHtml;
 
-            // Date and Payment
             const dateObj = new Date(order.created_at);
             document.getElementById('modal-order-date').innerText = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleString('en-IN');
             document.getElementById('modal-pay-mode').innerText = order.payment_mode || 'N/A';
             document.getElementById('modal-order-total').innerText = order.total_amount || '₹0';
 
-            // Extract Cart Items (Depending on how you saved them)
             let itemsHtml = '';
             let items = [];
             try { 
-                // Assuming items might be stored in 'cart_details' or 'products' column
                 let rawItems = order.cart_details || order.products || order.items || '[]';
                 items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; 
             } catch(e){}
@@ -805,18 +639,12 @@
                                 <p class="font-bold text-gray-800 text-sm">${item.name || 'Unknown Item'}</p>
                                 <p class="text-[10px] text-gray-500 font-medium">Qty: ${item.quantity || 1} | Price: ₹${item.price || 0}</p>
                             </div>
-                            <div class="font-extrabold text-gray-900 text-sm">
-                                ₹${(item.price || 0) * (item.quantity || 1)}
-                            </div>
-                        </div>
-                    `;
+                            <div class="font-extrabold text-gray-900 text-sm">₹${(item.price || 0) * (item.quantity || 1)}</div>
+                        </div>`;
                 });
-            } else {
-                itemsHtml = '<p class="text-sm text-gray-400 italic">No detailed items found for this order.</p>';
-            }
+            } else { itemsHtml = '<p class="text-sm text-gray-400 italic">No detailed items found.</p>'; }
+            
             document.getElementById('modal-order-items').innerHTML = itemsHtml;
-
-            // Show Modal
             document.getElementById('order-details-modal').classList.remove('hidden');
             document.getElementById('order-details-modal').classList.add('flex');
         }
@@ -826,6 +654,126 @@
             document.getElementById('order-details-modal').classList.remove('flex');
         }
 
+        // --- NEW PDF INVOICE GENERATOR LOGIC ---
+        function generateInvoice() {
+            if(!currentViewedOrder) return;
+            const order = currentViewedOrder;
+            
+            let cust = {};
+            try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
+            
+            let items = [];
+            try { 
+                let rawItems = order.cart_details || order.products || order.items || '[]';
+                items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; 
+            } catch(e){}
+
+            const dateObj = new Date(order.created_at);
+            const orderDate = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleDateString('en-IN');
+
+            let itemsHtml = '';
+            items.forEach((item, index) => {
+                itemsHtml += `
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${index + 1}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">${item.name || 'Jewellery Item'}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${item.quantity || 1}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">₹${item.price || 0}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">₹${(item.price || 0) * (item.quantity || 1)}</td>
+                    </tr>
+                `;
+            });
+
+            let addressStr = cust.address ? `${cust.address}, <br>${cust.city || ''}, ${cust.state || ''} <br><strong>PIN: ${cust.pincode || ''}</strong>` : 'N/A';
+
+            // Beautiful HTML Template for Invoice
+            const invoiceHTML = `
+            <html>
+            <head>
+                <title>Invoice - ${order.order_id}</title>
+                <style>
+                    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 40px; background: #fff;}
+                    .invoice-box { max-width: 800px; margin: auto; padding: 40px; border: 1px solid #eee; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); border-radius: 8px; }
+                    .header { border-bottom: 2px solid #e6998c; padding-bottom: 20px; margin-bottom: 30px; }
+                    .header h1 { margin: 0; color: #e6998c; font-size: 32px; font-family: 'Georgia', serif; letter-spacing: 1px;}
+                    table { width: 100%; text-align: left; border-collapse: collapse; }
+                    th { background: #f9fafb; padding: 12px; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;}
+                    .total-section { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
+                    .footer { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px;}
+                </style>
+            </head>
+            <body>
+                <div class="invoice-box">
+                    <table class="header">
+                        <tr>
+                            <td>
+                                <h1>YOGESH JEWELLERS</h1>
+                                <p style="margin: 5px 0 0 0; font-size: 14px; color: #64748b;">Agra, Uttar Pradesh, India</p>
+                            </td>
+                            <td style="text-align:right">
+                                <h2 style="margin:0; font-size: 28px; color: #0f172a;">INVOICE</h2>
+                                <p style="margin: 8px 0 0 0; font-size: 14px;">Order ID: <strong style="color: #e6998c;">${order.order_id}</strong></p>
+                                <p style="margin: 4px 0 0 0; font-size: 14px; color: #64748b;">Date: ${orderDate}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <table style="margin-bottom: 40px;">
+                        <tr>
+                            <td style="width:50%; vertical-align: top; padding-right: 20px;">
+                                <h3 style="font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Billed To:</h3>
+                                <p style="margin:0 0 5px 0; font-weight:bold; font-size: 16px; color: #0f172a;">${cust.name || 'N/A'}</p>
+                                <p style="margin:0 0 5px 0; font-size: 14px; color: #475569;">Phone: ${cust.phone || cust.email_phone || 'N/A'}</p>
+                                <p style="margin:0; font-size: 14px; color: #475569;">Email: ${cust.email || 'N/A'}</p>
+                            </td>
+                            <td style="width:50%; vertical-align: top; text-align: right;">
+                                <h3 style="font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Shipping Address:</h3>
+                                <p style="margin:0; font-size: 14px; color: #475569; line-height: 1.5;">${addressStr}</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table style="margin-bottom: 30px;">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Item Description</th>
+                                <th>Qty</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsHtml}
+                        </tbody>
+                    </table>
+
+                    <div class="total-section">
+                        <p style="margin: 5px 0; font-size: 14px; color: #64748b;">Payment Mode: <strong style="color: #0f172a; text-transform: uppercase;">${order.payment_mode || 'N/A'}</strong></p>
+                        <p style="margin: 10px 0; font-size: 24px; font-weight: bold; color: #0f172a;">Grand Total: <span style="color:#059669">₹${order.total_amount || 0}</span></p>
+                    </div>
+
+                    <div class="footer">
+                        <p style="margin:0 0 5px 0;">Thank you for shopping with Yogesh Jewellers!</p>
+                        <p style="margin:0;">This is a computer-generated invoice and requires no signature.</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+
+            // Open window and print
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(invoiceHTML);
+            printWindow.document.close();
+            printWindow.focus();
+            
+            // Wait slightly for browser to render styles before calling print dialog
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 250);
+        }
     </script>
 </body>
 </html>
