@@ -43,7 +43,7 @@
                         <input type="password" id="admin-pass" placeholder="Enter your password" class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg outline-none focus:border-[#e6998c] focus:ring-1 focus:ring-[#e6998c] transition-all text-[16px]">
                     </div>
                 </div>
-                <button onclick="checkLogin()" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
+                <button onclick="checkLogin()" id="btn-login" class="w-full bg-black hover:bg-gray-800 text-white py-3.5 rounded-lg font-bold tracking-wide uppercase transition-colors shadow-lg">Secure Login</button>
             </div>
         </div>
     </div>
@@ -246,13 +246,14 @@
                     </div>
                 </div>
 
-                <!-- 5. NEW SETTINGS TAB (CLOUD BACKUP) -->
+                <!-- 5. NEW SETTINGS TAB (CLOUD BACKUP & PASSWORD CHANGE) -->
                 <div id="section-settings" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                         <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-2">System Settings</h2>
                         <p class="text-xs text-gray-500 mb-6">Manage your admin panel configurations and data.</p>
                         
-                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 md:p-6">
+                        <!-- Backup Section -->
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 md:p-6 mb-6">
                             <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                                 <div>
                                     <h3 class="font-bold text-blue-900 flex items-center gap-2"><i class="ph ph-cloud-arrow-up text-xl"></i> Online Cloud Backup</h3>
@@ -261,6 +262,18 @@
                                 <button onclick="createCloudBackup()" id="btn-backup" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2 shrink-0">
                                     <i class="ph ph-database text-lg"></i> Backup Data Now
                                 </button>
+                            </div>
+                        </div>
+
+                        <!-- Change Password Section -->
+                        <div class="border border-gray-200 rounded-xl p-5 md:p-6">
+                            <h3 class="font-bold text-gray-900 flex items-center gap-2 mb-4"><i class="ph ph-lock-key text-xl text-[#e6998c]"></i> Change Admin Password</h3>
+                            <div class="max-w-md">
+                                <label class="block text-[11px] font-bold text-gray-600 mb-2 uppercase tracking-wider">New Secure Password</label>
+                                <div class="flex flex-col sm:flex-row gap-3">
+                                    <input type="text" id="new-admin-pass" placeholder="Enter new password" class="w-full p-2.5 border border-gray-300 rounded outline-none focus:border-[#e6998c] text-[16px] md:text-sm">
+                                    <button onclick="updatePassword()" id="btn-update-pass" class="px-6 py-2.5 bg-black hover:bg-gray-800 text-white rounded text-xs font-bold uppercase tracking-widest transition-colors whitespace-nowrap">Update</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -366,7 +379,6 @@
     <!-- JAVASCRIPT LOGIC -->
     <!-- ========================================== -->
     <script>
-        const ADMIN_PASSWORD = "123"; 
         const supabaseUrl = 'https://fzzwioyhmuanfvpotfit.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZ6endpb3lobXVhbmZ2cG90Zml0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM4MDAxODYsImV4cCI6MjA5OTM3NjE4Nn0.y-eyWjY4oO8PbpiARC4RVy48256QUHfYn4BOZi2DdSQ';
         const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -388,17 +400,69 @@
             }
         }
 
+        // --- SECURE LOGIN LOGIC ---
         async function checkLogin() {
-            const pass = document.getElementById('admin-pass').value;
-            if (pass === ADMIN_PASSWORD) {
-                document.getElementById('login-modal').classList.add('hidden');
-                const panel = document.getElementById('admin-panel');
-                panel.classList.remove('hidden');
-                panel.classList.add('block'); 
+            const passInput = document.getElementById('admin-pass').value;
+            const btn = document.getElementById('btn-login');
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin"></i> Checking...';
+            btn.disabled = true;
+
+            try {
+                const { data, error } = await supabaseClient
+                    .from('admin_settings')
+                    .select('setting_value')
+                    .eq('setting_key', 'admin_password')
+                    .single();
+
+                if (error || !data) throw new Error("Could not connect to database security settings.");
+
+                if (passInput === data.setting_value) {
+                    document.getElementById('login-modal').classList.add('hidden');
+                    const panel = document.getElementById('admin-panel');
+                    panel.classList.remove('hidden');
+                    panel.classList.add('block'); 
+                    
+                    await logAction('Login', 'Admin securely logged into the dashboard'); 
+                    initDashboard();
+                } else { 
+                    alert("Incorrect Password! Access Denied."); 
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Error connecting to server. Please check your internet or Supabase settings.");
+            } finally {
+                btn.innerHTML = 'Secure Login';
+                btn.disabled = false;
+            }
+        }
+
+        // --- UPDATE ADMIN PASSWORD LOGIC ---
+        async function updatePassword() {
+            const newPass = document.getElementById('new-admin-pass').value;
+            if(!newPass) { alert("Please enter a new password first."); return; }
+            
+            const btn = document.getElementById('btn-update-pass');
+            btn.innerHTML = 'Updating...'; 
+            btn.disabled = true;
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('admin_settings')
+                    .update({ setting_value: newPass })
+                    .eq('setting_key', 'admin_password');
+                    
+                if (error) throw error;
                 
-                await logAction('Login', 'Admin securely logged into the dashboard'); 
-                initDashboard();
-            } else { alert("Incorrect Password! Access Denied."); }
+                await logAction('Security Update', 'Admin password was changed successfully.');
+                alert("Password updated successfully! 🎉\\nNext time you login, use your new password.");
+                document.getElementById('new-admin-pass').value = '';
+            } catch (err) {
+                console.error(err);
+                alert("Error updating password.");
+            } finally {
+                btn.innerHTML = 'Update'; 
+                btn.disabled = false;
+            }
         }
 
         async function logout() {
@@ -429,14 +493,14 @@
             document.getElementById('section-products').classList.add('hidden');
             document.getElementById('section-orders').classList.add('hidden');
             document.getElementById('section-logs').classList.add('hidden'); 
-            document.getElementById('section-settings').classList.add('hidden'); // NEW
+            document.getElementById('section-settings').classList.add('hidden');
             
             const inactiveClass = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
             document.getElementById('tab-dashboard').className = inactiveClass;
             document.getElementById('tab-products').className = inactiveClass;
             document.getElementById('tab-orders').className = inactiveClass;
             document.getElementById('tab-logs').className = inactiveClass; 
-            document.getElementById('tab-settings').className = inactiveClass; // NEW
+            document.getElementById('tab-settings').className = inactiveClass; 
 
             const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
             
@@ -456,7 +520,7 @@
                 document.getElementById('section-logs').classList.remove('hidden');
                 document.getElementById('tab-logs').className = activeClass;
                 loadLogs();
-            } else if(tabName === 'settings') { // NEW
+            } else if(tabName === 'settings') { 
                 document.getElementById('section-settings').classList.remove('hidden');
                 document.getElementById('tab-settings').className = activeClass;
             }
@@ -473,7 +537,6 @@
             loadOrders();
         }
 
-        // --- DASHBOARD AND CHARTS LOGIC ---
         async function loadDashboardStats() {
             try {
                 const { data: orders } = await supabaseClient.from('orders').select('*');
@@ -500,15 +563,12 @@
         }
 
         function renderCharts(orders, products) {
-            const last7Days = [];
-            const revenueData = [];
+            const last7Days = []; const revenueData = [];
             for(let i=6; i>=0; i--) {
-                let d = new Date();
-                d.setDate(d.getDate() - i);
+                let d = new Date(); d.setDate(d.getDate() - i);
                 last7Days.push(d.toLocaleDateString('en-IN', {day:'2-digit', month:'short'}));
                 revenueData.push(0); 
             }
-
             if(orders) {
                 orders.forEach(o => {
                     let oDate = new Date(o.created_at);
@@ -520,167 +580,72 @@
                     }
                 });
             }
-
             const ctxLine = document.getElementById('revenueChart').getContext('2d');
             if(revenueChartInstance) revenueChartInstance.destroy();
             revenueChartInstance = new Chart(ctxLine, {
                 type: 'line',
-                data: {
-                    labels: last7Days,
-                    datasets: [{
-                        label: 'Daily Revenue (₹)',
-                        data: revenueData,
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#3b82f6',
-                        pointBorderWidth: 2,
-                        pointRadius: 4
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { 
-                        y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-                        x: { grid: { display: false } }
-                    }
-                }
+                data: { labels: last7Days, datasets: [{ label: 'Daily Revenue (₹)', data: revenueData, borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)', borderWidth: 3, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true }, x: { grid: { display: false } } } }
             });
 
             const categories = {};
             if(products) {
-                products.forEach(p => {
-                    let cat = p.category || 'Other';
-                    categories[cat] = (categories[cat] || 0) + 1;
-                });
+                products.forEach(p => { let cat = p.category || 'Other'; categories[cat] = (categories[cat] || 0) + 1; });
             }
-            
             const ctxPie = document.getElementById('categoryChart').getContext('2d');
             if(categoryChartInstance) categoryChartInstance.destroy();
             categoryChartInstance = new Chart(ctxPie, {
                 type: 'doughnut',
-                data: {
-                    labels: Object.keys(categories),
-                    datasets: [{
-                        data: Object.values(categories),
-                        backgroundColor: ['#e6998c', '#0f172a', '#059669', '#f59e0b', '#3b82f6', '#8b5cf6'],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false, 
-                    cutout: '75%',
-                    plugins: {
-                        legend: { position: 'right', labels: { usePointStyle: true, boxWidth: 8, font: { size: 10 } } }
-                    }
-                }
+                data: { labels: Object.keys(categories), datasets: [{ data: Object.values(categories), backgroundColor: ['#e6998c', '#0f172a', '#059669', '#f59e0b', '#3b82f6', '#8b5cf6'], borderWidth: 0 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'right' } } }
             });
         }
 
         function updateLowStockAlert() {
             const lowStockProducts = allProducts.filter(p => parseInt(p.stock) <= 3);
             const alertContainer = document.getElementById('low-stock-alert-container');
-            
             if (lowStockProducts.length > 0) {
                 let itemsHtml = lowStockProducts.map(p => `<li class="text-sm">⚠️ <b>${p.name}</b> (SKU: ${p.sku || 'N/A'}) - Only <b class="text-red-900">${p.stock}</b> left!</li>`).join('');
-                
-                alertContainer.innerHTML = `
-                    <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm mb-6">
-                        <div class="flex items-center gap-3 mb-2">
-                            <i class="ph ph-warning-circle text-red-500 text-2xl"></i>
-                            <h3 class="text-red-800 font-bold text-lg">Low Stock Alert!</h3>
-                        </div>
-                        <ul class="list-disc list-inside text-red-700 ml-9 space-y-1">${itemsHtml}</ul>
-                    </div>
-                `;
+                alertContainer.innerHTML = `<div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg shadow-sm mb-6"><div class="flex items-center gap-3 mb-2"><i class="ph ph-warning-circle text-red-500 text-2xl"></i><h3 class="text-red-800 font-bold text-lg">Low Stock Alert!</h3></div><ul class="list-disc list-inside text-red-700 ml-9 space-y-1">${itemsHtml}</ul></div>`;
                 alertContainer.classList.remove('hidden');
-            } else {
-                alertContainer.classList.add('hidden');
-                alertContainer.innerHTML = '';
-            }
+            } else { alertContainer.classList.add('hidden'); alertContainer.innerHTML = ''; }
         }
 
-        // --- NEW: CLOUD BACKUP LOGIC ---
         async function createCloudBackup() {
             const btn = document.getElementById('btn-backup');
             const originalHTML = btn.innerHTML;
             btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> Uploading...';
             btn.disabled = true;
-
             try {
-                // 1. Fetch all important data
                 const { data: products } = await supabaseClient.from('products').select('*');
                 const { data: orders } = await supabaseClient.from('orders').select('*');
                 const { data: logs } = await supabaseClient.from('admin_logs').select('*');
-
-                // 2. Prepare JSON structure
-                const backupPayload = {
-                    backup_date: new Date().toISOString(),
-                    total_products: products ? products.length : 0,
-                    total_orders: orders ? orders.length : 0,
-                    products: products || [],
-                    orders: orders || [],
-                    activity_logs: logs || []
-                };
-
-                // 3. Convert to Blob (File)
+                const backupPayload = { backup_date: new Date().toISOString(), total_products: products ? products.length : 0, total_orders: orders ? orders.length : 0, products: products || [], orders: orders || [], activity_logs: logs || [] };
                 const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
                 const fileName = `database_backup_${Date.now()}.json`;
-
-                // 4. Upload to 'backups' bucket
                 const { data, error } = await supabaseClient.storage.from('backups').upload(fileName, blob);
-
                 if (error) throw error;
-
-                // 5. Success
                 await logAction('Cloud Backup', `Secure cloud backup created: ${fileName}`);
-                alert(`Cloud Backup Successful! 🎉\nYour data has been securely saved to Supabase Storage.\nFilename: ${fileName}`);
-                
-            } catch (err) {
-                console.error('Backup Error:', err);
-                alert('Failed to create backup: ' + err.message);
-            } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-            }
+                alert(`Cloud Backup Successful! 🎉\\nYour data has been securely saved to Supabase Storage.\\nFilename: ${fileName}`);
+            } catch (err) { console.error(err); alert('Failed to create backup: ' + err.message);
+            } finally { btn.innerHTML = originalHTML; btn.disabled = false; }
         }
 
-        // --- LOAD ACTIVITY LOGS ---
         async function loadLogs() {
             const tbody = document.getElementById('logs-table-body');
             tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-gray-400">Loading logs...</td></tr>';
             const { data, error } = await supabaseClient.from('admin_logs').select('*').order('created_at', { ascending: false });
             if (error) { tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-red-500">Error loading logs</td></tr>`; return; }
-            if (!data || data.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-gray-500">No activity logs found.</td></tr>`; 
-                return; 
-            }
-            
+            if (!data || data.length === 0) { tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-gray-500">No activity logs found.</td></tr>`; return; }
             let html = '';
             data.forEach(l => {
                 let badgeClass = 'bg-gray-100 text-gray-700';
                 if(l.action.toLowerCase().includes('delete')) badgeClass = 'bg-red-100 text-red-700';
-                else if(l.action.toLowerCase().includes('update') || l.action.toLowerCase().includes('edit')) badgeClass = 'bg-blue-100 text-blue-700';
+                else if(l.action.toLowerCase().includes('update') || l.action.toLowerCase().includes('edit') || l.action.toLowerCase().includes('security')) badgeClass = 'bg-blue-100 text-blue-700';
                 else if(l.action.toLowerCase().includes('login') || l.action.toLowerCase().includes('backup')) badgeClass = 'bg-purple-100 text-purple-700';
                 else if(l.action.toLowerCase().includes('add')) badgeClass = 'bg-green-100 text-green-700';
-
                 let dateObj = new Date(l.created_at);
-                let formattedDate = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleString('en-IN');
-                
-                html += `
-                    <tr class="hover:bg-gray-50 border-b border-gray-50">
-                        <td class="p-3 md:p-4"><span class="${badgeClass} px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">${l.action}</span></td>
-                        <td class="p-3 md:p-4 text-sm text-gray-700 font-medium">${l.details}</td>
-                        <td class="p-3 md:p-4 text-xs text-gray-500 font-bold text-right">${formattedDate}</td>
-                    </tr>
-                `;
+                html += `<tr class="hover:bg-gray-50 border-b border-gray-50"><td class="p-3 md:p-4"><span class="${badgeClass} px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">${l.action}</span></td><td class="p-3 md:p-4 text-sm text-gray-700 font-medium">${l.details}</td><td class="p-3 md:p-4 text-xs text-gray-500 font-bold text-right">${isNaN(dateObj) ? 'N/A' : dateObj.toLocaleString('en-IN')}</td></tr>`;
             });
             tbody.innerHTML = html;
         }
@@ -694,8 +659,7 @@
             document.querySelectorAll('input[type="file"]').forEach(el => el.value = '');
             document.querySelectorAll('.img-preview').forEach(el => { el.src = ''; el.classList.add('hidden'); });
             document.getElementById('add-p-trending').checked = false; document.getElementById('add-p-flash').checked = false;
-            document.getElementById('product-modal').classList.remove('hidden');
-            document.getElementById('product-modal').classList.add('flex');
+            document.getElementById('product-modal').classList.remove('hidden'); document.getElementById('product-modal').classList.add('flex');
         }
 
         function editProduct(id) {
@@ -704,39 +668,26 @@
             currentEditId = id;
             document.getElementById('modal-title').innerHTML = '<span class="text-blue-500">✏️</span> प्रॉडक्ट एडिट करें';
             document.getElementById('btn-save-adv').innerText = 'UPDATE PRODUCT';
-            document.getElementById('add-p-name').value = p.name || '';
-            document.getElementById('add-p-category').value = p.category || 'Rings';
-            document.getElementById('add-p-sku').value = p.sku || '';
-            document.getElementById('add-p-price').value = p.price || '';
-            document.getElementById('add-p-stock').value = p.stock || '';
-            document.getElementById('add-p-material').value = p.material || '';
-            document.getElementById('add-p-theme').value = p.theme || 'Traditional';
-            document.getElementById('add-p-desc').value = p.description || '';
-            document.getElementById('add-p-trending').checked = p.is_trending || false;
-            document.getElementById('add-p-flash').checked = p.is_flash_sale || false;
+            document.getElementById('add-p-name').value = p.name || ''; document.getElementById('add-p-category').value = p.category || 'Rings';
+            document.getElementById('add-p-sku').value = p.sku || ''; document.getElementById('add-p-price').value = p.price || '';
+            document.getElementById('add-p-stock').value = p.stock || ''; document.getElementById('add-p-material').value = p.material || '';
+            document.getElementById('add-p-theme').value = p.theme || 'Traditional'; document.getElementById('add-p-desc').value = p.description || '';
+            document.getElementById('add-p-trending').checked = p.is_trending || false; document.getElementById('add-p-flash').checked = p.is_flash_sale || false;
 
             existingImageUrls = { 1: p.image_url, 2: p.image_2, 3: p.image_3, 4: p.image_4, 5: p.image_5 };
             [1,2,3,4,5].forEach(num => {
-                const url = existingImageUrls[num];
-                const imgEl = document.getElementById(`preview-${num}`);
-                if(url) { imgEl.src = url; imgEl.classList.remove('hidden'); } 
-                else { imgEl.src = ''; imgEl.classList.add('hidden'); }
+                const url = existingImageUrls[num]; const imgEl = document.getElementById(`preview-${num}`);
+                if(url) { imgEl.src = url; imgEl.classList.remove('hidden'); } else { imgEl.src = ''; imgEl.classList.add('hidden'); }
             });
-
-            document.getElementById('product-modal').classList.remove('hidden');
-            document.getElementById('product-modal').classList.add('flex');
+            document.getElementById('product-modal').classList.remove('hidden'); document.getElementById('product-modal').classList.add('flex');
         }
 
-        function closeProductModal() {
-            document.getElementById('product-modal').classList.add('hidden');
-            document.getElementById('product-modal').classList.remove('flex');
-        }
+        function closeProductModal() { document.getElementById('product-modal').classList.add('hidden'); document.getElementById('product-modal').classList.remove('flex'); }
 
         function previewImage(inputElement, previewImgId) {
             const previewImg = document.getElementById(previewImgId);
             if (inputElement.files && inputElement.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) { previewImg.src = e.target.result; previewImg.classList.remove('hidden'); }
+                const reader = new FileReader(); reader.onload = function(e) { previewImg.src = e.target.result; previewImg.classList.remove('hidden'); }
                 reader.readAsDataURL(inputElement.files[0]);
             } else {
                 const imgNum = previewImgId.split('-')[1];
@@ -749,8 +700,7 @@
             const fileInput = document.getElementById(fileInputId);
             if (!fileInput || !fileInput.files || fileInput.files.length === 0) return null;
             const file = fileInput.files[0];
-            const fileExt = file.name.split('.').pop();
-            const fileName = Date.now() + '_' + Math.random().toString(36).substring(7) + '.' + fileExt;
+            const fileName = Date.now() + '_' + Math.random().toString(36).substring(7) + '.' + file.name.split('.').pop();
             const { error: uploadError } = await supabaseClient.storage.from('product-images').upload(fileName, file);
             if (uploadError) throw uploadError;
             const { data: { publicUrl } } = supabaseClient.storage.from('product-images').getPublicUrl(fileName);
@@ -759,16 +709,8 @@
 
         async function saveAdvancedProduct() {
             const btn = document.getElementById('btn-save-adv');
-            const name = document.getElementById('add-p-name').value;
-            const category = document.getElementById('add-p-category').value;
-            const sku = document.getElementById('add-p-sku').value;
-            const price = document.getElementById('add-p-price').value;
-            const stock = document.getElementById('add-p-stock').value;
-            const material = document.getElementById('add-p-material').value;
-            const theme = document.getElementById('add-p-theme').value;
-            const desc = document.getElementById('add-p-desc').value;
-            const isTrending = document.getElementById('add-p-trending').checked;
-            const isFlash = document.getElementById('add-p-flash').checked;
+            const name = document.getElementById('add-p-name').value; const sku = document.getElementById('add-p-sku').value;
+            const price = document.getElementById('add-p-price').value; const stock = document.getElementById('add-p-stock').value;
 
             if(!name || !price || !sku || !stock) { alert("Please fill all mandatory (*) fields."); return; }
             const mainImageInput = document.getElementById('file-img-1');
@@ -776,40 +718,32 @@
 
             btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> SAVING...'; btn.disabled = true;
             try {
-                const img1_url = (mainImageInput.files && mainImageInput.files.length > 0) ? await uploadFileToSupabase('file-img-1') : existingImageUrls[1];
-                const img2_url = (document.getElementById('file-img-2').files.length > 0) ? await uploadFileToSupabase('file-img-2') : existingImageUrls[2];
-                const img3_url = (document.getElementById('file-img-3').files.length > 0) ? await uploadFileToSupabase('file-img-3') : existingImageUrls[3];
-                const img4_url = (document.getElementById('file-img-4').files.length > 0) ? await uploadFileToSupabase('file-img-4') : existingImageUrls[4];
-                const img5_url = (document.getElementById('file-img-5').files.length > 0) ? await uploadFileToSupabase('file-img-5') : existingImageUrls[5];
-
-                if(!img1_url) throw new Error("Main image upload failed.");
-
                 const productData = {
-                    name: name, category: category, sku: sku, price: price, stock: stock,
-                    material: material, theme: theme, description: desc,
-                    is_trending: isTrending, is_flash_sale: isFlash,
-                    image_url: img1_url, image_2: img2_url, image_3: img3_url, image_4: img4_url, image_5: img5_url
+                    name: name, category: document.getElementById('add-p-category').value, sku: sku, price: price, stock: stock,
+                    material: document.getElementById('add-p-material').value, theme: document.getElementById('add-p-theme').value,
+                    description: document.getElementById('add-p-desc').value, is_trending: document.getElementById('add-p-trending').checked, is_flash_sale: document.getElementById('add-p-flash').checked,
+                    image_url: (mainImageInput.files && mainImageInput.files.length > 0) ? await uploadFileToSupabase('file-img-1') : existingImageUrls[1],
+                    image_2: (document.getElementById('file-img-2').files.length > 0) ? await uploadFileToSupabase('file-img-2') : existingImageUrls[2],
+                    image_3: (document.getElementById('file-img-3').files.length > 0) ? await uploadFileToSupabase('file-img-3') : existingImageUrls[3],
+                    image_4: (document.getElementById('file-img-4').files.length > 0) ? await uploadFileToSupabase('file-img-4') : existingImageUrls[4],
+                    image_5: (document.getElementById('file-img-5').files.length > 0) ? await uploadFileToSupabase('file-img-5') : existingImageUrls[5]
                 };
+
+                if(!productData.image_url) throw new Error("Main image upload failed.");
 
                 if(currentEditId) {
                     const { error: updateError } = await supabaseClient.from('products').update(productData).eq('id', currentEditId);
                     if (updateError) throw updateError;
-                    
                     await logAction('Update Product', `Product "${name}" (SKU: ${sku}) was updated.`);
                     alert("Product Updated Successfully! 🎉");
                 } else {
                     const { error: insertError } = await supabaseClient.from('products').insert([productData]);
                     if (insertError) throw insertError;
-                    
                     await logAction('Add Product', `New product "${name}" (SKU: ${sku}) was added.`);
                     alert("Product Added Successfully! 🎉");
                 }
                 closeProductModal(); loadDashboardStats(); 
-            } catch (err) {
-                console.error(err); alert("Error: " + err.message);
-            } finally {
-                btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT'; btn.disabled = false;
-            }
+            } catch (err) { console.error(err); alert("Error: " + err.message); } finally { btn.innerHTML = currentEditId ? 'UPDATE PRODUCT' : 'SAVE PRODUCT'; btn.disabled = false; }
         }
 
         async function loadProducts() {
@@ -817,57 +751,29 @@
             tbody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-gray-400">Loading products...</td></tr>';
             const { data, error } = await supabaseClient.from('products').select('*').order('id', { ascending: false });
             if (error) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-red-500">Error loading products</td></tr>`; return; }
-            allProducts = data || []; 
-            renderProducts(allProducts);
-            updateLowStockAlert();
+            allProducts = data || []; renderProducts(allProducts); updateLowStockAlert();
         }
 
         function renderProducts(dataArray) {
             const tbody = document.getElementById('products-table-body');
-            if (!dataArray || dataArray.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found.</td></tr>`; 
-                return; 
-            }
+            if (!dataArray || dataArray.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-8 text-center text-gray-500">No products found.</td></tr>`; return; }
             let html = '';
             dataArray.forEach(p => {
                 let stockStatus = p.stock > 0 ? `<span class="bg-green-100 text-green-700 px-2 py-1 rounded text-[10px] font-bold">In Stock (${p.stock})</span>` : `<span class="bg-red-100 text-red-700 px-2 py-1 rounded text-[10px] font-bold">Out of Stock</span>`;
-                html += `
-                    <tr class="hover:bg-gray-50 border-b border-gray-50">
-                        <td class="p-3 md:p-4"><img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'"></td>
-                        <td class="p-3 md:p-4">
-                            <p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p>
-                            <p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'}</p>
-                        </td>
-                        <td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td>
-                        <td class="p-3 md:p-4">${stockStatus}</td>
-                        <td class="p-3 md:p-4 text-center">
-                            <div class="flex justify-center items-center gap-2">
-                                <button onclick="editProduct(${p.id})" class="w-8 h-8 rounded bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-pencil-simple text-lg"></i></button>
-                                <button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-trash text-lg"></i></button>
-                            </div>
-                        </td>
-                    </tr>`;
+                html += `<tr class="hover:bg-gray-50 border-b border-gray-50"><td class="p-3 md:p-4"><img src="${p.image_url}" class="w-10 h-10 rounded object-cover border border-gray-200" onerror="this.src='https://via.placeholder.com/150'"></td><td class="p-3 md:p-4"><p class="font-bold text-gray-800 text-sm max-w-[150px] md:max-w-[200px] truncate">${p.name}</p><p class="text-[10px] text-gray-400 font-medium mt-0.5">SKU: ${p.sku || 'N/A'}</p></td><td class="p-3 md:p-4 font-bold text-gray-900">₹${p.price}</td><td class="p-3 md:p-4">${stockStatus}</td><td class="p-3 md:p-4 text-center"><div class="flex justify-center items-center gap-2"><button onclick="editProduct(${p.id})" class="w-8 h-8 rounded bg-blue-50 text-blue-500 hover:bg-blue-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-pencil-simple text-lg"></i></button><button onclick="deleteProduct(${p.id}, '${p.name}')" class="w-8 h-8 rounded bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"><i class="ph ph-trash text-lg"></i></button></div></td></tr>`;
             });
             tbody.innerHTML = html;
         }
 
         function searchProducts() {
             const query = document.getElementById('search-product').value.toLowerCase();
-            const filtered = allProducts.filter(p => 
-                (p.name && p.name.toLowerCase().includes(query)) || 
-                (p.sku && p.sku.toLowerCase().includes(query))
-            );
-            renderProducts(filtered);
+            renderProducts(allProducts.filter(p => (p.name && p.name.toLowerCase().includes(query)) || (p.sku && p.sku.toLowerCase().includes(query))));
         }
 
         async function deleteProduct(id, name) {
             if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                if(error) alert("Error deleting product."); 
-                else { 
-                    await logAction('Delete Product', `Product "${name}" was deleted from inventory.`); 
-                    loadDashboardStats(); 
-                }
+                if(error) alert("Error deleting product."); else { await logAction('Delete Product', `Product "${name}" was deleted from inventory.`); loadDashboardStats(); }
             }
         }
 
@@ -877,78 +783,42 @@
             tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>';
             const { data, error } = await supabaseClient.from('orders').select('*').order('created_at', { ascending: false });
             if (error) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500">Error loading orders</td></tr>`; return; }
-            allOrders = data || []; 
-            renderOrders(allOrders);
+            allOrders = data || []; renderOrders(allOrders);
         }
 
         function renderOrders(dataArray) {
             const tbody = document.getElementById('orders-table-body');
-            if (!dataArray || dataArray.length === 0) { 
-                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders found.</td></tr>`; 
-                return; 
-            }
+            if (!dataArray || dataArray.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders found.</td></tr>`; return; }
             let html = '';
             dataArray.forEach(o => {
                 let customerHTML = "N/A";
                 if(o.customer_details) {
-                    try {
-                        let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : o.customer_details;
-                        customerHTML = `<p class="font-bold text-gray-800">${c.name || 'N/A'}</p><p class="text-xs text-gray-500">${c.email_phone || ''}</p>`;
-                    } catch(e) {}
+                    try { let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : o.customer_details; customerHTML = `<p class="font-bold text-gray-800">${c.name || 'N/A'}</p><p class="text-xs text-gray-500">${c.email_phone || ''}</p>`; } catch(e) {}
                 }
                 let badgeClass = o.status === 'Shipped' ? 'bg-blue-100 text-blue-700' : o.status === 'Delivered' ? 'bg-green-100 text-green-700' : o.status === 'Cancelled' ? 'bg-red-100 text-red-700' : 'bg-yellow-100 text-yellow-700';
-                html += `
-                    <tr class="hover:bg-gray-50 border-b border-gray-100">
-                        <td class="p-3 md:p-4"><button onclick="viewOrderDetails(${o.id})" class="font-bold text-[#e6998c] hover:underline flex items-center gap-1">${o.order_id} <i class="ph ph-arrow-square-out text-xs"></i></button></td>
-                        <td class="p-3 md:p-4">${customerHTML}</td>
-                        <td class="p-3 md:p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td>
-                        <td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
-                        <td class="p-3 md:p-4"><span class="${badgeClass} px-2 md:px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td>
-                        <td class="p-3 md:p-4 text-right">
-                            <select onchange="updateOrderStatus(${o.id}, this.value, '${o.order_id}')" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
-                                <option value="" disabled selected>Status</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Delivered">Delivered</option>
-                                <option value="Cancelled">Cancelled</option>
-                            </select>
-                        </td>
-                    </tr>`;
+                html += `<tr class="hover:bg-gray-50 border-b border-gray-100"><td class="p-3 md:p-4"><button onclick="viewOrderDetails(${o.id})" class="font-bold text-[#e6998c] hover:underline flex items-center gap-1">${o.order_id} <i class="ph ph-arrow-square-out text-xs"></i></button></td><td class="p-3 md:p-4">${customerHTML}</td><td class="p-3 md:p-4 font-extrabold text-gray-900">${o.total_amount || '₹0'}</td><td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td><td class="p-3 md:p-4"><span class="${badgeClass} px-2 md:px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td><td class="p-3 md:p-4 text-right"><select onchange="updateOrderStatus(${o.id}, this.value, '${o.order_id}')" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer"><option value="" disabled selected>Status</option><option value="Processing">Processing</option><option value="Shipped">Shipped</option><option value="Delivered">Delivered</option><option value="Cancelled">Cancelled</option></select></td></tr>`;
             });
             tbody.innerHTML = html;
         }
 
         function searchOrders() {
             const query = document.getElementById('search-order').value.toLowerCase();
-            const filtered = allOrders.filter(o => {
+            renderOrders(allOrders.filter(o => {
                 let cName = '', cPhone = '';
-                try {
-                    let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : (o.customer_details || {});
-                    cName = (c.name || '').toLowerCase();
-                    cPhone = (c.phone || c.email_phone || '').toLowerCase();
-                } catch(e){}
-                const oId = (o.order_id || '').toLowerCase();
-                return oId.includes(query) || cName.includes(query) || cPhone.includes(query);
-            });
-            renderOrders(filtered);
+                try { let c = typeof o.customer_details === 'string' ? JSON.parse(o.customer_details) : (o.customer_details || {}); cName = (c.name || '').toLowerCase(); cPhone = (c.phone || c.email_phone || '').toLowerCase(); } catch(e){}
+                return (o.order_id || '').toLowerCase().includes(query) || cName.includes(query) || cPhone.includes(query);
+            }));
         }
 
         async function updateOrderStatus(id, newStatus, orderIdStr) {
             if(!newStatus) return;
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
-            if(!error) {
-                await logAction('Update Order', `Order ${orderIdStr} status changed to ${newStatus}.`); 
-                loadOrders();
-            }
+            if(!error) { await logAction('Update Order', `Order ${orderIdStr} status changed to ${newStatus}.`); loadOrders(); }
         }
 
         function viewOrderDetails(id) {
-            const order = allOrders.find(o => o.id === id);
-            if(!order) return;
-            currentViewedOrder = order;
-
-            let cust = {};
-            try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
+            const order = allOrders.find(o => o.id === id); if(!order) return; currentViewedOrder = order;
+            let cust = {}; try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
 
             document.getElementById('modal-order-id').innerText = order.order_id || 'N/A';
             document.getElementById('modal-cust-name').innerText = cust.name || 'N/A';
@@ -956,12 +826,7 @@
             document.getElementById('modal-cust-email').innerHTML = `<i class="ph ph-envelope"></i> ${cust.email || 'N/A'}`;
             
             let addressHtml = 'पता उपलब्ध नहीं है';
-            if(cust.address) {
-                addressHtml = `${cust.address}<br>`;
-                if(cust.city) addressHtml += `${cust.city}, `;
-                if(cust.state) addressHtml += `${cust.state} `;
-                if(cust.pincode) addressHtml += `- <span class="font-extrabold text-black">${cust.pincode}</span>`;
-            }
+            if(cust.address) { addressHtml = `${cust.address}<br>`; if(cust.city) addressHtml += `${cust.city}, `; if(cust.state) addressHtml += `${cust.state} `; if(cust.pincode) addressHtml += `- <span class="font-extrabold text-black">${cust.pincode}</span>`; }
             document.getElementById('modal-cust-address').innerHTML = addressHtml;
 
             const dateObj = new Date(order.created_at);
@@ -969,169 +834,40 @@
             document.getElementById('modal-pay-mode').innerText = order.payment_mode || 'N/A';
             document.getElementById('modal-order-total').innerText = order.total_amount || '₹0';
 
-            let itemsHtml = '';
-            let items = [];
-            try { 
-                let rawItems = order.cart_details || order.products || order.items || '[]';
-                items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; 
-            } catch(e){}
-
+            let itemsHtml = ''; let items = [];
+            try { let rawItems = order.cart_details || order.products || order.items || '[]'; items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; } catch(e){}
             if(items && Array.isArray(items) && items.length > 0) {
-                items.forEach(item => {
-                    itemsHtml += `
-                        <div class="flex justify-between items-center border-b border-gray-100 py-3 last:border-0">
-                            <div>
-                                <p class="font-bold text-gray-800 text-sm">${item.name || 'Unknown Item'}</p>
-                                <p class="text-[10px] text-gray-500 font-medium">Qty: ${item.quantity || 1} | Price: ₹${item.price || 0}</p>
-                            </div>
-                            <div class="font-extrabold text-gray-900 text-sm">₹${(item.price || 0) * (item.quantity || 1)}</div>
-                        </div>`;
-                });
+                items.forEach(item => { itemsHtml += `<div class="flex justify-between items-center border-b border-gray-100 py-3 last:border-0"><div><p class="font-bold text-gray-800 text-sm">${item.name || 'Unknown Item'}</p><p class="text-[10px] text-gray-500 font-medium">Qty: ${item.quantity || 1} | Price: ₹${item.price || 0}</p></div><div class="font-extrabold text-gray-900 text-sm">₹${(item.price || 0) * (item.quantity || 1)}</div></div>`; });
             } else { itemsHtml = '<p class="text-sm text-gray-400 italic">No detailed items found.</p>'; }
             
             document.getElementById('modal-order-items').innerHTML = itemsHtml;
-            document.getElementById('order-details-modal').classList.remove('hidden');
-            document.getElementById('order-details-modal').classList.add('flex');
+            document.getElementById('order-details-modal').classList.remove('hidden'); document.getElementById('order-details-modal').classList.add('flex');
         }
 
-        function closeOrderModal() {
-            document.getElementById('order-details-modal').classList.add('hidden');
-            document.getElementById('order-details-modal').classList.remove('flex');
-        }
+        function closeOrderModal() { document.getElementById('order-details-modal').classList.add('hidden'); document.getElementById('order-details-modal').classList.remove('flex'); }
 
         function sendWhatsAppMessage() {
-            if(!currentViewedOrder) return;
-            const order = currentViewedOrder;
-            let cust = {};
-            try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
+            if(!currentViewedOrder) return; const order = currentViewedOrder;
+            let cust = {}; try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
             let phone = cust.phone || cust.email_phone || '';
             if(!phone) { alert("Customer phone number not found."); return; }
-            phone = phone.replace(/\D/g,'');
-            if(phone.length === 10) { phone = '91' + phone; }
-            const customerName = cust.name || 'Customer';
-            const orderId = order.order_id || '';
-            const total = order.total_amount || 0;
+            phone = phone.replace(/\D/g,''); if(phone.length === 10) { phone = '91' + phone; }
+            const customerName = cust.name || 'Customer'; const orderId = order.order_id || ''; const total = order.total_amount || 0;
             let text = `Hello ${customerName}, \n\nThank you for your order *${orderId}* at *Yogesh Jewellers*! ✨\n\nYour order total is *₹${total}*.\nWe are processing your order and will update you regarding the shipping soon.\n\nThank you for shopping with us! 💍`;
-            const encodedText = encodeURIComponent(text);
-            const waUrl = `https://wa.me/${phone}?text=${encodedText}`;
-            window.open(waUrl, '_blank');
+            window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         function generateInvoice() {
-            if(!currentViewedOrder) return;
-            const order = currentViewedOrder;
-            
-            let cust = {};
-            try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
-            
-            let items = [];
-            try { 
-                let rawItems = order.cart_details || order.products || order.items || '[]';
-                items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; 
-            } catch(e){}
-
-            const dateObj = new Date(order.created_at);
-            const orderDate = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleDateString('en-IN');
-
+            if(!currentViewedOrder) return; const order = currentViewedOrder;
+            let cust = {}; try { cust = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {}); } catch(e){}
+            let items = []; try { let rawItems = order.cart_details || order.products || order.items || '[]'; items = typeof rawItems === 'string' ? JSON.parse(rawItems) : rawItems; } catch(e){}
+            const dateObj = new Date(order.created_at); const orderDate = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleDateString('en-IN');
             let itemsHtml = '';
-            items.forEach((item, index) => {
-                itemsHtml += `
-                    <tr>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${index + 1}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">${item.name || 'Jewellery Item'}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${item.quantity || 1}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">₹${item.price || 0}</td>
-                        <td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">₹${(item.price || 0) * (item.quantity || 1)}</td>
-                    </tr>
-                `;
-            });
-
+            items.forEach((item, index) => { itemsHtml += `<tr><td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${index + 1}</td><td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">${item.name || 'Jewellery Item'}</td><td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">${item.quantity || 1}</td><td style="padding: 12px; border-bottom: 1px solid #eee; color: #444;">₹${item.price || 0}</td><td style="padding: 12px; border-bottom: 1px solid #eee; color: #111; font-weight: bold;">₹${(item.price || 0) * (item.quantity || 1)}</td></tr>`; });
             let addressStr = cust.address ? `${cust.address}, <br>${cust.city || ''}, ${cust.state || ''} <br><strong>PIN: ${cust.pincode || ''}</strong>` : 'N/A';
-
-            const invoiceHTML = `
-            <html>
-            <head>
-                <title>Invoice - ${order.order_id}</title>
-                <style>
-                    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; margin: 0; padding: 40px; background: #fff;}
-                    .invoice-box { max-width: 800px; margin: auto; padding: 40px; border: 1px solid #eee; box-shadow: 0 0 20px rgba(0, 0, 0, 0.05); border-radius: 8px; }
-                    .header { border-bottom: 2px solid #e6998c; padding-bottom: 20px; margin-bottom: 30px; }
-                    .header h1 { margin: 0; color: #e6998c; font-size: 32px; font-family: 'Georgia', serif; letter-spacing: 1px;}
-                    table { width: 100%; text-align: left; border-collapse: collapse; }
-                    th { background: #f9fafb; padding: 12px; border-bottom: 2px solid #e2e8f0; color: #64748b; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;}
-                    .total-section { text-align: right; margin-top: 30px; padding-top: 20px; border-top: 2px solid #eee; }
-                    .footer { text-align: center; color: #94a3b8; font-size: 12px; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px;}
-                </style>
-            </head>
-            <body>
-                <div class="invoice-box">
-                    <table class="header">
-                        <tr>
-                            <td>
-                                <h1>YOGESH JEWELLERS</h1>
-                                <p style="margin: 5px 0 0 0; font-size: 14px; color: #64748b;">Agra, Uttar Pradesh, India</p>
-                            </td>
-                            <td style="text-align:right">
-                                <h2 style="margin:0; font-size: 28px; color: #0f172a;">INVOICE</h2>
-                                <p style="margin: 8px 0 0 0; font-size: 14px;">Order ID: <strong style="color: #e6998c;">${order.order_id}</strong></p>
-                                <p style="margin: 4px 0 0 0; font-size: 14px; color: #64748b;">Date: ${orderDate}</p>
-                            </td>
-                        </tr>
-                    </table>
-                    
-                    <table style="margin-bottom: 40px;">
-                        <tr>
-                            <td style="width:50%; vertical-align: top; padding-right: 20px;">
-                                <h3 style="font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Billed To:</h3>
-                                <p style="margin:0 0 5px 0; font-weight:bold; font-size: 16px; color: #0f172a;">${cust.name || 'N/A'}</p>
-                                <p style="margin:0 0 5px 0; font-size: 14px; color: #475569;">Phone: ${cust.phone || cust.email_phone || 'N/A'}</p>
-                                <p style="margin:0; font-size: 14px; color: #475569;">Email: ${cust.email || 'N/A'}</p>
-                            </td>
-                            <td style="width:50%; vertical-align: top; text-align: right;">
-                                <h3 style="font-size: 12px; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px;">Shipping Address:</h3>
-                                <p style="margin:0; font-size: 14px; color: #475569; line-height: 1.5;">${addressStr}</p>
-                            </td>
-                        </tr>
-                    </table>
-
-                    <table style="margin-bottom: 30px;">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Item Description</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${itemsHtml}
-                        </tbody>
-                    </table>
-
-                    <div class="total-section">
-                        <p style="margin: 5px 0; font-size: 14px; color: #64748b;">Payment Mode: <strong style="color: #0f172a; text-transform: uppercase;">${order.payment_mode || 'N/A'}</strong></p>
-                        <p style="margin: 10px 0; font-size: 24px; font-weight: bold; color: #0f172a;">Grand Total: <span style="color:#059669">₹${order.total_amount || 0}</span></p>
-                    </div>
-
-                    <div class="footer">
-                        <p style="margin:0 0 5px 0;">Thank you for shopping with Yogesh Jewellers!</p>
-                        <p style="margin:0;">This is a computer-generated invoice and requires no signature.</p>
-                    </div>
-                </div>
-            </body>
-            </html>
-            `;
-
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(invoiceHTML);
-            printWindow.document.close();
-            printWindow.focus();
-            
-            setTimeout(() => {
-                printWindow.print();
-                printWindow.close();
-            }, 250);
+            const invoiceHTML = `<html><head><title>Invoice - ${order.order_id}</title><style>body{font-family:sans-serif;padding:40px;}.invoice-box{max-width:800px;margin:auto;padding:40px;border:1px solid #eee;}table{width:100%;border-collapse:collapse;}th{background:#f9fafb;padding:12px;text-align:left;}</style></head><body><div class="invoice-box"><h2>YOGESH JEWELLERS</h2><p>Order ID: ${order.order_id}<br>Date: ${orderDate}</p><hr><p><b>Billed To:</b> ${cust.name || 'N/A'}<br>${cust.phone || cust.email_phone || 'N/A'}</p><p><b>Address:</b><br>${addressStr}</p><table><thead><tr><th>#</th><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>${itemsHtml}</tbody></table><h3 style="text-align:right;">Grand Total: ₹${order.total_amount || 0}</h3></div></body></html>`;
+            const printWindow = window.open('', '_blank'); printWindow.document.write(invoiceHTML); printWindow.document.close(); printWindow.focus();
+            setTimeout(() => { printWindow.print(); printWindow.close(); }, 250);
         }
     </script>
 </body>
