@@ -411,7 +411,10 @@
         // --- EMAILJS CONFIGURATION ---
         const EMAILJS_SERVICE_ID = "service_4zeuon9";
         const EMAILJS_TEMPLATE_ID = "template_veea0b5";
-        const EMAILJS_PUBLIC_KEY = "YTyO551BPv2WTnp6I";
+        
+        // PUBLIC KEY CORRECTED (LAST LETTER IS SMALL 'L')
+        const EMAILJS_PUBLIC_KEY = "YTyO551BPv2WTnp6l"; 
+        
         const ADMIN_EMAIL = "yogesh.shakya007@gmail.com";
         
         emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -461,8 +464,10 @@
                     document.getElementById('login-modal').classList.add('hidden');
                 }
             } catch(err) {
-                console.error(err);
-                alert("Failed to send OTP. Please check your internet connection.");
+                console.error("EmailJS Error:", err);
+                let errorMsg = err.text || err.message || JSON.stringify(err);
+                alert("OTP भेजने में दिक्कत आई। Error: " + errorMsg + "\n\n(कृपया अपनी EmailJS की Public Key और Gmail Connection चेक करें)");
+                
                 if(context === 'login') {
                     document.getElementById('login-modal').classList.remove('hidden');
                 }
