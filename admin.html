@@ -78,6 +78,11 @@
                 <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
                     <i class="ph ph-shopping-bag text-xl"></i> Order Management
                 </button>
+                <!-- NEW LOGS TAB -->
+                <button onclick="switchTab('logs')" id="tab-logs" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-shield-check text-xl"></i> Activity Logs
+                </button>
+                
                 <div class="w-full h-px bg-gray-800 my-6"></div>
                 <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4">Settings</p>
                 <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
@@ -120,9 +125,8 @@
                         </div>
                     </div>
 
-                    <!-- NEW: ANALYTICS CHARTS -->
+                    <!-- ANALYTICS CHARTS -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
-                        <!-- Line Chart: 7 Days Revenue -->
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2">
                             <h3 class="text-xs font-extrabold text-gray-500 mb-4 uppercase tracking-wider flex items-center gap-2">
                                 <i class="ph ph-trend-up text-lg text-blue-500"></i> Last 7 Days Revenue
@@ -131,7 +135,6 @@
                                 <canvas id="revenueChart"></canvas>
                             </div>
                         </div>
-                        <!-- Doughnut Chart: Products by Category -->
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
                             <h3 class="text-xs font-extrabold text-gray-500 mb-4 uppercase tracking-wider flex items-center gap-2">
                                 <i class="ph ph-chart-pie-slice text-lg text-[#e6998c]"></i> Catalog Categories
@@ -210,6 +213,33 @@
                                 </thead>
                                 <tbody id="orders-table-body" class="divide-y divide-gray-100 bg-white">
                                     <tr><td colspan="6" class="p-8 text-center text-gray-400">Loading orders...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. NEW LOGS TAB -->
+                <div id="section-logs" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                            <div>
+                                <h2 class="text-lg md:text-xl font-bold text-gray-900">Security Activity Logs</h2>
+                                <p class="text-[11px] md:text-xs text-gray-500 mt-1">Track admin changes and logins.</p>
+                            </div>
+                            <button onclick="loadLogs()" class="text-xs font-bold text-gray-500 hover:text-black flex items-center gap-1 shrink-0"><i class="ph ph-arrows-clockwise"></i> Refresh Logs</button>
+                        </div>
+                        <div class="overflow-x-auto border border-gray-100 rounded-xl w-full">
+                            <table class="w-full text-left text-sm whitespace-nowrap">
+                                <thead class="bg-gray-50 text-gray-500 font-bold border-b border-gray-100 text-[10px] md:text-xs uppercase tracking-wider">
+                                    <tr>
+                                        <th class="p-3 md:p-4 font-semibold">Action</th>
+                                        <th class="p-3 md:p-4 font-semibold">Details</th>
+                                        <th class="p-3 md:p-4 font-semibold text-right">Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="logs-table-body" class="divide-y divide-gray-100 bg-white">
+                                    <tr><td colspan="3" class="p-8 text-center text-gray-400">Loading logs...</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -330,19 +360,31 @@
         let revenueChartInstance = null;
         let categoryChartInstance = null;
 
-        function checkLogin() {
+        // --- NEW: LOGGING FUNCTION ---
+        async function logAction(action, details) {
+            try {
+                await supabaseClient.from('admin_logs').insert([{ action, details }]);
+            } catch (err) {
+                console.error("Log error: ", err);
+            }
+        }
+
+        async function checkLogin() {
             const pass = document.getElementById('admin-pass').value;
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('login-modal').classList.add('hidden');
                 const panel = document.getElementById('admin-panel');
                 panel.classList.remove('hidden');
                 panel.classList.add('block'); 
+                
+                await logAction('Login', 'Admin securely logged into the dashboard'); // LOG TRIGGER
                 initDashboard();
             } else { alert("Incorrect Password! Access Denied."); }
         }
 
-        function logout() {
+        async function logout() {
             if(confirm("Are you sure you want to logout?")) {
+                await logAction('Logout', 'Admin logged out of the dashboard'); // LOG TRIGGER
                 document.getElementById('admin-pass').value = '';
                 const panel = document.getElementById('admin-panel');
                 panel.classList.add('hidden');
@@ -367,11 +409,13 @@
             document.getElementById('section-dashboard').classList.add('hidden');
             document.getElementById('section-products').classList.add('hidden');
             document.getElementById('section-orders').classList.add('hidden');
+            document.getElementById('section-logs').classList.add('hidden'); // NEW LOGS TAB
             
             const inactiveClass = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
             document.getElementById('tab-dashboard').className = inactiveClass;
             document.getElementById('tab-products').className = inactiveClass;
             document.getElementById('tab-orders').className = inactiveClass;
+            document.getElementById('tab-logs').className = inactiveClass; // NEW LOGS TAB
 
             const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
             
@@ -387,6 +431,10 @@
                 document.getElementById('section-orders').classList.remove('hidden');
                 document.getElementById('tab-orders').className = activeClass;
                 loadOrders();
+            } else if(tabName === 'logs') { // NEW LOGS TAB
+                document.getElementById('section-logs').classList.remove('hidden');
+                document.getElementById('tab-logs').className = activeClass;
+                loadLogs();
             }
 
             if(window.innerWidth < 768) {
@@ -422,14 +470,12 @@
                     updateLowStockAlert();  
                 }
 
-                // Render Analytics Charts
                 renderCharts(orders, products);
                 
             } catch (error) { console.error(error); }
         }
 
         function renderCharts(orders, products) {
-            // 1. Line Chart Data (Last 7 Days Revenue)
             const last7Days = [];
             const revenueData = [];
             for(let i=6; i>=0; i--) {
@@ -482,7 +528,6 @@
                 }
             });
 
-            // 2. Doughnut Chart Data (Products by Category)
             const categories = {};
             if(products) {
                 products.forEach(p => {
@@ -536,6 +581,39 @@
                 alertContainer.classList.add('hidden');
                 alertContainer.innerHTML = '';
             }
+        }
+
+        // --- NEW: LOAD ACTIVITY LOGS ---
+        async function loadLogs() {
+            const tbody = document.getElementById('logs-table-body');
+            tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-gray-400">Loading logs...</td></tr>';
+            const { data, error } = await supabaseClient.from('admin_logs').select('*').order('created_at', { ascending: false });
+            if (error) { tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-red-500">Error loading logs</td></tr>`; return; }
+            if (!data || data.length === 0) { 
+                tbody.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-gray-500">No activity logs found.</td></tr>`; 
+                return; 
+            }
+            
+            let html = '';
+            data.forEach(l => {
+                let badgeClass = 'bg-gray-100 text-gray-700';
+                if(l.action.toLowerCase().includes('delete')) badgeClass = 'bg-red-100 text-red-700';
+                else if(l.action.toLowerCase().includes('update') || l.action.toLowerCase().includes('edit')) badgeClass = 'bg-blue-100 text-blue-700';
+                else if(l.action.toLowerCase().includes('login')) badgeClass = 'bg-purple-100 text-purple-700';
+                else if(l.action.toLowerCase().includes('add')) badgeClass = 'bg-green-100 text-green-700';
+
+                let dateObj = new Date(l.created_at);
+                let formattedDate = isNaN(dateObj) ? 'N/A' : dateObj.toLocaleString('en-IN');
+                
+                html += `
+                    <tr class="hover:bg-gray-50 border-b border-gray-50">
+                        <td class="p-3 md:p-4"><span class="${badgeClass} px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider">${l.action}</span></td>
+                        <td class="p-3 md:p-4 text-sm text-gray-700 font-medium">${l.details}</td>
+                        <td class="p-3 md:p-4 text-xs text-gray-500 font-bold text-right">${formattedDate}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
         }
 
         // --- PRODUCT MANAGEMENT ---
@@ -647,10 +725,14 @@
                 if(currentEditId) {
                     const { error: updateError } = await supabaseClient.from('products').update(productData).eq('id', currentEditId);
                     if (updateError) throw updateError;
+                    
+                    await logAction('Update Product', `Product "${name}" (SKU: ${sku}) was updated.`); // LOG TRIGGER
                     alert("Product Updated Successfully! 🎉");
                 } else {
                     const { error: insertError } = await supabaseClient.from('products').insert([productData]);
                     if (insertError) throw insertError;
+                    
+                    await logAction('Add Product', `New product "${name}" (SKU: ${sku}) was added.`); // LOG TRIGGER
                     alert("Product Added Successfully! 🎉");
                 }
                 closeProductModal(); loadDashboardStats(); // Refresh everything
@@ -712,7 +794,11 @@
         async function deleteProduct(id, name) {
             if(confirm(`Are you sure you want to delete "${name}"?`)) {
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
-                if(error) alert("Error deleting product."); else { loadDashboardStats(); }
+                if(error) alert("Error deleting product."); 
+                else { 
+                    await logAction('Delete Product', `Product "${name}" was deleted from inventory.`); // LOG TRIGGER
+                    loadDashboardStats(); 
+                }
             }
         }
 
@@ -750,7 +836,7 @@
                         <td class="p-3 md:p-4"><span class="bg-gray-100 text-gray-600 px-2 py-1 rounded text-[10px] md:text-xs font-bold uppercase">${o.payment_mode || 'N/A'}</span></td>
                         <td class="p-3 md:p-4"><span class="${badgeClass} px-2 md:px-3 py-1 rounded-full text-[9px] md:text-[10px] font-bold uppercase tracking-wider">${o.status || 'Processing'}</span></td>
                         <td class="p-3 md:p-4 text-right">
-                            <select onchange="updateOrderStatus(${o.id}, this.value)" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
+                            <select onchange="updateOrderStatus(${o.id}, this.value, '${o.order_id}')" class="p-1.5 md:p-2 border border-gray-200 rounded-lg text-[10px] md:text-xs font-bold text-gray-700 bg-white outline-none cursor-pointer">
                                 <option value="" disabled selected>Status</option>
                                 <option value="Processing">Processing</option>
                                 <option value="Shipped">Shipped</option>
@@ -778,10 +864,13 @@
             renderOrders(filtered);
         }
 
-        async function updateOrderStatus(id, newStatus) {
+        async function updateOrderStatus(id, newStatus, orderIdStr) {
             if(!newStatus) return;
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
-            if(!error) loadOrders();
+            if(!error) {
+                await logAction('Update Order', `Order ${orderIdStr} status changed to ${newStatus}.`); // LOG TRIGGER
+                loadOrders();
+            }
         }
 
         function viewOrderDetails(id) {
