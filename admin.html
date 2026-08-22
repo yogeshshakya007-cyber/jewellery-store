@@ -78,13 +78,16 @@
                 <button onclick="switchTab('orders')" id="tab-orders" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
                     <i class="ph ph-shopping-bag text-xl"></i> Order Management
                 </button>
-                <!-- NEW LOGS TAB -->
                 <button onclick="switchTab('logs')" id="tab-logs" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
                     <i class="ph ph-shield-check text-xl"></i> Activity Logs
                 </button>
                 
                 <div class="w-full h-px bg-gray-800 my-6"></div>
                 <p class="text-[11px] font-bold text-gray-500 uppercase tracking-widest px-4 mb-4">Settings</p>
+                <!-- NEW SETTINGS TAB -->
+                <button onclick="switchTab('settings')" id="tab-settings" class="w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300">
+                    <i class="ph ph-gear text-xl"></i> System Settings
+                </button>
                 <button onclick="logout()" class="w-full p-3.5 hover:bg-red-500/10 hover:text-red-500 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-400">
                     <i class="ph ph-sign-out text-xl"></i> Secure Logout
                 </button>
@@ -106,10 +109,8 @@
                 <!-- 1. DASHBOARD TAB -->
                 <div id="section-dashboard" class="block space-y-6 max-w-7xl mx-auto">
                     
-                    <!-- LOW STOCK ALERT CONTAINER -->
                     <div id="low-stock-alert-container" class="hidden"></div>
 
-                    <!-- STATS CARDS -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4 md:gap-5">
                             <div class="w-12 h-12 md:w-14 md:h-14 rounded-full bg-green-50 text-green-600 flex items-center justify-center text-xl md:text-2xl shrink-0"><i class="ph ph-currency-inr"></i></div>
@@ -125,7 +126,6 @@
                         </div>
                     </div>
 
-                    <!-- ANALYTICS CHARTS -->
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6 mt-6">
                         <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm lg:col-span-2">
                             <h3 class="text-xs font-extrabold text-gray-500 mb-4 uppercase tracking-wider flex items-center gap-2">
@@ -219,7 +219,7 @@
                     </div>
                 </div>
 
-                <!-- 4. NEW LOGS TAB -->
+                <!-- 4. LOGS TAB -->
                 <div id="section-logs" class="hidden space-y-6 max-w-7xl mx-auto">
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-5 md:p-6">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -242,6 +242,26 @@
                                     <tr><td colspan="3" class="p-8 text-center text-gray-400">Loading logs...</td></tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. NEW SETTINGS TAB (CLOUD BACKUP) -->
+                <div id="section-settings" class="hidden space-y-6 max-w-7xl mx-auto">
+                    <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 shadow-sm">
+                        <h2 class="text-lg md:text-xl font-bold text-gray-900 mb-2">System Settings</h2>
+                        <p class="text-xs text-gray-500 mb-6">Manage your admin panel configurations and data.</p>
+                        
+                        <div class="bg-blue-50 border border-blue-100 rounded-xl p-5 md:p-6">
+                            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                <div>
+                                    <h3 class="font-bold text-blue-900 flex items-center gap-2"><i class="ph ph-cloud-arrow-up text-xl"></i> Online Cloud Backup</h3>
+                                    <p class="text-xs text-blue-700 mt-1 max-w-md">Securely backup all your Products, Orders, and Activity Logs directly to your Supabase Cloud Storage.</p>
+                                </div>
+                                <button onclick="createCloudBackup()" id="btn-backup" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold uppercase tracking-widest shadow-md transition-colors flex items-center gap-2 shrink-0">
+                                    <i class="ph ph-database text-lg"></i> Backup Data Now
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,7 +380,6 @@
         let revenueChartInstance = null;
         let categoryChartInstance = null;
 
-        // --- NEW: LOGGING FUNCTION ---
         async function logAction(action, details) {
             try {
                 await supabaseClient.from('admin_logs').insert([{ action, details }]);
@@ -377,14 +396,14 @@
                 panel.classList.remove('hidden');
                 panel.classList.add('block'); 
                 
-                await logAction('Login', 'Admin securely logged into the dashboard'); // LOG TRIGGER
+                await logAction('Login', 'Admin securely logged into the dashboard'); 
                 initDashboard();
             } else { alert("Incorrect Password! Access Denied."); }
         }
 
         async function logout() {
             if(confirm("Are you sure you want to logout?")) {
-                await logAction('Logout', 'Admin logged out of the dashboard'); // LOG TRIGGER
+                await logAction('Logout', 'Admin logged out of the dashboard'); 
                 document.getElementById('admin-pass').value = '';
                 const panel = document.getElementById('admin-panel');
                 panel.classList.add('hidden');
@@ -409,13 +428,15 @@
             document.getElementById('section-dashboard').classList.add('hidden');
             document.getElementById('section-products').classList.add('hidden');
             document.getElementById('section-orders').classList.add('hidden');
-            document.getElementById('section-logs').classList.add('hidden'); // NEW LOGS TAB
+            document.getElementById('section-logs').classList.add('hidden'); 
+            document.getElementById('section-settings').classList.add('hidden'); // NEW
             
             const inactiveClass = "w-full p-3.5 hover:bg-gray-800 hover:text-white rounded-xl text-left font-bold flex items-center gap-3 transition-all text-gray-300";
             document.getElementById('tab-dashboard').className = inactiveClass;
             document.getElementById('tab-products').className = inactiveClass;
             document.getElementById('tab-orders').className = inactiveClass;
-            document.getElementById('tab-logs').className = inactiveClass; // NEW LOGS TAB
+            document.getElementById('tab-logs').className = inactiveClass; 
+            document.getElementById('tab-settings').className = inactiveClass; // NEW
 
             const activeClass = "menu-active w-full p-3.5 rounded-xl text-left font-bold flex items-center gap-3 transition-all text-white";
             
@@ -431,10 +452,13 @@
                 document.getElementById('section-orders').classList.remove('hidden');
                 document.getElementById('tab-orders').className = activeClass;
                 loadOrders();
-            } else if(tabName === 'logs') { // NEW LOGS TAB
+            } else if(tabName === 'logs') { 
                 document.getElementById('section-logs').classList.remove('hidden');
                 document.getElementById('tab-logs').className = activeClass;
                 loadLogs();
+            } else if(tabName === 'settings') { // NEW
+                document.getElementById('section-settings').classList.remove('hidden');
+                document.getElementById('tab-settings').className = activeClass;
             }
 
             if(window.innerWidth < 768) {
@@ -583,7 +607,52 @@
             }
         }
 
-        // --- NEW: LOAD ACTIVITY LOGS ---
+        // --- NEW: CLOUD BACKUP LOGIC ---
+        async function createCloudBackup() {
+            const btn = document.getElementById('btn-backup');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="ph ph-spinner animate-spin text-lg"></i> Uploading...';
+            btn.disabled = true;
+
+            try {
+                // 1. Fetch all important data
+                const { data: products } = await supabaseClient.from('products').select('*');
+                const { data: orders } = await supabaseClient.from('orders').select('*');
+                const { data: logs } = await supabaseClient.from('admin_logs').select('*');
+
+                // 2. Prepare JSON structure
+                const backupPayload = {
+                    backup_date: new Date().toISOString(),
+                    total_products: products ? products.length : 0,
+                    total_orders: orders ? orders.length : 0,
+                    products: products || [],
+                    orders: orders || [],
+                    activity_logs: logs || []
+                };
+
+                // 3. Convert to Blob (File)
+                const blob = new Blob([JSON.stringify(backupPayload, null, 2)], { type: 'application/json' });
+                const fileName = `database_backup_${Date.now()}.json`;
+
+                // 4. Upload to 'backups' bucket
+                const { data, error } = await supabaseClient.storage.from('backups').upload(fileName, blob);
+
+                if (error) throw error;
+
+                // 5. Success
+                await logAction('Cloud Backup', `Secure cloud backup created: ${fileName}`);
+                alert(`Cloud Backup Successful! 🎉\nYour data has been securely saved to Supabase Storage.\nFilename: ${fileName}`);
+                
+            } catch (err) {
+                console.error('Backup Error:', err);
+                alert('Failed to create backup: ' + err.message);
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        }
+
+        // --- LOAD ACTIVITY LOGS ---
         async function loadLogs() {
             const tbody = document.getElementById('logs-table-body');
             tbody.innerHTML = '<tr><td colspan="3" class="p-8 text-center text-gray-400">Loading logs...</td></tr>';
@@ -599,7 +668,7 @@
                 let badgeClass = 'bg-gray-100 text-gray-700';
                 if(l.action.toLowerCase().includes('delete')) badgeClass = 'bg-red-100 text-red-700';
                 else if(l.action.toLowerCase().includes('update') || l.action.toLowerCase().includes('edit')) badgeClass = 'bg-blue-100 text-blue-700';
-                else if(l.action.toLowerCase().includes('login')) badgeClass = 'bg-purple-100 text-purple-700';
+                else if(l.action.toLowerCase().includes('login') || l.action.toLowerCase().includes('backup')) badgeClass = 'bg-purple-100 text-purple-700';
                 else if(l.action.toLowerCase().includes('add')) badgeClass = 'bg-green-100 text-green-700';
 
                 let dateObj = new Date(l.created_at);
@@ -726,16 +795,16 @@
                     const { error: updateError } = await supabaseClient.from('products').update(productData).eq('id', currentEditId);
                     if (updateError) throw updateError;
                     
-                    await logAction('Update Product', `Product "${name}" (SKU: ${sku}) was updated.`); // LOG TRIGGER
+                    await logAction('Update Product', `Product "${name}" (SKU: ${sku}) was updated.`);
                     alert("Product Updated Successfully! 🎉");
                 } else {
                     const { error: insertError } = await supabaseClient.from('products').insert([productData]);
                     if (insertError) throw insertError;
                     
-                    await logAction('Add Product', `New product "${name}" (SKU: ${sku}) was added.`); // LOG TRIGGER
+                    await logAction('Add Product', `New product "${name}" (SKU: ${sku}) was added.`);
                     alert("Product Added Successfully! 🎉");
                 }
-                closeProductModal(); loadDashboardStats(); // Refresh everything
+                closeProductModal(); loadDashboardStats(); 
             } catch (err) {
                 console.error(err); alert("Error: " + err.message);
             } finally {
@@ -796,7 +865,7 @@
                 const { error } = await supabaseClient.from('products').delete().eq('id', id);
                 if(error) alert("Error deleting product."); 
                 else { 
-                    await logAction('Delete Product', `Product "${name}" was deleted from inventory.`); // LOG TRIGGER
+                    await logAction('Delete Product', `Product "${name}" was deleted from inventory.`); 
                     loadDashboardStats(); 
                 }
             }
@@ -868,7 +937,7 @@
             if(!newStatus) return;
             const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', id);
             if(!error) {
-                await logAction('Update Order', `Order ${orderIdStr} status changed to ${newStatus}.`); // LOG TRIGGER
+                await logAction('Update Order', `Order ${orderIdStr} status changed to ${newStatus}.`); 
                 loadOrders();
             }
         }
