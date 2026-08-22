@@ -411,10 +411,7 @@
         // --- EMAILJS CONFIGURATION ---
         const EMAILJS_SERVICE_ID = "service_4zeuon9";
         const EMAILJS_TEMPLATE_ID = "template_veea0b5";
-        
-        // PUBLIC KEY CORRECTED (LAST LETTER IS SMALL 'L')
         const EMAILJS_PUBLIC_KEY = "YTyO551BPv2WTnp6l"; 
-        
         const ADMIN_EMAIL = "yogesh.shakya007@gmail.com";
         
         emailjs.init(EMAILJS_PUBLIC_KEY);
@@ -428,10 +425,21 @@
         let revenueChartInstance = null;
         let categoryChartInstance = null;
         
-        // --- OTP STATE ---
         let generatedOTP = null;
         let otpContext = null; 
         let pendingNewPassword = null;
+
+        // --- CHECK LOCAL STORAGE ON PAGE LOAD (NEW FEATURE) ---
+        window.onload = function() {
+            if(localStorage.getItem('yogesh_admin_auth') === 'true') {
+                // User is already logged in! Skip login screen.
+                document.getElementById('login-modal').classList.add('hidden');
+                const panel = document.getElementById('admin-panel');
+                panel.classList.remove('hidden');
+                panel.classList.add('block'); 
+                initDashboard();
+            }
+        };
 
         async function logAction(action, details) {
             try { await supabaseClient.from('admin_logs').insert([{ action, details }]); } catch (err) { console.error("Log error: ", err); }
@@ -492,6 +500,9 @@
                     closeOTPModal();
                     
                     if(otpContext === 'login') {
+                        // NEW: Save login state so refresh doesn't log them out!
+                        localStorage.setItem('yogesh_admin_auth', 'true');
+
                         const panel = document.getElementById('admin-panel');
                         panel.classList.remove('hidden');
                         panel.classList.add('block'); 
@@ -576,6 +587,9 @@
 
         async function logout() {
             if(confirm("Are you sure you want to logout?")) {
+                // NEW: Delete login state on explicit logout
+                localStorage.removeItem('yogesh_admin_auth');
+
                 await logAction('Logout', 'Admin logged out of the dashboard'); 
                 document.getElementById('admin-pass').value = '';
                 const panel = document.getElementById('admin-panel');
